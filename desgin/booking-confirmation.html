@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Xác Nhận Đặt Phòng - Khách Sạn & Resort</title>
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="css/style.css">
+   
+   <!-- Include API integration -->
+   <script src="../frontend-integration/api.js"></script>
+   <script src="js/auth.js"></script>
+
+   <style>
+      .order-card {
+         background: var(--sub-color);
+         border: var(--border);
+         border-radius: 0.5rem;
+         padding: 2.5rem;
+         margin-bottom: 2rem;
+      }
+
+      .order-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 2rem;
+         padding-bottom: 1.5rem;
+         border-bottom: 2px solid var(--main-color);
+      }
+
+      .order-ref {
+         font-size: 2rem;
+         font-weight: 600;
+         color: var(--main-color);
+      }
+
+      .order-status {
+         padding: 0.8rem 2rem;
+         border-radius: 0.3rem;
+         font-size: 1.4rem;
+         font-weight: 600;
+         text-transform: capitalize;
+         background: var(--main-color);
+         color: var(--white);
+      }
+
+      .order-details-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+         gap: 2rem;
+         margin-bottom: 2rem;
+      }
+
+      .order-detail-item {
+         display: flex;
+         flex-direction: column;
+         gap: 0.5rem;
+      }
+
+      .order-detail-label {
+         font-size: 1.4rem;
+         color: var(--text-dark-alt);
+         font-weight: 500;
+      }
+
+      .order-detail-value {
+         font-size: 1.8rem;
+         color: var(--text-dark);
+         font-weight: 500;
+      }
+
+      .order-price {
+         font-size: 2.5rem;
+         color: var(--main-color);
+         font-weight: 700;
+      }
+
+      .view-all-orders {
+         text-align: center;
+         margin-top: 2rem;
+      }
+   </style>
+
+</head>
+<body>
+   
+<!-- header section starts  -->
+
+<section class="header">
+   <div class="flex">
+      <a href="index.html#home" class="logo" style="font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 500;">Amanoi</a>
+      <div class="header-actions">
+         <a href="index.html#reservation" class="btn btn-primary" style="text-transform: uppercase; letter-spacing: 0.2rem; font-size: 1.2rem; padding: 1rem 2.5rem;">BOOK A ROOM</a>
+         <div class="auth-buttons-container"></div>
+      </div>
+      <div id="menu-btn" class="fas fa-bars"></div>
+   </div>
+   <nav class="navbar">
+      <a href="index.html#home" data-page="home">HOME</a>
+      <a href="index.html#locations" data-page="locations">LOCATIONS</a>
+      <a href="index.html#reservation" data-page="reservation">BOOK NOW</a>
+      <a href="index.html#reviews" data-page="reviews">REVIEWS</a>
+      <a href="rooms.html" data-page="rooms">ROOMS</a>
+      <a href="index.html#contact" data-page="contact">CONTACT</a>
+      <a href="index.html#packages" data-page="packages">PACKAGES</a>
+   </nav>
+</section>
+
+<!-- header section ends -->
+
+<!-- booking confirmation section starts  -->
+
+<section class="booking-confirmation" id="booking-confirmation" style="padding-top: 12rem; min-height: auto; padding-bottom: 5rem;">
+
+   <div class="confirmation-container" style="max-width: 800px; margin: 0 auto; text-align: center;">
+      
+      <div class="success-icon" style="font-size: 8rem; color: #4CAF50; margin-bottom: 2rem;">
+         <i class="fas fa-check-circle"></i>
+      </div>
+
+      <h1 style="font-size: 3rem; color: var(--text-dark); margin-bottom: 1rem; text-transform: capitalize;">Booking Confirmed!</h1>
+      
+      <p style="font-size: 1.8rem; color: var(--text-dark-alt); margin-bottom: 3rem;">Thank you for choosing Hotels And Resorts. Your reservation has been successfully confirmed.</p>
+
+      <div class="booking-details" style="border: var(--border); padding: 3rem; border-radius: .5rem; margin-bottom: 3rem; text-align: left; min-height: 40rem;">
+         <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 2rem; text-align: center; text-transform: capitalize;">Booking Details</h2>
+         
+         <div class="detail-row" style="display: flex; justify-content: space-between; padding: 1.5rem 0; border-bottom: var(--border); min-height: 5rem; align-items: center;">
+            <span style="font-size: 1.8rem; color: var(--text-dark); font-weight: bold;">Booking Reference:</span>
+            <span style="font-size: 1.8rem; color: var(--text-dark-alt); min-width: 20rem; text-align: right;" id="booking-ref">HTL-2024-001234</span>
+         </div>
+
+         <div class="detail-row" style="display: flex; justify-content: space-between; padding: 1.5rem 0; border-bottom: var(--border); min-height: 5rem; align-items: center;">
+            <span style="font-size: 1.8rem; color: var(--text-dark); font-weight: bold;">Check-in Date:</span>
+            <span style="font-size: 1.8rem; color: var(--text-dark-alt); min-width: 20rem; text-align: right;" id="check-in-date">Loading...</span>
+         </div>
+
+         <div class="detail-row" style="display: flex; justify-content: space-between; padding: 1.5rem 0; border-bottom: var(--border); min-height: 5rem; align-items: center;">
+            <span style="font-size: 1.8rem; color: var(--text-dark); font-weight: bold;">Check-out Date:</span>
+            <span style="font-size: 1.8rem; color: var(--text-dark-alt); min-width: 20rem; text-align: right;" id="check-out-date">Loading...</span>
+         </div>
+
+         <div class="detail-row" style="display: flex; justify-content: space-between; padding: 1.5rem 0; border-bottom: var(--border); min-height: 5rem; align-items: center;">
+            <span style="font-size: 1.8rem; color: var(--text-dark); font-weight: bold;">Guests:</span>
+            <span style="font-size: 1.8rem; color: var(--text-dark-alt); min-width: 20rem; text-align: right;" id="guests">Loading...</span>
+         </div>
+
+         <div class="detail-row" style="display: flex; justify-content: space-between; padding: 1.5rem 0; border-bottom: var(--border); min-height: 5rem; align-items: center;">
+            <span style="font-size: 1.8rem; color: var(--text-dark); font-weight: bold;">Room Type:</span>
+            <span style="font-size: 1.8rem; color: var(--text-dark-alt); min-width: 20rem; text-align: right;" id="room-type">Deluxe King Room</span>
+         </div>
+
+         <div class="detail-row" style="display: flex; justify-content: space-between; padding: 1.5rem 0; min-height: 5rem; align-items: center;">
+            <span style="font-size: 1.8rem; color: var(--text-dark); font-weight: bold;">Total Amount:</span>
+            <span style="font-size: 2rem; color: var(--main-color); font-weight: bold; min-width: 20rem; text-align: right;" id="total-amount">$160</span>
+         </div>
+      </div>
+
+      <div class="confirmation-message" style="background-color: var(--sub-color); color: var(--main-color); padding: 2rem; border-radius: .5rem; margin-bottom: 3rem;">
+         <p style="font-size: 1.6rem; line-height: 2;">
+            A confirmation email has been sent to your registered email address. 
+            Please check your inbox for booking details and instructions.
+         </p>
+      </div>
+
+      <div class="action-buttons" style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+         <a href="index.html" class="btn">Back to Home</a>
+         <a href="rooms.html" class="btn">View More Rooms</a>
+      </div>
+
+      <!-- My Orders Section -->
+      <div class="my-orders-section" style="margin-top: 4rem; padding: 3rem; border: var(--border); border-radius: .5rem; background: var(--white);">
+         <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 2rem; text-align: center; text-transform: capitalize;">
+            <i class="fas fa-shopping-bag" style="margin-right: 1rem;"></i>My Orders
+         </h2>
+         <div id="my-orders-content" style="min-height: 20rem;">
+            <div style="text-align: center; padding: 3rem; color: var(--text-dark-alt);">
+               <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+               <p style="font-size: 1.6rem;">Loading your recent order...</p>
+            </div>
+         </div>
+      </div>
+
+      <div class="contact-info" style="margin-top: 4rem; padding: 2rem; border: var(--border); border-radius: .5rem;">
+         <h3 style="font-size: 2rem; color: var(--text-dark); margin-bottom: 1.5rem; text-transform: capitalize;">Need Help?</h3>
+         <p style="font-size: 1.6rem; color: var(--text-dark-alt); margin-bottom: 1rem;">
+            <i class="fas fa-phone"></i> Call us: <a href="tel:1234567890" style="color: var(--main-color);">+123-456-7890</a>
+         </p>
+         <p style="font-size: 1.6rem; color: var(--text-dark-alt);">
+            <i class="fas fa-envelope"></i> Email us: <a href="mailto:shakhanas@gmail.com" style="color: var(--main-color);">shakhanas@gmail.com</a>
+         </p>
+      </div>
+
+   </div>
+
+</section>
+
+<!-- booking confirmation section ends -->
+
+<!-- footer section starts  -->
+
+<section class="footer">
+   <div class="box-container">
+      <div class="box">
+         <h4 style="font-size: 2.4rem; color: var(--white); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Amanoi</h4>
+         <a href="#"><i class="fas fa-map-marker-alt"></i> Vinh Hy Village, Vinh Hai Commune, Khanh Hoa Province, Vietnam</a>
+         <a href="tel:+842593770777"><i class="fas fa-phone"></i> Tel: +84 931055975</a>
+         <a href="tel:+842593535777"><i class="fas fa-phone"></i> For reservations: +84 9310559xxx</a>
+         <a href="mailto:amanoi@aman.com"><i class="fas fa-envelope"></i> Email: amanoi@aman.com</a>
+      </div>
+      <div class="box">
+         <h4>More information</h4>
+         <a href="index.html#about">Aman Group</a>
+         <a href="index.html#locations">Destinations</a>
+         <a href="index.html#packages">Experiences</a>
+         <a href="index.html#reviews">About Us</a>
+         <a href="index.html#contact">Contact Us</a>
+      </div>
+      <div class="box">
+         <h4>Follow Us</h4>
+         <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+         <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+         <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+         <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+         <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      </div>
+   </div>
+   <div class="credit">Copyright 2025, Aman Resorts Ltd</div>
+</section>
+
+</section>
+
+<!-- footer section ends -->
+
+<script>
+   // Prevent layout shift by running script immediately
+   (function() {
+      // Get booking details from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const checkIn = urlParams.get('check_in');
+      const checkOut = urlParams.get('check_out');
+      const adults = urlParams.get('adults') || urlParams.get('adult') || '1';
+      const children = urlParams.get('children') || urlParams.get('childs') || '0';
+      const room = urlParams.get('room') || 'deluxe';
+      const total = urlParams.get('total') || urlParams.get('total_amount');
+
+      // Room names mapping
+      const roomNames = {
+         deluxe: 'Deluxe King Room',
+         suite: 'Executive Suite',
+         family: 'Family Suite',
+         ocean: 'Ocean View Room',
+         executive: 'Executive Suite',
+         presidential: 'Presidential Suite'
+      };
+
+      // Generate random booking reference
+      const bookingRef = 'HTL-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+      
+      // Update booking details immediately to prevent layout shift
+      function updateBookingDetails() {
+         // Booking reference
+         const refEl = document.getElementById('booking-ref');
+         if (refEl) refEl.textContent = bookingRef;
+         
+         // Check-in date
+         const checkInEl = document.getElementById('check-in-date');
+         if (checkInEl) {
+            if (checkIn) {
+               checkInEl.textContent = new Date(checkIn).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+               });
+            } else {
+               checkInEl.textContent = '-';
+            }
+         }
+         
+         // Check-out date
+         const checkOutEl = document.getElementById('check-out-date');
+         if (checkOutEl) {
+            if (checkOut) {
+               checkOutEl.textContent = new Date(checkOut).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+               });
+            } else {
+               checkOutEl.textContent = '-';
+            }
+         }
+         
+         // Guests
+         const guestsEl = document.getElementById('guests');
+         if (guestsEl) {
+            let guestsText = adults + ' adult' + (parseInt(adults) > 1 ? 's' : '');
+            if (children && parseInt(children) > 0) {
+               guestsText += ', ' + children + ' child' + (parseInt(children) > 1 ? 'ren' : '');
+            }
+            guestsEl.textContent = guestsText;
+         }
+         
+         // Room type
+         const roomEl = document.getElementById('room-type');
+         if (roomEl) {
+            roomEl.textContent = roomNames[room] || 'Deluxe King Room';
+         }
+         
+         // Total amount
+         const totalEl = document.getElementById('total-amount');
+         if (totalEl && total) {
+            totalEl.textContent = '$' + parseFloat(total).toFixed(2);
+         }
+      }
+
+      // Run immediately if DOM is ready, otherwise wait
+      if (document.readyState === 'loading') {
+         document.addEventListener('DOMContentLoaded', updateBookingDetails);
+      } else {
+         updateBookingDetails();
+      }
+   })();
+
+   // Load My Orders (most recent booking)
+   async function loadMyOrders() {
+      const ordersContent = document.getElementById('my-orders-content');
+      
+      // Get booking details from URL parameters as fallback
+      const urlParams = new URLSearchParams(window.location.search);
+      const checkIn = urlParams.get('check_in');
+      const checkOut = urlParams.get('check_out');
+      const adults = urlParams.get('adults') || urlParams.get('adult') || '1';
+      const children = urlParams.get('children') || urlParams.get('childs') || '0';
+      const room = urlParams.get('room') || 'deluxe';
+      const total = urlParams.get('total') || urlParams.get('total_amount');
+      
+      // Room names mapping
+      const roomNames = {
+         deluxe: 'Deluxe King Room',
+         suite: 'Executive Suite',
+         family: 'Family Suite',
+         ocean: 'Ocean View Room',
+         executive: 'Executive Suite',
+         presidential: 'Presidential Suite'
+      };
+      
+      // Calculate nights
+      function calculateNights(checkIn, checkOut) {
+         if (!checkIn || !checkOut) return 1;
+         const start = new Date(checkIn);
+         const end = new Date(checkOut);
+         const diffTime = Math.abs(end - start);
+         return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+      }
+      
+      // Generate booking reference (same as in booking details)
+      const bookingRef = 'HTL-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+      
+      // Check if user is logged in
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+         // Show current booking from URL params if not logged in
+         if (checkIn && checkOut) {
+            const nights = calculateNights(checkIn, checkOut);
+            const checkInDate = new Date(checkIn);
+            const checkOutDate = new Date(checkOut);
+            const defaultCheckInTime = '3:00 PM';
+            const totalAmount = total ? parseFloat(total).toFixed(2) : '160.00';
+            
+            ordersContent.innerHTML = `
+               <div class="order-card">
+                  <div class="order-header">
+                     <div class="order-ref">${bookingRef}</div>
+                     <span class="order-status" style="background: var(--main-color);">Confirmed</span>
+                  </div>
+                  
+                  <div class="order-details-grid">
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-bed"></i> Room</span>
+                        <span class="order-detail-value">${roomNames[room] || 'Deluxe King Room'}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-calendar-check"></i> Check-in</span>
+                        <span class="order-detail-value">
+                           ${checkInDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                           <br><small style="color: var(--text-dark-alt); font-size: 1.4rem;">${defaultCheckInTime}</small>
+                        </span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-calendar-times"></i> Check-out</span>
+                        <span class="order-detail-value">${checkOutDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-users"></i> Guests</span>
+                        <span class="order-detail-value">${adults} Adult(s), ${children} Child(ren)</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-moon"></i> Nights</span>
+                        <span class="order-detail-value">${nights}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-dollar-sign"></i> Total Amount</span>
+                        <span class="order-detail-value order-price">$${totalAmount}</span>
+                     </div>
+                  </div>
+               </div>
+               <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: var(--sub-color); border-radius: 0.5rem;">
+                  <p style="font-size: 1.4rem; color: var(--text-dark-alt); margin-bottom: 1rem;">
+                     <i class="fas fa-info-circle"></i> <a href="auth.html" style="color: var(--main-color); text-decoration: underline;">Login</a> to view all your orders
+                  </p>
+               </div>
+            `;
+            return;
+         }
+         
+         ordersContent.innerHTML = `
+            <div style="text-align: center; padding: 3rem; color: var(--text-dark-alt);">
+               <i class="fas fa-sign-in-alt" style="font-size: 3rem; margin-bottom: 1rem; color: var(--main-color);"></i>
+               <p style="font-size: 1.6rem; margin-bottom: 2rem;">Please <a href="auth.html" style="color: var(--main-color); text-decoration: underline;">login</a> to view your orders</p>
+            </div>
+         `;
+         return;
+      }
+
+      // Check if API is available
+      if (typeof BookingsAPI === 'undefined') {
+         // Fallback to URL params if API not available
+         if (checkIn && checkOut) {
+            const nights = calculateNights(checkIn, checkOut);
+            const checkInDate = new Date(checkIn);
+            const checkOutDate = new Date(checkOut);
+            const defaultCheckInTime = '3:00 PM';
+            const totalAmount = total ? parseFloat(total).toFixed(2) : '160.00';
+            
+            ordersContent.innerHTML = `
+               <div class="order-card">
+                  <div class="order-header">
+                     <div class="order-ref">${bookingRef}</div>
+                     <span class="order-status" style="background: var(--main-color);">Confirmed</span>
+                  </div>
+                  
+                  <div class="order-details-grid">
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-bed"></i> Room</span>
+                        <span class="order-detail-value">${roomNames[room] || 'Deluxe King Room'}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-calendar-check"></i> Check-in</span>
+                        <span class="order-detail-value">
+                           ${checkInDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                           <br><small style="color: var(--text-dark-alt); font-size: 1.4rem;">${defaultCheckInTime}</small>
+                        </span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-calendar-times"></i> Check-out</span>
+                        <span class="order-detail-value">${checkOutDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-users"></i> Guests</span>
+                        <span class="order-detail-value">${adults} Adult(s), ${children} Child(ren)</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-moon"></i> Nights</span>
+                        <span class="order-detail-value">${nights}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-dollar-sign"></i> Total Amount</span>
+                        <span class="order-detail-value order-price">$${totalAmount}</span>
+                     </div>
+                  </div>
+               </div>
+            `;
+            return;
+         }
+         
+         ordersContent.innerHTML = `
+            <div style="text-align: center; padding: 3rem; color: #c62828;">
+               <p style="font-size: 1.6rem;">Error: API not loaded. Please refresh the page.</p>
+            </div>
+         `;
+         return;
+      }
+
+      try {
+         console.log('Loading recent orders...');
+         const response = await BookingsAPI.getMyBookings();
+         console.log('Orders response:', response);
+         
+         if (response && response.success) {
+            const bookings = response.bookings || response.data || [];
+            
+            if (!Array.isArray(bookings) || bookings.length === 0) {
+               // Fallback: Show current booking from URL params if no database bookings
+               if (checkIn && checkOut) {
+                  const nights = calculateNights(checkIn, checkOut);
+                  const checkInDate = new Date(checkIn);
+                  const checkOutDate = new Date(checkOut);
+                  const defaultCheckInTime = '3:00 PM';
+                  const totalAmount = total ? parseFloat(total).toFixed(2) : '160.00';
+                  
+                  ordersContent.innerHTML = `
+                     <div class="order-card">
+                        <div class="order-header">
+                           <div class="order-ref">${bookingRef}</div>
+                           <span class="order-status" style="background: var(--main-color);">Confirmed</span>
+                        </div>
+                        
+                        <div class="order-details-grid">
+                           <div class="order-detail-item">
+                              <span class="order-detail-label"><i class="fas fa-bed"></i> Room</span>
+                              <span class="order-detail-value">${roomNames[room] || 'Deluxe King Room'}</span>
+                           </div>
+                           <div class="order-detail-item">
+                              <span class="order-detail-label"><i class="fas fa-calendar-check"></i> Check-in</span>
+                              <span class="order-detail-value">
+                                 ${checkInDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                                 <br><small style="color: var(--text-dark-alt); font-size: 1.4rem;">${defaultCheckInTime}</small>
+                              </span>
+                           </div>
+                           <div class="order-detail-item">
+                              <span class="order-detail-label"><i class="fas fa-calendar-times"></i> Check-out</span>
+                              <span class="order-detail-value">${checkOutDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                           </div>
+                           <div class="order-detail-item">
+                              <span class="order-detail-label"><i class="fas fa-users"></i> Guests</span>
+                              <span class="order-detail-value">${adults} Adult(s), ${children} Child(ren)</span>
+                           </div>
+                           <div class="order-detail-item">
+                              <span class="order-detail-label"><i class="fas fa-moon"></i> Nights</span>
+                              <span class="order-detail-value">${nights}</span>
+                           </div>
+                           <div class="order-detail-item">
+                              <span class="order-detail-label"><i class="fas fa-dollar-sign"></i> Total Amount</span>
+                              <span class="order-detail-value order-price">$${totalAmount}</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: var(--sub-color); border-radius: 0.5rem;">
+                        <p style="font-size: 1.4rem; color: var(--text-dark-alt);">
+                           <i class="fas fa-info-circle"></i> This is your current booking. It will appear in your booking history once saved.
+                        </p>
+                     </div>
+                  `;
+                  return;
+               }
+               
+               ordersContent.innerHTML = `
+                  <div style="text-align: center; padding: 3rem; color: var(--text-dark-alt);">
+                     <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 1rem; color: var(--text-light);"></i>
+                     <p style="font-size: 1.6rem;">No orders found.</p>
+                     <a href="rooms.html" class="btn" style="margin-top: 2rem;">Book a Room</a>
+                  </div>
+               `;
+               return;
+            }
+
+            // Get most recent booking (first in array since API returns DESC)
+            const mostRecent = bookings[0];
+            const checkInDate = new Date(mostRecent.check_in);
+            const checkOutDate = new Date(mostRecent.check_out);
+            const defaultCheckInTime = '3:00 PM';
+            
+            const statusClass = mostRecent.booking_status === 'confirmed' ? 'var(--main-color)' : 
+                               mostRecent.booking_status === 'cancelled' ? '#c62828' : 
+                               mostRecent.booking_status === 'checked_in' ? '#1976d2' :
+                               mostRecent.booking_status === 'checked_out' ? '#388e3c' : 'var(--text-light)';
+
+            ordersContent.innerHTML = `
+               <div class="order-card">
+                  <div class="order-header">
+                     <div class="order-ref">${mostRecent.booking_reference}</div>
+                     <span class="order-status" style="background: ${statusClass};">${mostRecent.booking_status}</span>
+                  </div>
+                  
+                  <div class="order-details-grid">
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-bed"></i> Room</span>
+                        <span class="order-detail-value">${mostRecent.room_name || 'N/A'}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-calendar-check"></i> Check-in</span>
+                        <span class="order-detail-value">
+                           ${checkInDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                           <br><small style="color: var(--text-dark-alt); font-size: 1.4rem;">${defaultCheckInTime}</small>
+                        </span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-calendar-times"></i> Check-out</span>
+                        <span class="order-detail-value">${checkOutDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-users"></i> Guests</span>
+                        <span class="order-detail-value">${mostRecent.adults} Adult(s), ${mostRecent.children || 0} Child(ren)</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-moon"></i> Nights</span>
+                        <span class="order-detail-value">${mostRecent.nights || 1}</span>
+                     </div>
+                     <div class="order-detail-item">
+                        <span class="order-detail-label"><i class="fas fa-dollar-sign"></i> Total Amount</span>
+                        <span class="order-detail-value order-price">$${parseFloat(mostRecent.total_price || 0).toFixed(2)}</span>
+                     </div>
+                  </div>
+               </div>
+               
+               ${bookings.length > 1 ? `
+                  <div class="view-all-orders">
+                     <a href="profile.html" class="btn" style="display: inline-block;">
+                        <i class="fas fa-list"></i> View All Orders (${bookings.length})
+                     </a>
+                  </div>
+               ` : ''}
+            `;
+         } else {
+            ordersContent.innerHTML = `
+               <div style="text-align: center; padding: 3rem; color: #c62828;">
+                  <p style="font-size: 1.6rem;">Error: ${response?.message || 'Failed to load orders'}</p>
+               </div>
+            `;
+         }
+      } catch (error) {
+         console.error('Load orders error:', error);
+         let errorMessage = error.message || 'Failed to load orders';
+         
+         if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+            ordersContent.innerHTML = `
+               <div style="text-align: center; padding: 3rem; color: var(--text-dark-alt);">
+                  <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem; color: #c62828;"></i>
+                  <p style="font-size: 1.6rem; margin-bottom: 2rem;">Session expired. Please <a href="auth.html" style="color: var(--main-color); text-decoration: underline;">login</a> again.</p>
+               </div>
+            `;
+         } else {
+            ordersContent.innerHTML = `
+               <div style="text-align: center; padding: 3rem; color: #c62828;">
+                  <p style="font-size: 1.6rem;">Error: ${errorMessage}</p>
+                  <button onclick="loadMyOrders()" class="btn" style="margin-top: 1rem;">Retry</button>
+               </div>
+            `;
+         }
+      }
+   }
+
+   // Load orders when page loads
+   if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadMyOrders);
+   } else {
+      loadMyOrders();
+   }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+<script src="js/navigation.js"></script>
+
+</body>
+</html>
+

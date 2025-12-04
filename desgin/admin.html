@@ -1,0 +1,3371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Admin Dashboard - Hotel Management</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+   <link rel="stylesheet" href="css/style.css">
+
+   <style>
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+      }
+
+      body {
+         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: #f5f5f5;
+         color: #333;
+         overflow-x: hidden;
+      }
+
+      .admin-dashboard {
+         display: flex;
+         min-height: 100vh;
+      }
+
+      /* Left Sidebar */
+      .sidebar {
+         width: 80px;
+         background: #fff;
+         border-right: 1px solid #e0e0e0;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         padding: 2rem 0;
+         position: fixed;
+         left: 0;
+         top: 0;
+         height: 100vh;
+         z-index: 1000;
+      }
+
+      .sidebar-icon {
+         width: 50px;
+         height: 50px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         border-radius: 12px;
+         margin-bottom: 1.5rem;
+         cursor: pointer;
+         transition: all 0.3s;
+         color: #666;
+         font-size: 2rem;
+      }
+
+      .sidebar-icon:hover {
+         background: #f0f0f0;
+         color: #8F9F04;
+      }
+
+      .sidebar-icon.active {
+         background: #8F9F04;
+         color: #fff;
+      }
+
+      /* Main Content Area */
+      .main-content {
+         flex: 1;
+         margin-left: 80px;
+         display: flex;
+         flex-direction: column;
+      }
+
+      /* Top Header */
+      .top-header {
+         background: #fff;
+         padding: 2rem 3rem;
+         border-bottom: 1px solid #e0e0e0;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         position: sticky;
+         top: 0;
+         z-index: 100;
+      }
+
+      .header-left {
+         display: flex;
+         align-items: center;
+         gap: 2rem;
+      }
+
+      .header-title {
+         font-size: 2.4rem;
+         font-weight: 600;
+         color: #333;
+      }
+
+      .search-bar {
+         display: flex;
+         align-items: center;
+         background: #f5f5f5;
+         border-radius: 12px;
+         padding: 1rem 1.5rem;
+         width: 300px;
+      }
+
+      .search-bar i {
+         color: #999;
+         margin-right: 1rem;
+      }
+
+      .search-bar input {
+         border: none;
+         background: transparent;
+         outline: none;
+         font-size: 1.4rem;
+         color: #333;
+         width: 100%;
+      }
+
+      .header-right {
+         display: flex;
+         align-items: center;
+         gap: 2rem;
+      }
+
+      .header-icon {
+         width: 40px;
+         height: 40px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         border-radius: 50%;
+         background: #f5f5f5;
+         cursor: pointer;
+         transition: all 0.3s;
+         color: #666;
+         font-size: 1.6rem;
+         position: relative;
+      }
+
+      .header-icon:hover {
+         background: #e0e0e0;
+      }
+
+      .header-icon.active {
+         background: #8F9F04;
+         color: #fff;
+      }
+
+      .header-icon .badge {
+         position: absolute;
+         top: -5px;
+         right: -5px;
+         background: #ff4444;
+         color: #fff;
+         border-radius: 50%;
+         width: 18px;
+         height: 18px;
+         font-size: 1rem;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      .profile-pic {
+         width: 40px;
+         height: 40px;
+         border-radius: 50%;
+         background: linear-gradient(135deg, #8F9F04, #6B7A03);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: #fff;
+         font-weight: 600;
+         cursor: pointer;
+         transition: all 0.3s;
+         position: relative;
+      }
+
+      .profile-pic:hover {
+         transform: scale(1.05);
+         box-shadow: 0 2px 8px rgba(143, 159, 4, 0.3);
+      }
+
+      /* Content Wrapper */
+      .content-wrapper {
+         display: flex;
+         flex: 1;
+         overflow: hidden;
+      }
+
+      /* Main Section */
+      .main-section {
+         flex: 1;
+         padding: 3rem;
+         overflow-y: auto;
+         background: #f5f5f5;
+      }
+
+      .section-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 3rem;
+      }
+
+      .section-title {
+         font-size: 2.8rem;
+         font-weight: 600;
+         color: #333;
+      }
+
+      .section-stats {
+         display: flex;
+         gap: 2rem;
+         margin-bottom: 2rem;
+      }
+
+      .stat-item {
+         font-size: 1.4rem;
+         color: #666;
+      }
+
+      .stat-item strong {
+         color: #333;
+         font-weight: 600;
+      }
+
+      .section-actions {
+         display: flex;
+         align-items: center;
+         gap: 1rem;
+      }
+
+      .view-toggle {
+         display: flex;
+         gap: 0.5rem;
+         background: #fff;
+         padding: 0.5rem;
+         border-radius: 8px;
+      }
+
+      .view-toggle button {
+         width: 32px;
+         height: 32px;
+         border: none;
+         background: transparent;
+         border-radius: 6px;
+         cursor: pointer;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: #666;
+         transition: all 0.3s;
+      }
+
+      .view-toggle button.active {
+         background: #8F9F04;
+         color: #fff;
+      }
+
+      /* Cards Grid */
+      .cards-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+         gap: 2rem;
+      }
+
+      .card {
+         background: #fff;
+         border-radius: 16px;
+         padding: 2rem;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+         transition: all 0.3s;
+         cursor: pointer;
+      }
+
+      .card:hover {
+         transform: translateY(-4px);
+         box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      }
+
+      .card-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: flex-start;
+         margin-bottom: 1.5rem;
+      }
+
+      .card-date {
+         font-size: 1.2rem;
+         color: #999;
+      }
+
+      .card-status {
+         padding: 0.5rem 1rem;
+         border-radius: 20px;
+         font-size: 1.2rem;
+         font-weight: 500;
+      }
+
+      .card-title {
+         font-size: 1.8rem;
+         font-weight: 600;
+         color: #333;
+         margin-bottom: 0.5rem;
+      }
+
+      .card-subtitle {
+         font-size: 1.4rem;
+         color: #666;
+         margin-bottom: 1.5rem;
+      }
+
+      .progress-bar {
+         height: 8px;
+         background: #f0f0f0;
+         border-radius: 4px;
+         margin-bottom: 1rem;
+         overflow: hidden;
+      }
+
+      .progress-fill {
+         height: 100%;
+         border-radius: 4px;
+         transition: width 0.3s;
+      }
+
+      .progress-text {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 1.5rem;
+      }
+
+      .progress-percent {
+         font-size: 1.4rem;
+         font-weight: 600;
+         color: #333;
+      }
+
+      .card-footer {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .card-users {
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+      }
+
+      .user-avatar {
+         width: 32px;
+         height: 32px;
+         border-radius: 50%;
+         background: linear-gradient(135deg, #8F9F04, #6B7A03);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: #fff;
+         font-size: 1.2rem;
+         font-weight: 600;
+         border: 2px solid #fff;
+         margin-left: -8px;
+      }
+
+      .user-avatar:first-child {
+         margin-left: 0;
+      }
+
+      .add-user {
+         width: 32px;
+         height: 32px;
+         border-radius: 50%;
+         background: #f0f0f0;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: #666;
+         cursor: pointer;
+         border: 2px solid #fff;
+      }
+
+      .time-badge {
+         padding: 0.5rem 1rem;
+         border-radius: 20px;
+         font-size: 1.2rem;
+         font-weight: 500;
+      }
+
+      /* Right Sidebar */
+      .right-sidebar {
+         width: 350px;
+         background: #fff;
+         border-left: 1px solid #e0e0e0;
+         padding: 3rem 2rem;
+         overflow-y: auto;
+      }
+
+      .sidebar-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 2rem;
+      }
+
+      .sidebar-title {
+         font-size: 2rem;
+         font-weight: 600;
+         color: #333;
+      }
+
+      .sidebar-icon-small {
+         width: 32px;
+         height: 32px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         border-radius: 8px;
+         background: #f5f5f5;
+         cursor: pointer;
+         color: #666;
+      }
+
+      .message-list {
+         display: flex;
+         flex-direction: column;
+         gap: 1.5rem;
+      }
+
+      .message-item {
+         display: flex;
+         gap: 1rem;
+         padding: 1.5rem;
+         border-radius: 12px;
+         cursor: pointer;
+         transition: all 0.3s;
+      }
+
+      .message-item:hover {
+         background: #f5f5f5;
+      }
+
+      .message-avatar {
+         width: 48px;
+         height: 48px;
+         border-radius: 50%;
+         background: linear-gradient(135deg, #8F9F04, #6B7A03);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: #fff;
+         font-weight: 600;
+         flex-shrink: 0;
+      }
+
+      .message-content {
+         flex: 1;
+      }
+
+      .message-name {
+         font-size: 1.4rem;
+         font-weight: 600;
+         color: #333;
+         margin-bottom: 0.5rem;
+      }
+
+      .message-text {
+         font-size: 1.3rem;
+         color: #666;
+         line-height: 1.5;
+         margin-bottom: 0.5rem;
+      }
+
+      .message-meta {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .message-date {
+         font-size: 1.2rem;
+         color: #999;
+      }
+
+      .message-star {
+         color: #ffd700;
+         cursor: pointer;
+      }
+
+      .message-star.outline {
+         color: #ccc;
+      }
+
+      /* Status Colors */
+      .status-pending { background: #fff3cd; color: #856404; }
+      .status-confirmed { background: #d4edda; color: #155724; }
+      .status-cancelled { background: #f8d7da; color: #721c24; }
+      .status-checked_in { background: #cce5ff; color: #004085; }
+      .status-checked_out { background: #e2e3e5; color: #383d41; }
+
+      /* Progress Colors */
+      .progress-blue { background: #4285f4; }
+      .progress-orange { background: #ff9800; }
+      .progress-green { background: #34a853; }
+      .progress-pink { background: #ea4335; }
+
+      /* Time Badge Colors */
+      .badge-blue { background: #4285f4; color: #fff; }
+      .badge-orange { background: #ff9800; color: #fff; }
+      .badge-green { background: #34a853; color: #fff; }
+      .badge-pink { background: #ea4335; color: #fff; }
+
+      /* Table View */
+      .table-view {
+         display: none;
+      }
+
+      .table-view.active {
+         display: block;
+      }
+
+      .data-table {
+         width: 100%;
+         background: #fff;
+         border-radius: 16px;
+         overflow: hidden;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      }
+
+      .data-table table {
+         width: 100%;
+         border-collapse: collapse;
+      }
+
+      .data-table th {
+         padding: 1.5rem;
+         text-align: left;
+         font-size: 1.3rem;
+         font-weight: 600;
+         color: #666;
+         background: #f8f9fa;
+         border-bottom: 1px solid #e0e0e0;
+      }
+
+      .data-table td {
+         padding: 1.5rem;
+         font-size: 1.4rem;
+         color: #333;
+         border-bottom: 1px solid #f0f0f0;
+      }
+
+      .data-table tr:hover {
+         background: #f8f9fa;
+      }
+
+      /* Loading State */
+      .loading {
+         text-align: center;
+         padding: 4rem;
+         color: #999;
+         font-size: 1.6rem;
+      }
+
+      /* Empty State */
+      .empty-state {
+         text-align: center;
+         padding: 4rem;
+         color: #999;
+      }
+
+      .empty-state i {
+         font-size: 4rem;
+         margin-bottom: 1rem;
+         color: #ccc;
+      }
+
+      /* Dropdown Menu Styles */
+      .dropdown-menu {
+         position: absolute;
+         top: calc(100% + 10px);
+         right: 0;
+         background: #fff;
+         border-radius: 12px;
+         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+         min-width: 250px;
+         z-index: 1000;
+         overflow: hidden;
+         animation: slideDown 0.2s ease;
+      }
+
+      @keyframes slideDown {
+         from {
+            opacity: 0;
+            transform: translateY(-10px);
+         }
+         to {
+            opacity: 1;
+            transform: translateY(0);
+         }
+      }
+
+      .dropdown-header {
+         padding: 1.5rem;
+         border-bottom: 1px solid #e0e0e0;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .dropdown-header h3 {
+         font-size: 1.6rem;
+         font-weight: 600;
+         color: #333;
+         margin: 0;
+      }
+
+      .dropdown-content {
+         max-height: 400px;
+         overflow-y: auto;
+      }
+
+      .dropdown-item {
+         padding: 1.2rem 1.5rem;
+         display: flex;
+         align-items: center;
+         gap: 1rem;
+         cursor: pointer;
+         transition: all 0.2s;
+         font-size: 1.4rem;
+         color: #333;
+      }
+
+      .dropdown-item:hover {
+         background: #f5f5f5;
+      }
+
+      .dropdown-item i {
+         width: 20px;
+         text-align: center;
+         color: #666;
+      }
+
+      .dropdown-item:hover i {
+         color: #8F9F04;
+      }
+
+      .dropdown-divider {
+         height: 1px;
+         background: #e0e0e0;
+         margin: 0.5rem 0;
+      }
+
+      .notifications-dropdown {
+         min-width: 350px;
+      }
+
+      .notification-item {
+         padding: 1.2rem 1.5rem;
+         display: flex;
+         gap: 1rem;
+         border-bottom: 1px solid #f0f0f0;
+         cursor: pointer;
+         transition: all 0.2s;
+      }
+
+      .notification-item:hover {
+         background: #f8f9fa;
+      }
+
+      .notification-item.unread {
+         background: #f0f7ff;
+      }
+
+      .notification-item i {
+         font-size: 1.8rem;
+         margin-top: 0.2rem;
+      }
+
+      .notification-text {
+         flex: 1;
+      }
+
+      .notification-text strong {
+         display: block;
+         font-size: 1.4rem;
+         color: #333;
+         margin-bottom: 0.3rem;
+      }
+
+      .notification-text p {
+         font-size: 1.3rem;
+         color: #666;
+         margin: 0.3rem 0;
+      }
+
+      .notification-time {
+         font-size: 1.2rem;
+         color: #999;
+      }
+
+      .profile-dropdown {
+         min-width: 280px;
+      }
+
+      .profile-info {
+         display: flex;
+         align-items: center;
+         gap: 1rem;
+      }
+
+      .profile-pic-small {
+         width: 48px;
+         height: 48px;
+         border-radius: 50%;
+         background: linear-gradient(135deg, #8F9F04, #6B7A03);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: #fff;
+         font-weight: 600;
+         font-size: 1.6rem;
+      }
+
+      .profile-info strong {
+         display: block;
+         font-size: 1.5rem;
+         color: #333;
+         margin-bottom: 0.2rem;
+      }
+
+      .profile-info span {
+         font-size: 1.3rem;
+         color: #666;
+      }
+
+      /* Modal Styles */
+      .modal-overlay {
+         display: none;
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: rgba(0, 0, 0, 0.5);
+         z-index: 10000;
+         align-items: center;
+         justify-content: center;
+      }
+
+      .modal {
+         background: #fff;
+         border-radius: 16px;
+         padding: 3rem;
+         max-width: 500px;
+         width: 90%;
+         box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      }
+
+      .modal-header {
+         margin-bottom: 2rem;
+      }
+
+      .modal-header h3 {
+         font-size: 2rem;
+         font-weight: 600;
+         color: #333;
+      }
+
+      .modal-body {
+         margin-bottom: 2rem;
+      }
+
+      .modal-body p {
+         font-size: 1.4rem;
+         color: #666;
+         margin-bottom: 1rem;
+      }
+
+      .modal-body .input {
+         width: 100%;
+         padding: 1.2rem;
+         border: 1px solid #e0e0e0;
+         border-radius: 8px;
+         font-size: 1.4rem;
+         margin-top: 1rem;
+      }
+
+      .modal-footer {
+         display: flex;
+         gap: 1rem;
+         justify-content: flex-end;
+      }
+
+      .modal-btn {
+         padding: 1rem 2rem;
+         border: none;
+         border-radius: 8px;
+         font-size: 1.4rem;
+         cursor: pointer;
+         transition: all 0.3s;
+      }
+
+      .modal-btn-cancel {
+         background: #f0f0f0;
+         color: #333;
+      }
+
+      .modal-btn-confirm {
+         background: #c62828;
+         color: #fff;
+      }
+
+      .modal-btn:hover {
+         opacity: 0.9;
+         transform: translateY(-2px);
+      }
+
+      .error-message {
+         padding: 2rem;
+         background: #fff;
+         border-radius: 12px;
+         color: #c62828;
+         text-align: center;
+         font-size: 1.6rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 1200px) {
+         .right-sidebar {
+            display: none;
+         }
+      }
+
+      @media (max-width: 768px) {
+         .sidebar {
+            width: 60px;
+         }
+
+         .main-content {
+            margin-left: 60px;
+         }
+
+         .search-bar {
+            width: 200px;
+         }
+
+         .cards-grid {
+            grid-template-columns: 1fr;
+         }
+      }
+   </style>
+</head>
+<body>
+   <!-- Include API integration -->
+   <script src="../frontend-integration/api.js"></script>
+   <script src="js/auth.js"></script>
+
+   <div class="admin-dashboard">
+      <!-- Left Sidebar -->
+      <div class="sidebar">
+         <div class="sidebar-icon active" onclick="switchAdminTab('bookings', this)" title="Bookings">
+            <i class="fas fa-home"></i>
+         </div>
+         <div class="sidebar-icon" onclick="switchAdminTab('stats', this)" title="Dashboard">
+            <i class="fas fa-chart-bar"></i>
+         </div>
+         <div class="sidebar-icon" onclick="switchAdminTab('users', this)" title="Users">
+            <i class="fas fa-users"></i>
+         </div>
+         <div class="sidebar-icon" onclick="switchAdminTab('rooms', this)" title="Rooms">
+            <i class="fas fa-bed"></i>
+         </div>
+         <div class="sidebar-icon" onclick="switchAdminTab('reviews', this)" title="Reviews">
+            <i class="fas fa-star"></i>
+         </div>
+         <div class="sidebar-icon" onclick="switchAdminTab('query', this)" title="SQL Query">
+            <i class="fas fa-database"></i>
+         </div>
+         <div class="sidebar-icon" onclick="switchAdminTab('tables', this)" title="Tables">
+            <i class="fas fa-table"></i>
+         </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+         <!-- Top Header -->
+         <div class="top-header">
+            <div class="header-left">
+               <h1 class="header-title" id="page-title">Reservations</h1>
+               <div class="search-bar">
+                  <i class="fas fa-search"></i>
+                  <input type="text" placeholder="Search" id="search-input">
+               </div>
+            </div>
+            <div class="header-right">
+               <div class="header-icon" id="add-menu-btn" title="Add New" onclick="toggleAddMenu(event)">
+                  <i class="fas fa-plus"></i>
+                  <div class="dropdown-menu" id="add-menu" style="display: none;">
+                     <div class="dropdown-item" onclick="openRoomModal()">
+                        <i class="fas fa-bed"></i>
+                        <span>Add New Room</span>
+                     </div>
+                     <div class="dropdown-item" onclick="openCreateUserModal()">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create User</span>
+                     </div>
+                     <div class="dropdown-item" onclick="openCreateBookingModal()">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Create Booking</span>
+                     </div>
+                     <div class="dropdown-divider"></div>
+                     <div class="dropdown-item" onclick="exportData()">
+                        <i class="fas fa-download"></i>
+                        <span>Export Data</span>
+                     </div>
+                     <div class="dropdown-item" onclick="openBulkImportModal()">
+                        <i class="fas fa-file-upload"></i>
+                        <span>Bulk Import</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="header-icon" id="notifications-btn" title="Notifications" onclick="toggleNotifications(event)">
+                  <i class="fas fa-bell"></i>
+                  <span class="badge" id="notification-badge" style="display: none;">0</span>
+                  <div class="dropdown-menu notifications-dropdown" id="notifications-menu" style="display: none;">
+                     <div class="dropdown-header">
+                        <h3>Notifications</h3>
+                        <button onclick="markAllAsRead()" style="background: none; border: none; color: #8F9F04; cursor: pointer; font-size: 1.2rem;">Mark all as read</button>
+                     </div>
+                     <div class="dropdown-content" id="notifications-content">
+                        <div class="notification-item">
+                           <i class="fas fa-info-circle" style="color: #4285f4;"></i>
+                           <div class="notification-text">
+                              <strong>System</strong>
+                              <p>Welcome to the admin dashboard</p>
+                              <span class="notification-time">Just now</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="profile-pic" id="admin-profile" title="Admin Profile" onclick="toggleProfileMenu(event)">
+                  A
+                  <div class="dropdown-menu profile-dropdown" id="profile-menu" style="display: none;">
+                     <div class="dropdown-header">
+                        <div class="profile-info">
+                           <div class="profile-pic-small">A</div>
+                           <div>
+                              <strong id="profile-name">Admin User</strong>
+                              <span id="profile-email">admin@hotel.com</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="dropdown-divider"></div>
+                     <div class="dropdown-item" onclick="viewProfile()">
+                        <i class="fas fa-user"></i>
+                        <span>View Profile</span>
+                     </div>
+                     <div class="dropdown-item" onclick="openSettings()">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                     </div>
+                     <div class="dropdown-item" onclick="openActivityLog()">
+                        <i class="fas fa-history"></i>
+                        <span>Activity Log</span>
+                     </div>
+                     <div class="dropdown-divider"></div>
+                     <div class="dropdown-item" onclick="logout()" style="color: #ea4335;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Content Wrapper -->
+         <div class="content-wrapper">
+            <!-- Main Section -->
+            <div class="main-section">
+               <!-- Section Header -->
+               <div class="section-header">
+                  <div>
+                     <h2 class="section-title" id="section-title">Reservations</h2>
+                     <div class="section-stats" id="section-stats">
+                        <span class="stat-item"><strong id="stat-pending">0</strong> Pending</span>
+                        <span class="stat-item"><strong id="stat-confirmed">0</strong> Confirmed</span>
+                        <span class="stat-item"><strong id="stat-total">0</strong> Total</span>
+                     </div>
+                  </div>
+                  <div class="section-actions">
+                     <span id="current-month" style="font-size: 1.4rem; color: #666; margin-right: 1rem;"></span>
+                     <div class="view-toggle">
+                        <button class="active" onclick="switchView('grid', this)" title="Grid View">
+                           <i class="fas fa-th"></i>
+                        </button>
+                        <button onclick="switchView('table', this)" title="Table View">
+                           <i class="fas fa-list"></i>
+                        </button>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Content Area -->
+               <div id="admin-content">
+                  <div class="loading">Loading...</div>
+               </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-sidebar">
+               <div class="sidebar-header">
+                  <h3 class="sidebar-title">Recent Activity</h3>
+                  <div style="display: flex; gap: 0.5rem;">
+                     <div class="sidebar-icon-small">
+                        <i class="fas fa-search"></i>
+                     </div>
+                     <div class="sidebar-icon-small">
+                        <i class="fas fa-ellipsis-v"></i>
+                     </div>
+                  </div>
+               </div>
+               <div class="message-list" id="recent-activity">
+                  <div class="loading">Loading activity...</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Cancellation Modal -->
+   <div id="cancel-modal" class="modal-overlay">
+      <div class="modal">
+         <div class="modal-header">
+            <h3><i class="fas fa-exclamation-triangle" style="color: #c62828; margin-right: 1rem;"></i>Cancel Booking</h3>
+         </div>
+         <div class="modal-body">
+            <p><strong>Booking Reference:</strong> <span id="cancel-booking-ref"></span></p>
+            <p>You are about to cancel this booking. This action cannot be undone.</p>
+            <p style="color: #c62828; font-weight: 600;">Please enter your account password to confirm cancellation:</p>
+            <input type="password" id="cancel-password" class="input" placeholder="Enter your password" autocomplete="current-password">
+            <div id="cancel-error" style="display: none; color: #c62828; margin-top: 1rem; font-size: 1.4rem;"></div>
+         </div>
+         <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" onclick="closeCancelModal()">Cancel</button>
+            <button class="modal-btn modal-btn-confirm" onclick="confirmCancelBooking()" id="confirm-cancel-btn">
+               <i class="fas fa-trash"></i> Confirm Cancellation
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <script>
+      // Global state
+      let currentView = 'grid';
+      let currentTab = 'bookings';
+      let currentBookings = [];
+      let currentCancelBookingId = null;
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', async () => {
+         // Check authentication
+         const token = localStorage.getItem('authToken');
+         if (!token) {
+            alert('Please login to access admin panel.');
+            window.location.href = 'auth.html?redirect=admin.html';
+            return;
+         }
+
+         // Verify user is admin
+         try {
+            const user = await AuthAPI.getCurrentUser();
+            if (!user.success || !user.user || user.user.role !== 'admin') {
+               alert('Access denied. Admin privileges required.');
+               window.location.href = 'index.html';
+               return;
+            }
+
+            // Update profile
+            const adminProfile = document.getElementById('admin-profile');
+            if (user.user.first_name) {
+               adminProfile.textContent = user.user.first_name.charAt(0).toUpperCase();
+            }
+
+            // Set current month
+            const now = new Date();
+            document.getElementById('current-month').textContent = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            // Load default tab
+            switchAdminTab('bookings');
+            loadRecentActivity();
+         } catch (error) {
+            console.error('Admin check error:', error);
+            alert('Failed to verify admin access.');
+            window.location.href = 'auth.html?redirect=admin.html';
+         }
+      });
+
+      // Switch tabs
+      function switchAdminTab(tabName, clickedElement) {
+         currentTab = tabName;
+         
+         // Update sidebar icons
+         document.querySelectorAll('.sidebar-icon').forEach(icon => icon.classList.remove('active'));
+         if (clickedElement) {
+            clickedElement.classList.add('active');
+         } else {
+            // Find the icon by tab name
+            const icons = document.querySelectorAll('.sidebar-icon');
+            const tabOrder = ['bookings', 'stats', 'users', 'rooms', 'reviews', 'query', 'tables'];
+            const index = tabOrder.indexOf(tabName);
+            if (index >= 0 && icons[index]) {
+               icons[index].classList.add('active');
+            }
+         }
+
+         // Update page title
+         const titles = {
+            bookings: 'Reservations',
+            stats: 'Dashboard',
+            users: 'Users',
+            rooms: 'Rooms',
+            reviews: 'Reviews',
+            query: 'SQL Query',
+            tables: 'Database Tables'
+         };
+         document.getElementById('page-title').textContent = titles[tabName] || 'Admin';
+         document.getElementById('section-title').textContent = titles[tabName] || 'Admin';
+
+         // Load content
+         const content = document.getElementById('admin-content');
+         content.innerHTML = '<div class="loading">Loading...</div>';
+
+         switch(tabName) {
+            case 'bookings':
+               loadBookings();
+               break;
+            case 'stats':
+               loadStats();
+               break;
+            case 'users':
+               loadUsers();
+               break;
+            case 'rooms':
+               loadRooms();
+               break;
+            case 'reviews':
+               loadReviews();
+               break;
+            case 'query':
+               loadQuery();
+               break;
+            case 'tables':
+               loadTables();
+               break;
+         }
+      }
+
+      // Switch view (grid/table)
+      function switchView(view, clickedElement) {
+         currentView = view;
+         document.querySelectorAll('.view-toggle button').forEach(btn => btn.classList.remove('active'));
+         if (clickedElement) {
+            clickedElement.classList.add('active');
+         }
+
+         if (currentTab === 'bookings') {
+            renderBookings(currentBookings);
+         }
+      }
+
+      // Load Bookings
+      async function loadBookings() {
+         try {
+            const data = await AdminAPI.getBookings();
+            if (data && data.success) {
+               currentBookings = data.bookings || [];
+               renderBookings(currentBookings);
+               updateBookingStats(currentBookings);
+            }
+         } catch (error) {
+            document.getElementById('admin-content').innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+         }
+      }
+
+      // Render Bookings
+      function renderBookings(bookings) {
+         const content = document.getElementById('admin-content');
+         
+         if (bookings.length === 0) {
+            content.innerHTML = `
+               <div class="empty-state">
+                  <i class="fas fa-calendar-times"></i>
+                  <p>No bookings found</p>
+               </div>
+            `;
+            return;
+         }
+
+         if (currentView === 'grid') {
+            content.innerHTML = `
+               <div class="cards-grid">
+                  ${bookings.map(booking => {
+                     const checkIn = new Date(booking.check_in);
+                     const checkOut = new Date(booking.check_out);
+                     const nights = booking.nights || Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                     const status = booking.booking_status || 'pending';
+                     const statusClass = `status-${status}`;
+                     
+                     // Calculate progress (days until check-in)
+                     const today = new Date();
+                     const daysUntilCheckIn = Math.ceil((checkIn - today) / (1000 * 60 * 60 * 24));
+                     const progress = Math.max(0, Math.min(100, (30 - daysUntilCheckIn) / 30 * 100));
+                     
+                     // Progress color based on status
+                     let progressColor = 'progress-blue';
+                     if (status === 'confirmed') progressColor = 'progress-green';
+                     else if (status === 'cancelled') progressColor = 'progress-pink';
+                     else if (status === 'checked_in') progressColor = 'progress-orange';
+                     
+                     // Time badge
+                     let timeText = '';
+                     let badgeClass = 'badge-blue';
+                     if (daysUntilCheckIn < 0) {
+                        timeText = 'Past';
+                        badgeClass = 'badge-pink';
+                     } else if (daysUntilCheckIn === 0) {
+                        timeText = 'Today';
+                        badgeClass = 'badge-orange';
+                     } else if (daysUntilCheckIn < 7) {
+                        timeText = `${daysUntilCheckIn} day${daysUntilCheckIn > 1 ? 's' : ''} left`;
+                        badgeClass = 'badge-orange';
+                     } else if (daysUntilCheckIn < 30) {
+                        const weeks = Math.floor(daysUntilCheckIn / 7);
+                        timeText = `${weeks} week${weeks > 1 ? 's' : ''} left`;
+                        badgeClass = 'badge-green';
+                     } else {
+                        const months = Math.floor(daysUntilCheckIn / 30);
+                        timeText = `${months} month${months > 1 ? 's' : ''} left`;
+                        badgeClass = 'badge-blue';
+                     }
+
+                     const canCancel = status !== 'cancelled' && status !== 'checked_in' && status !== 'checked_out';
+                     
+                     return `
+                        <div class="card" onclick="viewBookingDetails('${booking.booking_reference}')">
+                           <div class="card-header">
+                              <div class="card-date">${checkIn.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                              <span class="card-status ${statusClass}">${status}</span>
+                           </div>
+                           <div class="card-title">${booking.room_name || 'Room'}</div>
+                           <div class="card-subtitle">${booking.first_name} ${booking.last_name}</div>
+                           <div class="progress-bar">
+                              <div class="progress-fill ${progressColor}" style="width: ${progress}%"></div>
+                           </div>
+                           <div class="progress-text">
+                              <span>Progress</span>
+                              <span class="progress-percent">${Math.round(progress)}%</span>
+                           </div>
+                           <div class="card-footer">
+                              <div class="card-users">
+                                 <div class="user-avatar">${(booking.first_name || 'U').charAt(0).toUpperCase()}</div>
+                                 ${booking.email ? `<div class="user-avatar">${booking.email.charAt(0).toUpperCase()}</div>` : ''}
+                              </div>
+                              <div class="time-badge ${badgeClass}">${timeText}</div>
+                           </div>
+                        </div>
+                     `;
+                  }).join('')}
+               </div>
+            `;
+         } else {
+            // Table view
+            content.innerHTML = `
+               <div class="data-table">
+                  <table>
+                     <thead>
+                        <tr>
+                           <th>Reference</th>
+                           <th>Guest</th>
+                           <th>Room</th>
+                           <th>Check-in</th>
+                           <th>Check-out</th>
+                           <th>Total</th>
+                           <th>Status</th>
+                           <th>Actions</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        ${bookings.map(booking => {
+                           const checkIn = new Date(booking.check_in);
+                           const checkOut = new Date(booking.check_out);
+                           const status = booking.booking_status || 'pending';
+                           const statusClass = `status-${status}`;
+                           const canCancel = status !== 'cancelled' && status !== 'checked_in' && status !== 'checked_out';
+                           
+                           return `
+                              <tr>
+                                 <td><strong>${booking.booking_reference}</strong></td>
+                                 <td>${booking.first_name} ${booking.last_name}<br><small>${booking.email}</small></td>
+                                 <td>${booking.room_name || 'N/A'}</td>
+                                 <td>${checkIn.toLocaleDateString()}</td>
+                                 <td>${checkOut.toLocaleDateString()}</td>
+                                 <td>$${parseFloat(booking.total_price || 0).toFixed(2)}</td>
+                                 <td><span class="card-status ${statusClass}">${status}</span></td>
+                                 <td>
+                                    ${canCancel ? `<button onclick="openCancelModal(${booking.id}, '${booking.booking_reference}'); event.stopPropagation();" style="padding: 0.5rem 1rem; background: #c62828; color: #fff; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>` : '-'}
+                                 </td>
+                              </tr>
+                           `;
+                        }).join('')}
+                     </tbody>
+                  </table>
+               </div>
+            `;
+         }
+      }
+
+      // Update Booking Stats
+      function updateBookingStats(bookings) {
+         const pending = bookings.filter(b => b.booking_status === 'pending').length;
+         const confirmed = bookings.filter(b => b.booking_status === 'confirmed').length;
+         const total = bookings.length;
+         
+         document.getElementById('stat-pending').textContent = pending;
+         document.getElementById('stat-confirmed').textContent = confirmed;
+         document.getElementById('stat-total').textContent = total;
+      }
+
+      // Load Stats
+      async function loadStats() {
+         try {
+            const data = await AdminAPI.getStats();
+            if (data && data.success) {
+               document.getElementById('admin-content').innerHTML = `
+                  <div class="cards-grid">
+                     <div class="card">
+                        <div class="card-title">Total Users</div>
+                        <div style="font-size: 3rem; font-weight: 600; color: #8F9F04; margin-top: 1rem;">${data.stats.users || 0}</div>
+                     </div>
+                     <div class="card">
+                        <div class="card-title">Total Rooms</div>
+                        <div style="font-size: 3rem; font-weight: 600; color: #8F9F04; margin-top: 1rem;">${data.stats.rooms || 0}</div>
+                     </div>
+                     <div class="card">
+                        <div class="card-title">Total Bookings</div>
+                        <div style="font-size: 3rem; font-weight: 600; color: #8F9F04; margin-top: 1rem;">${data.stats.bookings || 0}</div>
+                     </div>
+                     <div class="card">
+                        <div class="card-title">Total Reviews</div>
+                        <div style="font-size: 3rem; font-weight: 600; color: #8F9F04; margin-top: 1rem;">${data.stats.reviews || 0}</div>
+                     </div>
+                  </div>
+               `;
+            }
+         } catch (error) {
+            document.getElementById('admin-content').innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+         }
+      }
+
+      // Load Users
+      async function loadUsers() {
+         try {
+            const data = await AdminAPI.getUsers();
+            if (data && data.success) {
+               const users = data.users || [];
+               document.getElementById('admin-content').innerHTML = `
+                  <div class="data-table">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Phone</th>
+                              <th>Role</th>
+                              <th>Joined</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           ${users.map(user => `
+                              <tr>
+                                 <td><strong>${user.first_name} ${user.last_name}</strong></td>
+                                 <td>${user.email}</td>
+                                 <td>${user.phone || 'N/A'}</td>
+                                 <td><span class="card-status ${user.role === 'admin' ? 'status-confirmed' : 'status-pending'}">${user.role}</span></td>
+                                 <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                              </tr>
+                           `).join('')}
+                        </tbody>
+                     </table>
+                  </div>
+               `;
+            }
+         } catch (error) {
+            document.getElementById('admin-content').innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+         }
+      }
+
+      // Load Rooms
+      async function loadRooms() {
+         try {
+            const data = await AdminAPI.getRooms();
+            if (data && data.success) {
+               const rooms = data.rooms || [];
+               document.getElementById('admin-content').innerHTML = `
+                  <div class="cards-grid">
+                     ${rooms.map(room => {
+                        // Parse amenities if it's a string
+                        let amenities = [];
+                        if (room.amenities) {
+                           if (typeof room.amenities === 'string') {
+                              try {
+                                 amenities = JSON.parse(room.amenities);
+                              } catch (e) {
+                                 amenities = room.amenities.split(',').map(a => a.trim());
+                              }
+                           } else if (Array.isArray(room.amenities)) {
+                              amenities = room.amenities;
+                           }
+                        }
+                        
+                        return `
+                        <div class="card" onclick="viewRoomDetails(${room.id})" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
+                           <div class="card-title">${room.name}</div>
+                           <div class="card-subtitle">${room.category}</div>
+                           <div style="margin-top: 1.5rem;">
+                              <div style="font-size: 2rem; font-weight: 600; color: #8F9F04;">$${parseFloat(room.price_per_night || 0).toFixed(2)}</div>
+                              <div style="font-size: 1.2rem; color: #999;">per night</div>
+                           </div>
+                           ${room.description ? `<div style="margin-top: 1rem; font-size: 1.3rem; color: #666; line-height: 1.5;">${room.description.substring(0, 100)}${room.description.length > 100 ? '...' : ''}</div>` : ''}
+                           ${amenities.length > 0 ? `
+                              <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                 ${amenities.slice(0, 3).map(amenity => `
+                                    <span style="padding: 0.3rem 0.8rem; background: #f0f0f0; border-radius: 4px; font-size: 1.1rem;">${amenity}</span>
+                                 `).join('')}
+                                 ${amenities.length > 3 ? `<span style="padding: 0.3rem 0.8rem; background: #f0f0f0; border-radius: 4px; font-size: 1.1rem;">+${amenities.length - 3} more</span>` : ''}
+                              </div>
+                           ` : ''}
+                           <div style="margin-top: 1.5rem; display: flex; gap: 1rem;" onclick="event.stopPropagation();">
+                              <button onclick="openRoomModal(${room.id}); event.stopPropagation();" style="flex: 1; padding: 0.8rem; background: #4285f4; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.3rem;">
+                                 <i class="fas fa-edit"></i> Edit
+                              </button>
+                              <button onclick="deleteRoom(${room.id}, '${room.name.replace(/'/g, "\\'")}'); event.stopPropagation();" style="flex: 1; padding: 0.8rem; background: #ea4335; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.3rem;">
+                                 <i class="fas fa-trash"></i> Delete
+                              </button>
+                           </div>
+                        </div>
+                     `;
+                     }).join('')}
+                  </div>
+               `;
+            }
+         } catch (error) {
+            document.getElementById('admin-content').innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+         }
+      }
+
+      // Load Reviews
+      async function loadReviews() {
+         try {
+            if (typeof ReviewsAPI === 'undefined') {
+               document.getElementById('admin-content').innerHTML = '<div class="error-message">Reviews API not loaded</div>';
+               return;
+            }
+            const filterSelect = document.getElementById('review-filter');
+            const status = filterSelect ? filterSelect.value : '';
+            const filters = status ? { status } : {};
+            const data = await ReviewsAPI.getAll(filters);
+            if (data && data.success) {
+               const reviews = data.reviews || [];
+               document.getElementById('admin-content').innerHTML = `
+                  <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                     <h3 style="font-size: 2rem; color: #333;">All Reviews</h3>
+                     <div style="display: flex; gap: 1rem;">
+                        <select id="review-filter" onchange="loadReviews()" style="padding: 0.8rem 1.5rem; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1.4rem;">
+                           <option value="" ${!status ? 'selected' : ''}>All Reviews</option>
+                           <option value="pending" ${status === 'pending' ? 'selected' : ''}>Pending</option>
+                           <option value="approved" ${status === 'approved' ? 'selected' : ''}>Approved</option>
+                        </select>
+                     </div>
+                  </div>
+                  ${reviews.length === 0 ? `
+                     <div class="empty-state">
+                        <i class="fas fa-star"></i>
+                        <p>No reviews found</p>
+                     </div>
+                  ` : `
+                  <div class="data-table">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>User</th>
+                              <th>Room</th>
+                              <th>Rating</th>
+                              <th>Comment</th>
+                              <th>Date</th>
+                              <th>Status</th>
+                              <th>Actions</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           ${reviews.map(review => {
+                              return `
+                                 <tr>
+                                    <td><strong>${review.first_name} ${review.last_name}</strong><br><small>${review.email}</small></td>
+                                    <td>${review.room_name || 'N/A'}</td>
+                                    <td style="font-size: 1.6rem; color: #ffd700;">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</td>
+                                    <td style="max-width: 300px;">${review.comment || 'No comment'}</td>
+                                    <td>${new Date(review.created_at).toLocaleDateString()}</td>
+                                    <td><span class="card-status ${review.is_approved ? 'status-confirmed' : 'status-pending'}">${review.is_approved ? 'Approved' : 'Pending'}</span></td>
+                                    <td>
+                                       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                          ${!review.is_approved ? `
+                                             <button onclick="approveReview(${review.id})" style="padding: 0.5rem 1rem; background: #34a853; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.2rem;">
+                                                <i class="fas fa-check"></i> Approve
+                                             </button>
+                                          ` : `
+                                             <button onclick="approveReview(${review.id}, false)" style="padding: 0.5rem 1rem; background: #ff9800; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.2rem;">
+                                                <i class="fas fa-times"></i> Reject
+                                             </button>
+                                          `}
+                                          <button onclick="openEditReviewModal(${review.id})" style="padding: 0.5rem 1rem; background: #4285f4; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.2rem;">
+                                             <i class="fas fa-edit"></i> Edit
+                                          </button>
+                                          <button onclick="deleteReview(${review.id})" style="padding: 0.5rem 1rem; background: #ea4335; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.2rem;">
+                                             <i class="fas fa-trash"></i> Delete
+                                          </button>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              `;
+                           }).join('')}
+                        </tbody>
+                     </table>
+                  </div>
+                  `}
+               `;
+            }
+         } catch (error) {
+            document.getElementById('admin-content').innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+         }
+      }
+
+      // Load Query
+      function loadQuery() {
+         document.getElementById('admin-content').innerHTML = `
+            <div class="card" style="max-width: 800px;">
+               <h3 style="font-size: 2rem; margin-bottom: 2rem;">SQL Query Executor</h3>
+               <textarea id="sql-query" style="width: 100%; min-height: 200px; padding: 1.5rem; border: 1px solid #e0e0e0; border-radius: 8px; font-family: monospace; font-size: 1.4rem;" placeholder="SELECT * FROM users LIMIT 10;"></textarea>
+               <button onclick="executeQuery()" style="margin-top: 1.5rem; padding: 1rem 2rem; background: #8F9F04; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1.4rem;">Execute Query</button>
+               <div id="query-results" style="margin-top: 2rem;"></div>
+            </div>
+         `;
+      }
+
+      // Load Tables
+      async function loadTables() {
+         try {
+            const data = await AdminAPI.getTables();
+            if (data && data.success) {
+               const tables = data.tables || [];
+               document.getElementById('admin-content').innerHTML = `
+                  <div class="cards-grid">
+                     ${tables.map(table => `
+                        <div class="card" onclick="viewTableStructure('${table.TABLE_NAME}')">
+                           <div class="card-title">${table.TABLE_NAME}</div>
+                           <div class="card-subtitle">${table.TABLE_ROWS || 0} rows</div>
+                        </div>
+                     `).join('')}
+                  </div>
+               `;
+            }
+         } catch (error) {
+            document.getElementById('admin-content').innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+         }
+      }
+
+      // Load Recent Activity
+      async function loadRecentActivity() {
+         try {
+            const data = await AdminAPI.getBookings();
+            if (data && data.success) {
+               const recentBookings = (data.bookings || []).slice(0, 6);
+               const activity = document.getElementById('recent-activity');
+               
+               if (recentBookings.length === 0) {
+                  activity.innerHTML = '<div class="empty-state">No recent activity</div>';
+                  return;
+               }
+
+               activity.innerHTML = recentBookings.map(booking => {
+                  const checkIn = new Date(booking.check_in);
+                  const name = `${booking.first_name} ${booking.last_name}`;
+                  const initial = name.charAt(0).toUpperCase();
+                  
+                  return `
+                     <div class="message-item">
+                        <div class="message-avatar">${initial}</div>
+                        <div class="message-content">
+                           <div class="message-name">${name}</div>
+                           <div class="message-text">New booking: ${booking.room_name || 'Room'}</div>
+                           <div class="message-meta">
+                              <span class="message-date">${checkIn.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                              <i class="fas fa-star message-star outline"></i>
+                           </div>
+                        </div>
+                     </div>
+                  `;
+               }).join('');
+            }
+         } catch (error) {
+            console.error('Error loading activity:', error);
+         }
+      }
+
+      // Cancel Booking Modal
+      function openCancelModal(bookingId, bookingRef) {
+         currentCancelBookingId = bookingId;
+         document.getElementById('cancel-booking-ref').textContent = bookingRef;
+         document.getElementById('cancel-password').value = '';
+         document.getElementById('cancel-error').style.display = 'none';
+         document.getElementById('cancel-modal').style.display = 'flex';
+         document.getElementById('cancel-password').focus();
+      }
+
+      function closeCancelModal() {
+         document.getElementById('cancel-modal').style.display = 'none';
+         currentCancelBookingId = null;
+         document.getElementById('cancel-password').value = '';
+         document.getElementById('cancel-error').style.display = 'none';
+      }
+
+      async function confirmCancelBooking() {
+         const password = document.getElementById('cancel-password').value;
+         const errorDiv = document.getElementById('cancel-error');
+         const confirmBtn = document.getElementById('confirm-cancel-btn');
+
+         if (!password) {
+            errorDiv.textContent = 'Password is required';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         if (!currentCancelBookingId) {
+            errorDiv.textContent = 'No booking selected';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         confirmBtn.disabled = true;
+         confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+         try {
+            await AdminAPI.cancelBooking(currentCancelBookingId, password);
+            alert('Booking cancelled successfully');
+            closeCancelModal();
+            loadBookings();
+            loadRecentActivity();
+         } catch (error) {
+            errorDiv.textContent = error.message || 'Failed to cancel booking';
+            errorDiv.style.display = 'block';
+         } finally {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<i class="fas fa-trash"></i> Confirm Cancellation';
+         }
+      }
+
+      // Approve/Reject Review
+      async function approveReview(reviewId, approved = true) {
+         try {
+            await ReviewsAPI.approve(reviewId, approved);
+            alert(`Review ${approved ? 'approved' : 'rejected'} successfully`);
+            loadReviews();
+         } catch (error) {
+            alert('Error: ' + error.message);
+         }
+      }
+
+      // Delete Review
+      async function deleteReview(reviewId) {
+         if (!confirm('Are you sure you want to delete this review? This action cannot be undone.')) {
+            return;
+         }
+         try {
+            await ReviewsAPI.delete(reviewId);
+            alert('Review deleted successfully');
+            loadReviews();
+         } catch (error) {
+            alert('Error: ' + error.message);
+         }
+      }
+
+      // Open Edit Review Modal
+      async function openEditReviewModal(reviewId) {
+         try {
+            const data = await ReviewsAPI.getAll();
+            if (data && data.success) {
+               const review = data.reviews.find(r => r.id === reviewId);
+               if (!review) {
+                  alert('Review not found');
+                  return;
+               }
+
+               document.getElementById('edit-review-id').value = reviewId;
+               document.getElementById('edit-review-rating').value = review.rating;
+               document.getElementById('edit-review-comment').value = review.comment || '';
+               document.getElementById('edit-review-approved').checked = review.is_approved;
+               document.getElementById('edit-review-modal').style.display = 'flex';
+            }
+         } catch (error) {
+            alert('Error loading review: ' + error.message);
+         }
+      }
+
+      // Close Edit Review Modal
+      function closeEditReviewModal() {
+         document.getElementById('edit-review-modal').style.display = 'none';
+      }
+
+      // Save Review Changes
+      async function saveReviewChanges() {
+         const reviewId = document.getElementById('edit-review-id').value;
+         const rating = parseInt(document.getElementById('edit-review-rating').value);
+         const comment = document.getElementById('edit-review-comment').value;
+         const is_approved = document.getElementById('edit-review-approved').checked;
+
+         try {
+            await ReviewsAPI.update(reviewId, { rating, comment, is_approved });
+            alert('Review updated successfully');
+            closeEditReviewModal();
+            loadReviews();
+         } catch (error) {
+            alert('Error: ' + error.message);
+         }
+      }
+
+      // Execute Query
+      async function executeQuery() {
+         const query = document.getElementById('sql-query').value;
+         const resultsDiv = document.getElementById('query-results');
+         
+         if (!query.trim()) {
+            resultsDiv.innerHTML = '<div style="color: #c62828;">Please enter a query</div>';
+            return;
+         }
+
+         try {
+            const data = await AdminAPI.executeQuery(query);
+            if (data && data.success) {
+               const results = data.results || [];
+               if (results.length === 0) {
+                  resultsDiv.innerHTML = '<div>No results</div>';
+                  return;
+               }
+               
+               const keys = Object.keys(results[0]);
+               resultsDiv.innerHTML = `
+                  <div class="data-table">
+                     <table>
+                        <thead>
+                           <tr>${keys.map(key => `<th>${key}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody>
+                           ${results.map(row => `<tr>${keys.map(key => `<td>${row[key] || ''}</td>`).join('')}</tr>`).join('')}
+                        </tbody>
+                     </table>
+                  </div>
+               `;
+            }
+         } catch (error) {
+            resultsDiv.innerHTML = `<div style="color: #c62828;">Error: ${error.message}</div>`;
+         }
+      }
+
+      // View Table Structure
+      async function viewTableStructure(tableName) {
+         try {
+            const data = await AdminAPI.getTableStructure(tableName);
+            if (data && data.success) {
+               const columns = data.columns || [];
+               document.getElementById('admin-content').innerHTML = `
+                  <div class="card">
+                     <h3 style="font-size: 2rem; margin-bottom: 2rem;">Table: ${tableName}</h3>
+                     <div class="data-table">
+                        <table>
+                           <thead>
+                              <tr>
+                                 <th>Column Name</th>
+                                 <th>Data Type</th>
+                                 <th>Nullable</th>
+                                 <th>Default</th>
+                                 <th>Key</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              ${columns.map(col => `
+                                 <tr>
+                                    <td><strong>${col.COLUMN_NAME}</strong></td>
+                                    <td>${col.DATA_TYPE}</td>
+                                    <td>${col.IS_NULLABLE}</td>
+                                    <td>${col.COLUMN_DEFAULT || 'NULL'}</td>
+                                    <td>${col.COLUMN_KEY || '-'}</td>
+                                 </tr>
+                              `).join('')}
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               `;
+            }
+         } catch (error) {
+            alert('Error: ' + error.message);
+         }
+      }
+
+      // View Booking Details
+      function viewBookingDetails(reference) {
+         // Could open a modal or navigate to details page
+         console.log('View booking:', reference);
+      }
+
+      // Store selected images for upload
+      let selectedRoomImages = [];
+      let currentRoomImages = [];
+
+      // Handle image selection
+      function handleRoomImageSelect(event) {
+         const files = Array.from(event.target.files);
+         if (files.length > 10) {
+            alert('Maximum 10 images allowed');
+            event.target.value = '';
+            return;
+         }
+
+         selectedRoomImages = files;
+         const previewDiv = document.getElementById('room-images-selected');
+         previewDiv.style.display = 'grid';
+         previewDiv.innerHTML = files.map((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+               const img = document.getElementById(`preview-img-${index}`);
+               if (img) img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            
+            return `
+               <div style="position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 2px solid #8F9F04;">
+                  <img id="preview-img-${index}" src="" alt="Preview ${index + 1}" style="width: 100%; height: 100%; object-fit: cover;">
+                  <button onclick="removeSelectedImage(${index})" style="position: absolute; top: 0.5rem; right: 0.5rem; background: #ea4335; color: #fff; border: none; border-radius: 50%; width: 2.5rem; height: 2.5rem; cursor: pointer; font-size: 1.2rem;">
+                     <i class="fas fa-times"></i>
+                  </button>
+                  <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; padding: 0.3rem; font-size: 1rem; text-align: center;">${file.name}</div>
+               </div>
+            `;
+         }).join('');
+      }
+
+      // Remove selected image
+      function removeSelectedImage(index) {
+         selectedRoomImages.splice(index, 1);
+         const previewDiv = document.getElementById('room-images-selected');
+         if (selectedRoomImages.length === 0) {
+            previewDiv.style.display = 'none';
+            previewDiv.innerHTML = '';
+         } else {
+            // Re-render preview
+            handleRoomImageSelect({ target: { files: selectedRoomImages } });
+         }
+         document.getElementById('room-images-input').value = '';
+      }
+
+      // Load existing room images
+      function loadRoomImages(images) {
+         currentRoomImages = images || [];
+         const previewDiv = document.getElementById('room-images-preview');
+         
+         if (currentRoomImages.length === 0) {
+            previewDiv.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999; padding: 2rem;">No images uploaded</div>';
+            return;
+         }
+
+         previewDiv.innerHTML = currentRoomImages.map((img, index) => {
+            const imgUrl = img.startsWith('http') ? img : `http://localhost:3000${img.startsWith('/') ? img : '/' + img}`;
+            return `
+               <div style="position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 2px solid #e0e0e0;">
+                  <img src="${imgUrl}" alt="Room image ${index + 1}" 
+                       style="width: 100%; height: 100%; object-fit: cover;" 
+                       onerror="this.src='https://via.placeholder.com/150?text=Image+${index + 1}'">
+                  <button onclick="deleteRoomImage(${document.getElementById('room-id').value || 'null'}, '${img.replace(/'/g, "\\'")}', ${index})" 
+                          style="position: absolute; top: 0.5rem; right: 0.5rem; background: #ea4335; color: #fff; border: none; border-radius: 50%; width: 2.5rem; height: 2.5rem; cursor: pointer; font-size: 1.2rem;">
+                     <i class="fas fa-trash"></i>
+                  </button>
+               </div>
+            `;
+         }).join('');
+      }
+
+      // Delete room image
+      async function deleteRoomImage(roomId, imageUrl, index) {
+         if (!roomId || roomId === 'null') {
+            // Remove from preview if not saved yet
+            currentRoomImages.splice(index, 1);
+            loadRoomImages(currentRoomImages);
+            return;
+         }
+
+         if (!confirm('Are you sure you want to delete this image?')) {
+            return;
+         }
+
+         try {
+            const token = localStorage.getItem('authToken');
+            const response = await fetch(`http://localhost:3000/api/upload/rooms/${roomId}/images`, {
+               method: 'DELETE',
+               headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+               },
+               body: JSON.stringify({ imageUrl })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+               alert('Image deleted successfully');
+               // Reload room images
+               const roomData = await AdminAPI.getRooms();
+               if (roomData && roomData.success) {
+                  const room = roomData.rooms.find(r => r.id === parseInt(roomId));
+                  if (room) {
+                     let images = [];
+                     if (room.images) {
+                        if (typeof room.images === 'string') {
+                           try {
+                              images = JSON.parse(room.images);
+                           } catch (e) {
+                              images = [];
+                           }
+                        } else if (Array.isArray(room.images)) {
+                           images = room.images;
+                        }
+                     }
+                     loadRoomImages(images);
+                  }
+               }
+            } else {
+               alert('Error: ' + data.message);
+            }
+         } catch (error) {
+            alert('Error deleting image: ' + error.message);
+         }
+      }
+
+      // Open Room Modal (Create/Edit)
+      async function openRoomModal(roomId = null) {
+         // Reset selected images
+         selectedRoomImages = [];
+         document.getElementById('room-images-input').value = '';
+         document.getElementById('room-images-selected').style.display = 'none';
+         document.getElementById('room-images-selected').innerHTML = '';
+
+         if (roomId) {
+            // Edit mode
+            try {
+               const data = await AdminAPI.getRooms();
+               if (data && data.success) {
+                  const room = data.rooms.find(r => r.id === roomId);
+                  if (!room) {
+                     alert('Room not found');
+                     return;
+                  }
+
+                  document.getElementById('room-id').value = roomId;
+                  document.getElementById('room-name').value = room.name;
+                  document.getElementById('room-slug').value = room.slug;
+                  document.getElementById('room-category').value = room.category;
+                  document.getElementById('room-description').value = room.description || '';
+                  document.getElementById('room-price').value = room.price_per_night;
+                  document.getElementById('room-max-guests').value = room.max_guests || 2;
+                  document.getElementById('room-size').value = room.size_sqm || '';
+                  document.getElementById('room-bed-type').value = room.bed_type || '';
+                  // Parse amenities if it's a string
+                  let amenities = [];
+                  if (room.amenities) {
+                     if (typeof room.amenities === 'string') {
+                        try {
+                           amenities = JSON.parse(room.amenities);
+                        } catch (e) {
+                           amenities = room.amenities.split(',').map(a => a.trim());
+                        }
+                     } else if (Array.isArray(room.amenities)) {
+                        amenities = room.amenities;
+                     }
+                  }
+                  document.getElementById('room-amenities').value = amenities.join(', ');
+                  document.getElementById('room-available').checked = room.is_available !== 0;
+                  document.getElementById('room-modal-title').textContent = 'Edit Room';
+                  document.getElementById('room-save-btn').textContent = 'Update Room';
+
+                  // Load existing images
+                  let images = [];
+                  if (room.images) {
+                     if (typeof room.images === 'string') {
+                        try {
+                           images = JSON.parse(room.images);
+                        } catch (e) {
+                           images = [];
+                        }
+                     } else if (Array.isArray(room.images)) {
+                        images = room.images;
+                     }
+                  }
+                  loadRoomImages(images);
+               }
+            } catch (error) {
+               alert('Error loading room: ' + error.message);
+               return;
+            }
+         } else {
+            // Create mode
+            document.getElementById('room-id').value = '';
+            document.getElementById('room-name').value = '';
+            document.getElementById('room-slug').value = '';
+            document.getElementById('room-category').value = '';
+            document.getElementById('room-description').value = '';
+            document.getElementById('room-price').value = '';
+            document.getElementById('room-max-guests').value = '2';
+            document.getElementById('room-size').value = '';
+            document.getElementById('room-bed-type').value = '';
+            document.getElementById('room-amenities').value = '';
+            document.getElementById('room-available').checked = true;
+            document.getElementById('room-modal-title').textContent = 'Add New Room';
+            document.getElementById('room-save-btn').textContent = 'Create Room';
+            loadRoomImages([]);
+         }
+
+         document.getElementById('room-modal').style.display = 'flex';
+      }
+
+      // Close Room Modal
+      function closeRoomModal() {
+         document.getElementById('room-modal').style.display = 'none';
+      }
+
+      // Save Room (Create/Update)
+      async function saveRoom() {
+         const roomId = document.getElementById('room-id').value;
+         const name = document.getElementById('room-name').value.trim();
+         const slug = document.getElementById('room-slug').value.trim();
+         const category = document.getElementById('room-category').value.trim();
+         const description = document.getElementById('room-description').value.trim();
+         const price = parseFloat(document.getElementById('room-price').value);
+         const maxGuests = parseInt(document.getElementById('room-max-guests').value);
+         const size = document.getElementById('room-size').value.trim();
+         const bedType = document.getElementById('room-bed-type').value.trim();
+         const amenitiesStr = document.getElementById('room-amenities').value.trim();
+         const isAvailable = document.getElementById('room-available').checked;
+
+         if (!name || !slug || !category || !price || isNaN(price)) {
+            alert('Please fill in all required fields (Name, Slug, Category, Price)');
+            return;
+         }
+
+         const amenities = amenitiesStr ? amenitiesStr.split(',').map(a => a.trim()).filter(a => a) : [];
+         const saveBtn = document.getElementById('room-save-btn');
+
+         saveBtn.disabled = true;
+         saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+         try {
+            let savedRoomId = roomId;
+
+            if (roomId) {
+               // Update
+               await AdminAPI.updateRoom(roomId, {
+                  name, slug, category, description, price_per_night: price,
+                  max_guests: maxGuests, size_sqm: size || null, bed_type: bedType || null,
+                  amenities, is_available: isAvailable
+               });
+               savedRoomId = roomId;
+            } else {
+               // Create
+               const response = await AdminAPI.createRoom({
+                  name, slug, category, description, price_per_night: price,
+                  max_guests: maxGuests, size_sqm: size || null, bed_type: bedType || null,
+                  amenities, is_available: isAvailable
+               });
+               if (response && response.room && response.room.id) {
+                  savedRoomId = response.room.id;
+               } else {
+                  // If response doesn't have room ID, fetch it
+                  const roomsData = await AdminAPI.getRooms();
+                  if (roomsData && roomsData.success) {
+                     const newRoom = roomsData.rooms.find(r => r.slug === slug);
+                     if (newRoom) savedRoomId = newRoom.id;
+                  }
+               }
+            }
+
+            // Upload images if any selected
+            if (selectedRoomImages.length > 0 && savedRoomId) {
+               try {
+                  const formData = new FormData();
+                  selectedRoomImages.forEach(file => {
+                     formData.append('images', file);
+                  });
+
+                  await UploadAPI.uploadRoomImages(savedRoomId, formData);
+               } catch (uploadError) {
+                  console.error('Image upload error:', uploadError);
+                  alert('Room saved but some images failed to upload: ' + uploadError.message);
+               }
+            }
+
+            alert(roomId ? 'Room updated successfully' : 'Room created successfully');
+            closeRoomModal();
+            loadRooms();
+         } catch (error) {
+            alert('Error: ' + error.message);
+         } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = roomId ? 'Update Room' : 'Create Room';
+         }
+      }
+
+      // Delete Room
+      async function deleteRoom(roomId, roomName) {
+         if (!confirm(`Are you sure you want to delete "${roomName}"? This action cannot be undone.`)) {
+            return;
+         }
+         try {
+            await AdminAPI.deleteRoom(roomId);
+            alert('Room deleted successfully');
+            loadRooms();
+         } catch (error) {
+            alert('Error: ' + error.message);
+         }
+      }
+
+      // View Room Details
+      async function viewRoomDetails(roomId) {
+         try {
+            const data = await AdminAPI.getRooms();
+            if (data && data.success) {
+               const room = data.rooms.find(r => r.id === roomId);
+               if (!room) {
+                  alert('Room not found');
+                  return;
+               }
+
+               // Parse amenities
+               let amenities = [];
+               if (room.amenities) {
+                  if (typeof room.amenities === 'string') {
+                     try {
+                        amenities = JSON.parse(room.amenities);
+                     } catch (e) {
+                        amenities = room.amenities.split(',').map(a => a.trim());
+                     }
+                  } else if (Array.isArray(room.amenities)) {
+                     amenities = room.amenities;
+                  }
+               }
+
+               // Parse images
+               let images = [];
+               if (room.images) {
+                  if (typeof room.images === 'string') {
+                     try {
+                        images = JSON.parse(room.images);
+                     } catch (e) {
+                        images = room.images.split(',').map(i => i.trim());
+                     }
+                  } else if (Array.isArray(room.images)) {
+                     images = room.images;
+                  }
+               }
+
+               // Format dates
+               const createdDate = room.created_at ? new Date(room.created_at).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+               }) : 'N/A';
+               const updatedDate = room.updated_at ? new Date(room.updated_at).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+               }) : 'N/A';
+
+               // Build details modal HTML
+               document.getElementById('room-details-modal').innerHTML = `
+                  <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+                     <div class="modal-header">
+                        <h3>Room Configuration Details</h3>
+                        <i class="fas fa-times close-modal-btn" onclick="closeRoomDetailsModal()" style="cursor: pointer;"></i>
+                     </div>
+                     <div class="modal-body">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                           <div>
+                              <h4 style="font-size: 1.6rem; color: #333; margin-bottom: 1rem; font-weight: 600;">Basic Information</h4>
+                              <div style="display: grid; gap: 1rem;">
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Room Name</label>
+                                    <div style="font-size: 1.4rem; color: #333; font-weight: 600;">${room.name}</div>
+                                 </div>
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Slug</label>
+                                    <div style="font-size: 1.4rem; color: #333; font-family: monospace; background: #f5f5f5; padding: 0.5rem; border-radius: 4px;">${room.slug}</div>
+                                 </div>
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Category</label>
+                                    <div style="font-size: 1.4rem; color: #333;">${room.category}</div>
+                                 </div>
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Price per Night</label>
+                                    <div style="font-size: 2rem; color: #8F9F04; font-weight: 600;">$${parseFloat(room.price_per_night || 0).toFixed(2)}</div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div>
+                              <h4 style="font-size: 1.6rem; color: #333; margin-bottom: 1rem; font-weight: 600;">Room Specifications</h4>
+                              <div style="display: grid; gap: 1rem;">
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Max Guests</label>
+                                    <div style="font-size: 1.4rem; color: #333;">${room.max_guests || 'N/A'}</div>
+                                 </div>
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Size</label>
+                                    <div style="font-size: 1.4rem; color: #333;">${room.size_sqm ? `${room.size_sqm} sqm` : 'N/A'}</div>
+                                 </div>
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Bed Type</label>
+                                    <div style="font-size: 1.4rem; color: #333;">${room.bed_type || 'N/A'}</div>
+                                 </div>
+                                 <div>
+                                    <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Availability</label>
+                                    <div style="font-size: 1.4rem;">
+                                       <span style="padding: 0.5rem 1rem; background: ${room.is_available ? '#d4edda' : '#f8d7da'}; color: ${room.is_available ? '#155724' : '#721c24'}; border-radius: 6px; font-weight: 600;">
+                                          ${room.is_available ? 'Available' : 'Unavailable'}
+                                       </span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                           <h4 style="font-size: 1.6rem; color: #333; margin-bottom: 1rem; font-weight: 600;">Description</h4>
+                           <div style="font-size: 1.4rem; color: #666; line-height: 1.6; background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
+                              ${room.description || 'No description provided'}
+                           </div>
+                        </div>
+
+                        ${amenities.length > 0 ? `
+                        <div style="margin-bottom: 2rem;">
+                           <h4 style="font-size: 1.6rem; color: #333; margin-bottom: 1rem; font-weight: 600;">Amenities (${amenities.length})</h4>
+                           <div style="display: flex; flex-wrap: wrap; gap: 0.8rem;">
+                              ${amenities.map(amenity => `
+                                 <span style="padding: 0.6rem 1.2rem; background: #e8f5e9; color: #2e7d32; border-radius: 6px; font-size: 1.3rem; font-weight: 500;">
+                                    <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>${amenity}
+                                 </span>
+                              `).join('')}
+                           </div>
+                        </div>
+                        ` : ''}
+
+                        ${images.length > 0 ? `
+                        <div style="margin-bottom: 2rem;">
+                           <h4 style="font-size: 1.6rem; color: #333; margin-bottom: 1rem; font-weight: 600;">Images (${images.length})</h4>
+                           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+                              ${images.map((img, idx) => `
+                                 <div style="position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 2px solid #e0e0e0;">
+                                    <img src="${img.startsWith('http') ? img : `/uploads/rooms/${img}`}" alt="Room image ${idx + 1}" 
+                                         style="width: 100%; height: 100%; object-fit: cover;" 
+                                         onerror="this.src='https://via.placeholder.com/150?text=Image+${idx + 1}'">
+                                 </div>
+                              `).join('')}
+                           </div>
+                        </div>
+                        ` : '<div style="margin-bottom: 2rem;"><h4 style="font-size: 1.6rem; color: #333; margin-bottom: 1rem; font-weight: 600;">Images</h4><div style="color: #999; font-size: 1.3rem;">No images uploaded</div></div>'}
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e0e0e0;">
+                           <div>
+                              <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Created At</label>
+                              <div style="font-size: 1.3rem; color: #333;">${createdDate}</div>
+                           </div>
+                           <div>
+                              <label style="display: block; font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Last Updated</label>
+                              <div style="font-size: 1.3rem; color: #333;">${updatedDate}</div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="modal-footer">
+                        <button class="modal-btn modal-btn-cancel" onclick="closeRoomDetailsModal()">Close</button>
+                        <button class="modal-btn" onclick="openRoomModal(${room.id}); closeRoomDetailsModal();" style="background: #4285f4; color: #fff;">
+                           <i class="fas fa-edit"></i> Edit Room
+                        </button>
+                     </div>
+                  </div>
+               `;
+               document.getElementById('room-details-modal').style.display = 'flex';
+            }
+         } catch (error) {
+            alert('Error loading room details: ' + error.message);
+         }
+      }
+
+      // Close Room Details Modal
+      function closeRoomDetailsModal() {
+         document.getElementById('room-details-modal').style.display = 'none';
+      }
+
+      // Close modal on overlay click
+      document.getElementById('cancel-modal')?.addEventListener('click', (e) => {
+         if (e.target.id === 'cancel-modal') {
+            closeCancelModal();
+         }
+      });
+
+      document.getElementById('room-modal')?.addEventListener('click', (e) => {
+         if (e.target.id === 'room-modal') {
+            closeRoomModal();
+         }
+      });
+
+      // Auto-generate slug from name
+      document.addEventListener('DOMContentLoaded', function() {
+         const roomNameInput = document.getElementById('room-name');
+         if (roomNameInput) {
+            roomNameInput.addEventListener('input', function() {
+               const slugInput = document.getElementById('room-slug');
+               if (slugInput && !slugInput.value) {
+                  const slug = this.value.toLowerCase()
+                     .replace(/[^a-z0-9]+/g, '-')
+                     .replace(/^-+|-+$/g, '');
+                  slugInput.value = slug;
+               }
+            });
+         }
+
+         // Set minimum date for booking dates to today
+         const today = new Date().toISOString().split('T')[0];
+         const checkInInput = document.getElementById('booking-check-in');
+         const checkOutInput = document.getElementById('booking-check-out');
+         if (checkInInput) {
+            checkInInput.setAttribute('min', today);
+            checkInInput.addEventListener('change', function() {
+               if (checkOutInput) {
+                  const checkInDate = new Date(this.value);
+                  checkInDate.setDate(checkInDate.getDate() + 1);
+                  checkOutInput.setAttribute('min', checkInDate.toISOString().split('T')[0]);
+               }
+            });
+         }
+         if (checkOutInput) {
+            checkOutInput.setAttribute('min', today);
+         }
+      });
+   </script>
+
+   <!-- Room Modal (Create/Edit) -->
+   <div id="room-modal" class="modal-overlay">
+      <div class="modal" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
+         <div class="modal-header">
+            <h3 id="room-modal-title">Add New Room</h3>
+         </div>
+         <div class="modal-body">
+            <input type="hidden" id="room-id">
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Room Name *</label>
+               <input type="text" id="room-name" class="input" placeholder="e.g., Deluxe King Room" required style="width: 100%;">
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Slug *</label>
+               <input type="text" id="room-slug" class="input" placeholder="e.g., deluxe-king-room" required style="width: 100%;">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Category *</label>
+                  <input type="text" id="room-category" class="input" placeholder="e.g., Deluxe" required style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Price per Night ($) *</label>
+                  <input type="number" id="room-price" class="input" placeholder="220.00" step="0.01" required style="width: 100%;">
+               </div>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Description</label>
+               <textarea id="room-description" class="input" rows="4" placeholder="Room description..." style="width: 100%; resize: vertical;"></textarea>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Max Guests</label>
+                  <input type="number" id="room-max-guests" class="input" value="2" min="1" style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Size (sqm)</label>
+                  <input type="number" id="room-size" class="input" placeholder="35" style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Bed Type</label>
+                  <input type="text" id="room-bed-type" class="input" placeholder="1 King Bed" style="width: 100%;">
+               </div>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Amenities (comma-separated)</label>
+               <input type="text" id="room-amenities" class="input" placeholder="WiFi, TV, AC, Minibar" style="width: 100%;">
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: flex; align-items: center; gap: 1rem; font-size: 1.4rem; color: #333; cursor: pointer;">
+                  <input type="checkbox" id="room-available" checked style="width: 2rem; height: 2rem;">
+                  <span>Room is available</span>
+               </label>
+            </div>
+
+            <div style="margin-bottom: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 1rem; font-weight: 600;">Room Images</label>
+               
+               <!-- Existing Images Preview -->
+               <div id="room-images-preview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                  <!-- Images will be dynamically added here -->
+               </div>
+
+               <!-- Upload New Images -->
+               <div style="margin-bottom: 1rem;">
+                  <label for="room-images-input" style="display: inline-block; padding: 1rem 2rem; background: #8F9F04; color: #fff; border-radius: 8px; cursor: pointer; font-size: 1.3rem; text-align: center;">
+                     <i class="fas fa-upload"></i> Upload Images
+                  </label>
+                  <input type="file" id="room-images-input" multiple accept="image/*" style="display: none;" onchange="handleRoomImageSelect(event)">
+                  <small style="display: block; margin-top: 0.5rem; color: #666; font-size: 1.2rem;">You can select multiple images (JPG, PNG, max 10 images)</small>
+               </div>
+
+               <!-- Selected Images Preview (before upload) -->
+               <div id="room-images-selected" style="display: none; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                  <!-- Selected images will be shown here -->
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" onclick="closeRoomModal()">Cancel</button>
+            <button class="modal-btn" onclick="saveRoom()" id="room-save-btn" style="background: #8F9F04; color: #fff;">Create Room</button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Edit Review Modal -->
+   <div id="edit-review-modal" class="modal-overlay">
+      <div class="modal" style="max-width: 600px;">
+         <div class="modal-header">
+            <h3>Edit Review</h3>
+         </div>
+         <div class="modal-body">
+            <input type="hidden" id="edit-review-id">
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Rating *</label>
+               <select id="edit-review-rating" class="input" required style="width: 100%;">
+                  <option value="1">1 Star</option>
+                  <option value="2">2 Stars</option>
+                  <option value="3">3 Stars</option>
+                  <option value="4">4 Stars</option>
+                  <option value="5">5 Stars</option>
+               </select>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Comment</label>
+               <textarea id="edit-review-comment" class="input" rows="5" style="width: 100%; resize: vertical;"></textarea>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: flex; align-items: center; gap: 1rem; font-size: 1.4rem; color: #333; cursor: pointer;">
+                  <input type="checkbox" id="edit-review-approved" style="width: 2rem; height: 2rem;">
+                  <span>Approve this review</span>
+               </label>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" onclick="closeEditReviewModal()">Cancel</button>
+            <button class="modal-btn" onclick="saveReviewChanges()" style="background: #8F9F04; color: #fff;">Save Changes</button>
+         </div>
+      </div>
+   </div>
+
+   <script>
+      // Close modals on overlay click
+      document.getElementById('room-modal')?.addEventListener('click', (e) => {
+         if (e.target.id === 'room-modal') {
+            closeRoomModal();
+         }
+      });
+
+      document.getElementById('edit-review-modal')?.addEventListener('click', (e) => {
+         if (e.target.id === 'edit-review-modal') {
+            closeEditReviewModal();
+         }
+      });
+
+      // Toggle Add Menu
+      function toggleAddMenu(event) {
+         event.stopPropagation();
+         const menu = document.getElementById('add-menu');
+         const isVisible = menu && menu.style.display !== 'none';
+         
+         // Close all other menus
+         document.querySelectorAll('.dropdown-menu').forEach(m => {
+            if (m.id !== 'add-menu') m.style.display = 'none';
+         });
+         
+         if (menu) {
+            menu.style.display = isVisible ? 'none' : 'block';
+            const btn = document.getElementById('add-menu-btn');
+            if (btn) btn.classList.toggle('active', !isVisible);
+         }
+      }
+
+      // Toggle Notifications Menu
+      function toggleNotifications(event) {
+         event.stopPropagation();
+         const menu = document.getElementById('notifications-menu');
+         const isVisible = menu && menu.style.display !== 'none';
+         
+         // Close all other menus
+         document.querySelectorAll('.dropdown-menu').forEach(m => {
+            if (m.id !== 'notifications-menu') m.style.display = 'none';
+         });
+         
+         if (menu) {
+            menu.style.display = isVisible ? 'none' : 'block';
+            const btn = document.getElementById('notifications-btn');
+            if (btn) btn.classList.toggle('active', !isVisible);
+            
+            if (!isVisible) {
+               loadNotifications();
+            }
+         }
+      }
+
+      // Toggle Profile Menu
+      function toggleProfileMenu(event) {
+         event.stopPropagation();
+         const menu = document.getElementById('profile-menu');
+         const isVisible = menu && menu.style.display !== 'none';
+         
+         // Close all other menus
+         document.querySelectorAll('.dropdown-menu').forEach(m => {
+            if (m.id !== 'profile-menu') m.style.display = 'none';
+         });
+         
+         if (menu) {
+            menu.style.display = isVisible ? 'none' : 'block';
+         }
+      }
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function(event) {
+         if (!event.target.closest('.header-icon') && !event.target.closest('.profile-pic') && !event.target.closest('.dropdown-menu')) {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+               menu.style.display = 'none';
+            });
+            document.querySelectorAll('.header-icon').forEach(icon => {
+               icon.classList.remove('active');
+            });
+         }
+      });
+
+      // Load Notifications
+      async function loadNotifications() {
+         try {
+            const notifications = [];
+            
+            // Get recent bookings for notifications
+            try {
+               const bookingsData = await AdminAPI.getBookings();
+               if (bookingsData && bookingsData.success) {
+                  const bookings = bookingsData.bookings || [];
+                  const recentBookings = bookings
+                     .filter(b => {
+                        const checkIn = new Date(b.check_in);
+                        const today = new Date();
+                        const daysUntil = Math.ceil((checkIn - today) / (1000 * 60 * 60 * 24));
+                        return daysUntil >= 0 && daysUntil <= 7;
+                     })
+                     .slice(0, 5);
+
+                  recentBookings.forEach(booking => {
+                     const checkIn = new Date(booking.check_in);
+                     const daysUntil = Math.ceil((checkIn - new Date()) / (1000 * 60 * 60 * 24));
+                     
+                     notifications.push({
+                        type: 'booking',
+                        icon: 'fa-calendar',
+                        iconColor: '#4285f4',
+                        title: 'Upcoming Check-in',
+                        message: `${booking.first_name} ${booking.last_name} - ${booking.room_name || 'Room'}`,
+                        time: daysUntil === 0 ? 'Today' : `${daysUntil} day${daysUntil > 1 ? 's' : ''} away`,
+                        unread: true
+                     });
+                  });
+               }
+            } catch (e) {
+               console.error('Error loading bookings:', e);
+            }
+
+            // Add pending reviews
+            try {
+               if (typeof ReviewsAPI !== 'undefined') {
+                  const reviewsData = await ReviewsAPI.getAll({ status: 'pending' });
+                  if (reviewsData && reviewsData.success && reviewsData.reviews) {
+                     const pendingCount = reviewsData.reviews.length;
+                     if (pendingCount > 0) {
+                        notifications.push({
+                           type: 'review',
+                           icon: 'fa-star',
+                           iconColor: '#ff9800',
+                           title: 'Pending Reviews',
+                           message: `${pendingCount} review${pendingCount > 1 ? 's' : ''} awaiting approval`,
+                           time: 'Just now',
+                           unread: true
+                        });
+                     }
+                  }
+               }
+            } catch (e) {
+               console.error('Error loading reviews:', e);
+            }
+
+            // Update notification badge
+            const badge = document.getElementById('notification-badge');
+            if (badge) {
+               badge.textContent = notifications.length;
+               badge.style.display = notifications.length > 0 ? 'block' : 'none';
+            }
+
+            // Render notifications
+            const content = document.getElementById('notifications-content');
+            if (content) {
+               if (notifications.length === 0) {
+                  content.innerHTML = '<div style="padding: 2rem; text-align: center; color: #999;">No new notifications</div>';
+               } else {
+                  content.innerHTML = notifications.map(notif => `
+                     <div class="notification-item ${notif.unread ? 'unread' : ''}" onclick="handleNotificationClick('${notif.type}')">
+                        <i class="fas ${notif.icon}" style="color: ${notif.iconColor};"></i>
+                        <div class="notification-text">
+                           <strong>${notif.title}</strong>
+                           <p>${notif.message}</p>
+                           <span class="notification-time">${notif.time}</span>
+                        </div>
+                     </div>
+                  `).join('');
+               }
+            }
+         } catch (error) {
+            console.error('Error loading notifications:', error);
+         }
+      }
+
+      // Handle notification click
+      function handleNotificationClick(type) {
+         if (type === 'review') {
+            switchAdminTab('reviews');
+            const filter = document.getElementById('review-filter');
+            if (filter) {
+               filter.value = 'pending';
+               loadReviews();
+            }
+         } else if (type === 'booking') {
+            switchAdminTab('bookings');
+         }
+         // Close notifications menu
+         const menu = document.getElementById('notifications-menu');
+         if (menu) menu.style.display = 'none';
+      }
+
+      // Mark all notifications as read
+      function markAllAsRead() {
+         document.querySelectorAll('.notification-item').forEach(item => {
+            item.classList.remove('unread');
+         });
+         const badge = document.getElementById('notification-badge');
+         if (badge) {
+            badge.textContent = '0';
+            badge.style.display = 'none';
+         }
+      }
+
+      // Profile Menu Functions
+      function viewProfile() {
+         // Close profile menu
+         const menu = document.getElementById('profile-menu');
+         if (menu) menu.style.display = 'none';
+         
+         // Get current user info
+         try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+               // Show profile info in a modal or navigate to profile page
+               const profileInfo = `
+                  <div style="padding: 2rem;">
+                     <h2 style="font-size: 2.4rem; margin-bottom: 2rem; color: #333;">Profile Information</h2>
+                     <div style="display: grid; gap: 1.5rem;">
+                        <div>
+                           <label style="display: block; font-size: 1.4rem; color: #666; margin-bottom: 0.5rem;">Name</label>
+                           <div style="font-size: 1.6rem; color: #333; font-weight: 600;">${user.first_name || ''} ${user.last_name || ''}</div>
+                        </div>
+                        <div>
+                           <label style="display: block; font-size: 1.4rem; color: #666; margin-bottom: 0.5rem;">Email</label>
+                           <div style="font-size: 1.6rem; color: #333;">${user.email || 'N/A'}</div>
+                        </div>
+                        ${user.phone ? `
+                        <div>
+                           <label style="display: block; font-size: 1.4rem; color: #666; margin-bottom: 0.5rem;">Phone</label>
+                           <div style="font-size: 1.6rem; color: #333;">${user.phone}</div>
+                        </div>
+                        ` : ''}
+                        ${user.address ? `
+                        <div>
+                           <label style="display: block; font-size: 1.4rem; color: #666; margin-bottom: 0.5rem;">Address</label>
+                           <div style="font-size: 1.6rem; color: #333;">${user.address}</div>
+                        </div>
+                        ` : ''}
+                        <div>
+                           <label style="display: block; font-size: 1.4rem; color: #666; margin-bottom: 0.5rem;">Role</label>
+                           <div style="font-size: 1.6rem; color: #333; text-transform: capitalize;">${user.role || 'customer'}</div>
+                        </div>
+                     </div>
+                  </div>
+               `;
+               
+               // Create and show modal
+               const modal = document.createElement('div');
+               modal.className = 'modal-overlay';
+               modal.style.display = 'flex';
+               modal.innerHTML = `
+                  <div class="modal" style="max-width: 600px;">
+                     <div class="modal-header">
+                        <h3>My Profile</h3>
+                        <button onclick="this.closest('.modal-overlay').remove()" style="background: none; border: none; font-size: 2rem; cursor: pointer; color: #666;">&times;</button>
+                     </div>
+                     <div class="modal-body">
+                        ${profileInfo}
+                     </div>
+                     <div class="modal-footer">
+                        <button class="modal-btn modal-btn-cancel" onclick="this.closest('.modal-overlay').remove()">Close</button>
+                        <button class="modal-btn" onclick="window.location.href='profile.html'" style="background: #8F9F04; color: #fff;">Edit Profile</button>
+                     </div>
+                  </div>
+               `;
+               document.body.appendChild(modal);
+               
+               // Close on overlay click
+               modal.addEventListener('click', (e) => {
+                  if (e.target === modal) {
+                     modal.remove();
+                  }
+               });
+            } else {
+               alert('User information not found. Please login again.');
+            }
+         } catch (error) {
+            console.error('Error loading profile:', error);
+            alert('Failed to load profile information.');
+         }
+      }
+
+      function openSettings() {
+         alert('Settings panel coming soon!');
+         const menu = document.getElementById('profile-menu');
+         if (menu) menu.style.display = 'none';
+      }
+
+      function openActivityLog() {
+         alert('Activity log coming soon!');
+         const menu = document.getElementById('profile-menu');
+         if (menu) menu.style.display = 'none';
+      }
+
+      function logout() {
+         if (confirm('Are you sure you want to logout?')) {
+            // Clear all authentication data
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+               menu.style.display = 'none';
+            });
+            
+            // Redirect to login page
+            window.location.href = 'auth.html';
+         }
+      }
+
+      // Add Menu Functions
+      function openCreateUserModal() {
+         // Reset form
+         document.getElementById('user-email').value = '';
+         document.getElementById('user-password').value = '';
+         document.getElementById('user-confirm-password').value = '';
+         document.getElementById('user-first-name').value = '';
+         document.getElementById('user-last-name').value = '';
+         document.getElementById('user-phone').value = '';
+         document.getElementById('user-address').value = '';
+         document.getElementById('user-city').value = '';
+         document.getElementById('user-country').value = '';
+         document.getElementById('user-zip-code').value = '';
+         document.getElementById('user-role').value = 'customer';
+         document.getElementById('create-user-error').style.display = 'none';
+         
+         // Show modal
+         document.getElementById('create-user-modal').style.display = 'flex';
+         
+         // Close add menu
+         const menu = document.getElementById('add-menu');
+         if (menu) menu.style.display = 'none';
+      }
+
+      function closeCreateUserModal() {
+         document.getElementById('create-user-modal').style.display = 'none';
+      }
+
+      async function saveUser() {
+         const email = document.getElementById('user-email').value.trim();
+         const password = document.getElementById('user-password').value;
+         const confirmPassword = document.getElementById('user-confirm-password').value;
+         const firstName = document.getElementById('user-first-name').value.trim();
+         const lastName = document.getElementById('user-last-name').value.trim();
+         const phone = document.getElementById('user-phone').value.trim();
+         const address = document.getElementById('user-address').value.trim();
+         const city = document.getElementById('user-city').value.trim();
+         const country = document.getElementById('user-country').value.trim();
+         const zipCode = document.getElementById('user-zip-code').value.trim();
+         const role = document.getElementById('user-role').value;
+
+         const errorDiv = document.getElementById('create-user-error');
+         const saveBtn = document.getElementById('save-user-btn');
+
+         // Validation
+         if (!email || !password || !firstName || !lastName) {
+            errorDiv.textContent = 'Please fill in all required fields (Email, Password, First Name, Last Name)';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         if (password.length < 6) {
+            errorDiv.textContent = 'Password must be at least 6 characters';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         if (password !== confirmPassword) {
+            errorDiv.textContent = 'Passwords do not match';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         // Email validation
+         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+         if (!emailRegex.test(email)) {
+            errorDiv.textContent = 'Invalid email format';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         saveBtn.disabled = true;
+         saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+         try {
+            const response = await AdminAPI.createUser({
+               email,
+               password,
+               first_name: firstName,
+               last_name: lastName,
+               phone: phone || null,
+               address: address || null,
+               city: city || null,
+               country: country || null,
+               zip_code: zipCode || null,
+               role: role || 'customer'
+            });
+
+            if (response.success) {
+               alert('User created successfully!');
+               closeCreateUserModal();
+               // Reload users if on users tab
+               if (currentTab === 'users') {
+                  loadUsers();
+               }
+            } else {
+               errorDiv.textContent = response.message || 'Failed to create user';
+               errorDiv.style.display = 'block';
+            }
+         } catch (error) {
+            errorDiv.textContent = error.message || 'Failed to create user';
+            errorDiv.style.display = 'block';
+         } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = 'Create User';
+         }
+      }
+
+      function openCreateBookingModal() {
+         // Reset form
+         document.getElementById('booking-user-id').value = '';
+         document.getElementById('booking-room-id').value = '';
+         document.getElementById('booking-check-in').value = '';
+         document.getElementById('booking-check-out').value = '';
+         document.getElementById('booking-adults').value = '1';
+         document.getElementById('booking-children').value = '0';
+         document.getElementById('booking-rooms-count').value = '1';
+         document.getElementById('booking-special-requests').value = '';
+         document.getElementById('booking-status').value = 'confirmed';
+         document.getElementById('create-booking-error').style.display = 'none';
+         
+         // Load users and rooms
+         loadBookingUsers();
+         loadBookingRooms();
+         
+         // Show modal
+         document.getElementById('create-booking-modal').style.display = 'flex';
+         
+         // Close add menu
+         const menu = document.getElementById('add-menu');
+         if (menu) menu.style.display = 'none';
+      }
+
+      function closeCreateBookingModal() {
+         document.getElementById('create-booking-modal').style.display = 'none';
+      }
+
+      async function loadBookingUsers() {
+         try {
+            const data = await AdminAPI.getUsers();
+            if (data && data.success) {
+               const select = document.getElementById('booking-user-id');
+               select.innerHTML = '<option value="">Select User</option>' +
+                  data.users.map(user => 
+                     `<option value="${user.id}">${user.first_name} ${user.last_name} (${user.email})</option>`
+                  ).join('');
+            }
+         } catch (error) {
+            console.error('Error loading users:', error);
+         }
+      }
+
+      async function loadBookingRooms() {
+         try {
+            const data = await AdminAPI.getRooms();
+            if (data && data.success) {
+               const select = document.getElementById('booking-room-id');
+               select.innerHTML = '<option value="">Select Room</option>' +
+                  data.rooms.map(room => 
+                     `<option value="${room.id}">${room.name} - $${room.price_per_night}/night</option>`
+                  ).join('');
+            }
+         } catch (error) {
+            console.error('Error loading rooms:', error);
+         }
+      }
+
+      async function saveBooking() {
+         const userId = document.getElementById('booking-user-id').value;
+         const roomId = document.getElementById('booking-room-id').value;
+         const checkIn = document.getElementById('booking-check-in').value;
+         const checkOut = document.getElementById('booking-check-out').value;
+         const adults = parseInt(document.getElementById('booking-adults').value);
+         const children = parseInt(document.getElementById('booking-children').value);
+         const roomsCount = parseInt(document.getElementById('booking-rooms-count').value);
+         const specialRequests = document.getElementById('booking-special-requests').value;
+         const status = document.getElementById('booking-status').value;
+
+         const errorDiv = document.getElementById('create-booking-error');
+         const saveBtn = document.getElementById('save-booking-btn');
+
+         // Validation
+         if (!userId || !roomId || !checkIn || !checkOut || !adults) {
+            errorDiv.textContent = 'Please fill in all required fields';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         if (new Date(checkIn) >= new Date(checkOut)) {
+            errorDiv.textContent = 'Check-out date must be after check-in date';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         saveBtn.disabled = true;
+         saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+         try {
+            const response = await AdminAPI.createBooking({
+               user_id: parseInt(userId),
+               room_id: parseInt(roomId),
+               check_in: checkIn,
+               check_out: checkOut,
+               adults: adults,
+               children: children,
+               rooms_count: roomsCount,
+               special_requests: specialRequests || null,
+               booking_status: status
+            });
+
+            if (response.success) {
+               alert('Booking created successfully!');
+               closeCreateBookingModal();
+               // Reload bookings if on bookings tab
+               if (currentTab === 'bookings') {
+                  loadBookings();
+               }
+            } else {
+               errorDiv.textContent = response.message || 'Failed to create booking';
+               errorDiv.style.display = 'block';
+            }
+         } catch (error) {
+            errorDiv.textContent = error.message || 'Failed to create booking';
+            errorDiv.style.display = 'block';
+         } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = 'Create Booking';
+         }
+      }
+
+      async function exportData() {
+         const menu = document.getElementById('add-menu');
+         if (menu) menu.style.display = 'none';
+
+         // Show export options
+         const exportType = prompt('Select export type:\n1. bookings\n2. users\n3. rooms\n4. reviews\n\nEnter number (1-4):');
+         if (!exportType) return;
+
+         const types = { '1': 'bookings', '2': 'users', '3': 'rooms', '4': 'reviews' };
+         const type = types[exportType];
+         if (!type) {
+            alert('Invalid selection');
+            return;
+         }
+
+         const format = confirm('Export as CSV? (Click OK for CSV, Cancel for JSON)') ? 'csv' : 'json';
+
+         try {
+            if (format === 'json') {
+               // For JSON, fetch and download
+               const token = localStorage.getItem('authToken');
+               const response = await fetch(`http://localhost:3000/api/admin/export/${type}?format=json`, {
+                  headers: {
+                     'Authorization': `Bearer ${token}`
+                  }
+               });
+               if (!response.ok) {
+                  const error = await response.json();
+                  throw new Error(error.message || 'Export failed');
+               }
+               const data = await response.json();
+               const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+               const url = window.URL.createObjectURL(blob);
+               const a = document.createElement('a');
+               a.href = url;
+               a.download = `${type}-${new Date().toISOString().split('T')[0]}.json`;
+               document.body.appendChild(a);
+               a.click();
+               document.body.removeChild(a);
+               window.URL.revokeObjectURL(url);
+            } else {
+               // For CSV, use the API method which handles blob download
+               await AdminAPI.exportData(type, format);
+            }
+            alert(`Data exported successfully as ${format.toUpperCase()}!`);
+         } catch (error) {
+            alert('Export failed: ' + error.message);
+         }
+      }
+
+      function openBulkImportModal() {
+         document.getElementById('import-type').value = 'users';
+         document.getElementById('import-data').value = '';
+         document.getElementById('import-error').style.display = 'none';
+         document.getElementById('import-result').style.display = 'none';
+         
+         document.getElementById('bulk-import-modal').style.display = 'flex';
+         
+         const menu = document.getElementById('add-menu');
+         if (menu) menu.style.display = 'none';
+      }
+
+      function closeBulkImportModal() {
+         document.getElementById('bulk-import-modal').style.display = 'none';
+      }
+
+      async function processImport() {
+         const type = document.getElementById('import-type').value;
+         const dataText = document.getElementById('import-data').value.trim();
+         const errorDiv = document.getElementById('import-error');
+         const resultDiv = document.getElementById('import-result');
+         const importBtn = document.getElementById('import-btn');
+
+         errorDiv.style.display = 'none';
+         resultDiv.style.display = 'none';
+
+         if (!dataText) {
+            errorDiv.textContent = 'Please paste JSON data';
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         let data;
+         try {
+            data = JSON.parse(dataText);
+            if (!Array.isArray(data)) {
+               throw new Error('Data must be an array');
+            }
+         } catch (error) {
+            errorDiv.textContent = 'Invalid JSON format: ' + error.message;
+            errorDiv.style.display = 'block';
+            return;
+         }
+
+         importBtn.disabled = true;
+         importBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing...';
+
+         try {
+            const response = await AdminAPI.importData(type, data);
+            if (response.success) {
+               resultDiv.innerHTML = `
+                  <div style="padding: 1rem; background: #d4edda; color: #155724; border-radius: 8px;">
+                     <strong>Import Successful!</strong><br>
+                     Imported: ${response.imported} ${type}<br>
+                     ${response.errors && response.errors.length > 0 ? `Errors: ${response.errors.length}` : ''}
+                  </div>
+               `;
+               if (response.errors && response.errors.length > 0) {
+                  resultDiv.innerHTML += `
+                     <div style="margin-top: 1rem; padding: 1rem; background: #fff3cd; color: #856404; border-radius: 8px; max-height: 200px; overflow-y: auto;">
+                        <strong>Errors:</strong><br>
+                        ${response.errors.map(e => `- ${e.error}`).join('<br>')}
+                     </div>
+                  `;
+               }
+               resultDiv.style.display = 'block';
+               
+               // Reload relevant tab
+               if (type === 'users' && currentTab === 'users') {
+                  loadUsers();
+               } else if (type === 'rooms' && currentTab === 'rooms') {
+                  loadRooms();
+               }
+            } else {
+               errorDiv.textContent = response.message || 'Import failed';
+               errorDiv.style.display = 'block';
+            }
+         } catch (error) {
+            errorDiv.textContent = error.message || 'Import failed';
+            errorDiv.style.display = 'block';
+         } finally {
+            importBtn.disabled = false;
+            importBtn.innerHTML = 'Import Data';
+         }
+      }
+
+      // Update profile info on load
+      document.addEventListener('DOMContentLoaded', function() {
+         try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+               const profileName = document.getElementById('profile-name');
+               const profileEmail = document.getElementById('profile-email');
+               if (profileName) {
+                  profileName.textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Admin User';
+               }
+               if (profileEmail) {
+                  profileEmail.textContent = user.email || 'admin@hotel.com';
+               }
+            }
+         } catch (e) {
+            console.error('Error loading user profile:', e);
+         }
+      });
+   </script>
+
+   <!-- Create User Modal -->
+   <div id="create-user-modal" class="modal-overlay">
+      <div class="modal" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
+         <div class="modal-header">
+            <h3>Create New User</h3>
+         </div>
+         <div class="modal-body">
+            <div id="create-user-error" class="error-message" style="display: none; margin-bottom: 1.5rem; padding: 1rem; background: #fee; color: #c62828; border-radius: 8px;"></div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">First Name *</label>
+                  <input type="text" id="user-first-name" class="input" placeholder="John" required style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Last Name *</label>
+                  <input type="text" id="user-last-name" class="input" placeholder="Doe" required style="width: 100%;">
+               </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Email *</label>
+               <input type="email" id="user-email" class="input" placeholder="user@example.com" required style="width: 100%;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Password *</label>
+                  <input type="password" id="user-password" class="input" placeholder="Min. 6 characters" required style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Confirm Password *</label>
+                  <input type="password" id="user-confirm-password" class="input" placeholder="Confirm password" required style="width: 100%;">
+               </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Phone</label>
+               <input type="tel" id="user-phone" class="input" placeholder="+1234567890" style="width: 100%;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Address</label>
+               <input type="text" id="user-address" class="input" placeholder="Street address" style="width: 100%;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">City</label>
+                  <input type="text" id="user-city" class="input" placeholder="City" style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Country</label>
+                  <input type="text" id="user-country" class="input" placeholder="Country" style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Zip Code</label>
+                  <input type="text" id="user-zip-code" class="input" placeholder="12345" style="width: 100%;">
+               </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Role</label>
+               <select id="user-role" class="input" style="width: 100%;">
+                  <option value="customer">Customer</option>
+                  <option value="admin">Admin</option>
+               </select>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" onclick="closeCreateUserModal()">Cancel</button>
+            <button class="modal-btn" onclick="saveUser()" id="save-user-btn" style="background: #8F9F04; color: #fff;">Create User</button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Create Booking Modal -->
+   <div id="create-booking-modal" class="modal-overlay">
+      <div class="modal" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
+         <div class="modal-header">
+            <h3>Create New Booking</h3>
+         </div>
+         <div class="modal-body">
+            <div id="create-booking-error" class="error-message" style="display: none; margin-bottom: 1.5rem; padding: 1rem; background: #fee; color: #c62828; border-radius: 8px;"></div>
+            
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">User *</label>
+               <select id="booking-user-id" class="input" required style="width: 100%;">
+                  <option value="">Loading users...</option>
+               </select>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Room *</label>
+               <select id="booking-room-id" class="input" required style="width: 100%;">
+                  <option value="">Loading rooms...</option>
+               </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Check-in Date *</label>
+                  <input type="date" id="booking-check-in" class="input" required style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Check-out Date *</label>
+                  <input type="date" id="booking-check-out" class="input" required style="width: 100%;">
+               </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Adults *</label>
+                  <input type="number" id="booking-adults" class="input" value="1" min="1" required style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Children</label>
+                  <input type="number" id="booking-children" class="input" value="0" min="0" style="width: 100%;">
+               </div>
+               <div>
+                  <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Rooms</label>
+                  <input type="number" id="booking-rooms-count" class="input" value="1" min="1" style="width: 100%;">
+               </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Booking Status</label>
+               <select id="booking-status" class="input" style="width: 100%;">
+                  <option value="pending">Pending</option>
+                  <option value="confirmed" selected>Confirmed</option>
+                  <option value="checked_in">Checked In</option>
+               </select>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Special Requests</label>
+               <textarea id="booking-special-requests" class="input" rows="3" placeholder="Any special requests..." style="width: 100%; resize: vertical;"></textarea>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" onclick="closeCreateBookingModal()">Cancel</button>
+            <button class="modal-btn" onclick="saveBooking()" id="save-booking-btn" style="background: #8F9F04; color: #fff;">Create Booking</button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Bulk Import Modal -->
+   <div id="bulk-import-modal" class="modal-overlay">
+      <div class="modal" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+         <div class="modal-header">
+            <h3>Bulk Import Data</h3>
+         </div>
+         <div class="modal-body">
+            <div id="import-error" class="error-message" style="display: none; margin-bottom: 1.5rem; padding: 1rem; background: #fee; color: #c62828; border-radius: 8px;"></div>
+            <div id="import-result" style="display: none; margin-bottom: 1.5rem;"></div>
+            
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">Import Type *</label>
+               <select id="import-type" class="input" style="width: 100%;">
+                  <option value="users">Users</option>
+                  <option value="rooms">Rooms</option>
+               </select>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+               <label style="display: block; font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; font-weight: 600;">JSON Data *</label>
+               <textarea id="import-data" class="input" rows="15" placeholder='Paste JSON array here, e.g.:\n[\n  {\n    "email": "user@example.com",\n    "password": "password123",\n    "first_name": "John",\n    "last_name": "Doe"\n  }\n]' style="width: 100%; resize: vertical; font-family: monospace; font-size: 1.2rem;"></textarea>
+               <small style="color: #666; font-size: 1.2rem; margin-top: 0.5rem; display: block;">
+                  Format: JSON array of objects. For users: email, password, first_name, last_name are required. For rooms: name, slug, category, price_per_night are required.
+               </small>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button class="modal-btn modal-btn-cancel" onclick="closeBulkImportModal()">Cancel</button>
+            <button class="modal-btn" onclick="processImport()" id="import-btn" style="background: #8F9F04; color: #fff;">Import Data</button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Room Details Modal -->
+   <div id="room-details-modal" class="modal-overlay" onclick="if(event.target.id === 'room-details-modal') closeRoomDetailsModal();" style="display: none;">
+   </div>
+</body>
+</html>

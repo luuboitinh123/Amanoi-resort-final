@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Room Details - Hotels And Resorts</title>
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+   <!-- Include API integration -->
+   <script src="../frontend-integration/api.js"></script>
+   <script src="js/auth.js"></script>
+   
+<!-- header section starts  -->
+
+<section class="header">
+   <div class="flex">
+      <a href="index.html#home" class="logo" style="font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 500;">Amanoi</a>
+      <div class="header-actions">
+         <a href="index.html#reservation" class="btn btn-primary" style="text-transform: uppercase; letter-spacing: 0.2rem; font-size: 1.2rem; padding: 1rem 2.5rem;">BOOK A ROOM</a>
+         <div class="auth-buttons-container"></div>
+      </div>
+      <div id="menu-btn" class="fas fa-bars"></div>
+   </div>
+   <nav class="navbar">
+      <a href="index.html#home" data-page="home">HOME</a>
+      <a href="index.html#locations" data-page="locations">LOCATIONS</a>
+      <a href="index.html#reservation" data-page="reservation">BOOK NOW</a>
+      <a href="index.html#reviews" data-page="reviews">REVIEWS</a>
+      <a href="rooms.html" data-page="rooms" class="active">ROOMS</a>
+      <a href="index.html#contact" data-page="contact">CONTACT</a>
+      <a href="index.html#packages" data-page="packages">PACKAGES</a>
+   </nav>
+</section>
+
+<!-- header section ends -->
+
+<!-- room details section starts  -->
+
+<section class="room-details" id="room-details" style="padding-top: 8rem;">
+
+   <div class="row">
+      <div class="image-container">
+         <div class="main-image">
+            <img src="images/home-img-1.jpg" alt="" id="main-img">
+         </div>
+         <div class="image-gallery" id="image-gallery">
+            <img src="images/home-img-1.jpg" alt="" onclick="changeImage(this.src)">
+            <img src="images/home-img-2.jpg" alt="" onclick="changeImage(this.src)">
+            <img src="images/home-img-3.jpg" alt="" onclick="changeImage(this.src)">
+            <img src="images/gallery-img-1.jpg" alt="" onclick="changeImage(this.src)">
+         </div>
+      </div>
+
+      <div class="content">
+         <h1 class="room-title" id="room-title">Deluxe King Room</h1>
+         <div class="price" id="room-price">Starting from <span style="font-size: 2.5rem; font-weight: bold;">$220</span> <span>/ night</span></div>
+         <p class="description" id="room-description">Experience ultimate comfort in our spacious Deluxe King Room. This elegantly furnished room features modern amenities, premium bedding, and a serene atmosphere perfect for relaxation. The room includes a comfortable king-size bed, a well-appointed bathroom, and all the modern conveniences you need for a memorable stay.</p>
+         
+         <div class="amenities-list">
+            <h3>Room Amenities</h3>
+            <div class="amenities-grid" id="amenities-grid">
+               <div class="amenity-item">
+                  <i class="fas fa-wifi"></i>
+                  <span>Free High-Speed WiFi</span>
+               </div>
+               <div class="amenity-item">
+                  <i class="fas fa-tv"></i>
+                  <span>42" LED TV with Cable</span>
+               </div>
+               <div class="amenity-item">
+                  <i class="fas fa-snowflake"></i>
+                  <span>Air Conditioning</span>
+               </div>
+               <div class="amenity-item">
+                  <i class="fas fa-bed"></i>
+                  <span>King Size Bed</span>
+               </div>
+               <div class="amenity-item">
+                  <i class="fas fa-bath"></i>
+                  <span>Private Bathroom</span>
+               </div>
+               <div class="amenity-item">
+                  <i class="fas fa-coffee"></i>
+                  <span>Coffee Maker</span>
+               </div>
+               <div class="amenity-item">
+                  <i class="fas fa-utensils"></i>
+                  <span>Mini Bar</span>
+               </div>
+               <div class="amenity-item">
+                  <i class="fas fa-lock"></i>
+                  <span>In-Room Safe</span>
+               </div>
+            </div>
+         </div>
+
+         <div class="room-specs" id="room-specs">
+            <div class="spec">
+               <i class="fas fa-users"></i>
+               <span>Max Guests: 2</span>
+            </div>
+            <div class="spec">
+               <i class="fas fa-expand-arrows-alt"></i>
+               <span>Size: 45 sqm</span>
+            </div>
+            <div class="spec">
+               <i class="fas fa-bed"></i>
+               <span>Bed: 1 King Bed</span>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="booking-section">
+      <h2 style="text-align: center; font-size: 2.5rem; color: var(--main-color); margin-bottom: 3rem; text-transform: capitalize; font-family: 'Playfair Display', serif; font-weight: 500;">Book this room</h2>
+      <form action="payment.html" method="get" class="booking-form" id="booking-form">
+         <!-- Calendar Booking Interface -->
+         <div class="calendar-booking-interface" style="display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; margin-bottom: 3rem; align-items: start;">
+            
+            <!-- Left: Booking Summary -->
+            <div class="booking-summary-sidebar" style="border: var(--border); padding: 3rem; border-radius: 0.5rem; background: var(--white); position: sticky; top: 150px; max-height: calc(100vh - 180px); overflow-y: auto;">
+               <!-- Check-in/Check-out Display -->
+               <div style="margin-bottom: 3rem;">
+                  <div style="background: var(--main-color); color: var(--white); padding: 1.5rem; display: flex; justify-content: space-between; margin-bottom: 1rem; border-radius: 0.3rem 0.3rem 0 0;">
+                     <span style="font-size: 1.4rem; font-weight: 500;">Check-in</span>
+                     <span style="font-size: 1.4rem; font-weight: 500;">Check-out</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                     <div style="padding: 1.5rem; border: var(--border); background: var(--sub-color); color: var(--text-dark); font-size: 1.8rem; text-align: center; min-height: 5rem; display: flex; flex-direction: column; justify-content: center; border-radius: 0 0 0 0.3rem;" id="display-checkin">
+                        <div style="font-size: 2.5rem; font-weight: bold; color: var(--main-color);">-</div>
+                        <div style="font-size: 1.4rem; color: var(--text-light); margin-top: 0.5rem;">Select date</div>
+                     </div>
+                     <div style="padding: 1.5rem; border: var(--border); background: var(--sub-color); color: var(--text-dark); font-size: 1.8rem; text-align: center; min-height: 5rem; display: flex; flex-direction: column; justify-content: center; border-radius: 0 0 0.3rem 0;" id="display-checkout">
+                        <div style="font-size: 2.5rem; font-weight: bold; color: var(--main-color);">-</div>
+                        <div style="font-size: 1.4rem; color: var(--text-light); margin-top: 0.5rem;">Select date</div>
+                     </div>
+                  </div>
+               </div>
+               
+               <!-- Guest Selection -->
+               <div style="margin-bottom: 3rem;">
+                  <label style="display: block; font-size: 1.6rem; color: var(--main-color); margin-bottom: 1rem; font-weight: 500;">Guests</label>
+                  <div style="display: flex; flex-direction: column; gap: 1rem;">
+                     <select name="adults" id="guests-adults" class="input" required style="padding: 1.5rem; border: var(--border); background: var(--white); color: var(--text-dark); font-size: 1.6rem; cursor: pointer; border-radius: 0.3rem; transition: border-color 0.3s;">
+                        <option value="1">1 Adult</option>
+                        <option value="2" selected>2 Adults</option>
+                        <option value="3">3 Adults</option>
+                        <option value="4">4 Adults</option>
+                     </select>
+                     <select name="children" id="guests-children" class="input" required style="padding: 1.5rem; border: var(--border); background: var(--white); color: var(--text-dark); font-size: 1.6rem; cursor: pointer; border-radius: 0.3rem; transition: border-color 0.3s;">
+                        <option value="0" selected>0 Children</option>
+                        <option value="1">1 Child</option>
+                        <option value="2">2 Children</option>
+                     </select>
+                  </div>
+               </div>
+               
+               <!-- Action Button -->
+               <button type="submit" class="btn" style="width: 100%; padding: 1.5rem; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 0.2rem; background: var(--main-color); color: var(--white); border: none; border-radius: 0.3rem; cursor: pointer; transition: background 0.3s; font-weight: 600;">
+                  Check Room Availability
+               </button>
+            </div>
+            
+            <!-- Right: Calendar Section -->
+            <div class="calendar-section">
+               <h3 style="font-size: 2rem; color: var(--main-color); margin-bottom: 2rem; text-transform: capitalize; font-family: 'Playfair Display', serif; font-weight: 500;">Select Stay Dates</h3>
+               
+               <!-- Two Month Calendars -->
+               <div class="calendar-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; position: relative;">
+                  <button type="button" class="calendar-nav-arrow" id="prev-month-btn" style="position: absolute; left: -1rem; top: 50%; transform: translateY(-50%); background: var(--white); border: var(--border); border-radius: 50%; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                     <i class="fas fa-chevron-left" style="color: var(--main-color);"></i>
+                  </button>
+                  <div class="calendar-month" id="calendar-month-1"></div>
+                  <button type="button" class="calendar-nav-arrow" id="next-month-btn" style="position: absolute; right: -1rem; top: 50%; transform: translateY(-50%); background: var(--white); border: var(--border); border-radius: 50%; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                     <i class="fas fa-chevron-right" style="color: var(--main-color);"></i>
+                  </button>
+                  <div class="calendar-month" id="calendar-month-2"></div>
+               </div>
+               
+               <!-- Legend -->
+               <div class="calendar-legend" style="display: flex; gap: 3rem; font-size: 1.4rem; color: var(--text-dark-alt);">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                     <input type="checkbox" id="legend-selected" disabled style="width: 1.5rem; height: 1.5rem;">
+                     <span>Selected dates</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                     <input type="checkbox" id="legend-unavailable" disabled checked style="width: 1.5rem; height: 1.5rem;">
+                     <span style="color: #999;">No rooms available</span>
+                  </label>
+               </div>
+            </div>
+         </div>
+         
+         <!-- Hidden inputs for form submission -->
+         <input type="hidden" name="check_in" id="check-in-input" required>
+         <input type="hidden" name="check_out" id="check-out-input" required>
+         <input type="hidden" name="room" id="room-type-input" value="deluxe">
+      </form>
+   </div>
+
+</section>
+
+<!-- room details section ends -->
+
+<!-- footer section starts  -->
+
+<section class="footer">
+   <div class="box-container">
+      <div class="box">
+         <h4 style="font-size: 2.4rem; color: var(--white); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Amanoi</h4>
+         <a href="#"><i class="fas fa-map-marker-alt"></i> Vinh Hy Village, Vinh Hai Commune, Khanh Hoa Province, Vietnam</a>
+         <a href="tel:+842593770777"><i class="fas fa-phone"></i> Tel: +84 931055975</a>
+         <a href="tel:+842593535777"><i class="fas fa-phone"></i> For reservations: +84 9310559xxx</a>
+         <a href="mailto:amanoi@aman.com"><i class="fas fa-envelope"></i> Email: amanoi@aman.com</a>
+      </div>
+      <div class="box">
+         <h4>More information</h4>
+         <a href="index.html#about">Aman Group</a>
+         <a href="index.html#locations">Destinations</a>
+         <a href="index.html#packages">Experiences</a>
+         <a href="index.html#reviews">About Us</a>
+         <a href="index.html#contact">Contact Us</a>
+      </div>
+      <div class="box">
+         <h4>Follow Us</h4>
+         <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+         <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+         <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+         <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+         <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      </div>
+   </div>
+   <div class="credit">Copyright 2025, Aman Resorts Ltd</div>
+</section>
+
+<!-- footer section ends -->
+
+<script>
+   function changeImage(src) {
+      document.getElementById('main-img').src = src;
+   }
+
+   // Get room type from URL parameter
+   const urlParams = new URLSearchParams(window.location.search);
+   const roomType = urlParams.get('room');
+   
+   // Update room details based on type
+   const roomData = {
+      deluxe: {
+         title: 'Deluxe King Room',
+         price: 220,
+         images: ['images/home-img-1.jpg', 'images/home-img-2.jpg', 'images/home-img-3.jpg', 'images/gallery-img-1.jpg'],
+         description: 'Experience ultimate comfort in our spacious Deluxe King Room. This elegantly furnished room features modern amenities, premium bedding, and a serene atmosphere perfect for relaxation. The room includes a comfortable king-size bed, a well-appointed bathroom, and all the modern conveniences you need for a memorable stay.',
+         amenities: [
+            { icon: 'fas fa-wifi', text: 'Free High-Speed WiFi' },
+            { icon: 'fas fa-tv', text: '42" LED TV with Cable' },
+            { icon: 'fas fa-snowflake', text: 'Air Conditioning' },
+            { icon: 'fas fa-bed', text: 'King Size Bed' },
+            { icon: 'fas fa-bath', text: 'Private Bathroom' },
+            { icon: 'fas fa-coffee', text: 'Coffee Maker' },
+            { icon: 'fas fa-utensils', text: 'Mini Bar' },
+            { icon: 'fas fa-lock', text: 'In-Room Safe' }
+         ],
+         specs: {
+            guests: 2,
+            size: '45 sqm',
+            bed: '1 King Bed'
+         }
+      },
+      suite: {
+         title: 'Executive Suite',
+         price: 400,
+         images: ['images/home-img-2.jpg', 'images/home-img-1.jpg', 'images/gallery-img-2.webp', 'images/gallery-img-1.jpg'],
+         description: 'Premium suite designed for business professionals, offering a blend of luxury and functionality. Perfect for extended stays or special occasions. Features a separate living area, dedicated workspace, and exclusive amenities for business travelers.',
+         amenities: [
+            { icon: 'fas fa-wifi', text: 'Free High-Speed WiFi' },
+            { icon: 'fas fa-briefcase', text: 'Dedicated Workspace' },
+            { icon: 'fas fa-tv', text: '55" Smart TV' },
+            { icon: 'fas fa-snowflake', text: 'Air Conditioning' },
+            { icon: 'fas fa-bed', text: 'King Size Bed' },
+            { icon: 'fas fa-bath', text: 'Luxury Bathroom' },
+            { icon: 'fas fa-concierge-bell', text: 'Concierge Service' },
+            { icon: 'fas fa-coffee', text: 'Premium Coffee Maker' }
+         ],
+         specs: {
+            guests: 2,
+            size: '65 sqm',
+            bed: '1 King Bed'
+         }
+      },
+      family: {
+         title: 'Family Suite',
+         price: 300,
+         images: ['images/home-img-3.jpg', 'images/home-img-1.jpg', 'images/home-img-2.jpg', 'images/gallery-img-1.jpg'],
+         description: 'Spacious family-friendly suite with two bedrooms and a living area, perfect for a family vacation. Spacious and comfortable for the whole family. Ideal for families with children, offering plenty of space and family-oriented amenities.',
+         amenities: [
+            { icon: 'fas fa-wifi', text: 'Free High-Speed WiFi' },
+            { icon: 'fas fa-users', text: 'Family-Friendly' },
+            { icon: 'fas fa-tv', text: '42" LED TV' },
+            { icon: 'fas fa-snowflake', text: 'Air Conditioning' },
+            { icon: 'fas fa-bed', text: 'Multiple Beds' },
+            { icon: 'fas fa-couch', text: 'Living Area' },
+            { icon: 'fas fa-bath', text: 'Family Bathroom' },
+            { icon: 'fas fa-utensils', text: 'Mini Bar' }
+         ],
+         specs: {
+            guests: 4,
+            size: '80 sqm',
+            bed: '2 Queen Beds'
+         }
+      },
+      ocean: {
+         title: 'Ocean View Room',
+         price: 450,
+         images: ['images/gallery-img-1.jpg', 'images/home-img-1.jpg', 'images/home-img-2.jpg', 'images/gallery-img-2.webp'],
+         description: 'Breathtaking ocean views with balcony access, premium amenities, and elegant decor. Wake up to stunning sunrise views. This room offers direct access to a private balcony overlooking the ocean, perfect for relaxation and enjoying the natural beauty.',
+         amenities: [
+            { icon: 'fas fa-wifi', text: 'Free High-Speed WiFi' },
+            { icon: 'fas fa-water', text: 'Ocean View' },
+            { icon: 'fas fa-door-open', text: 'Private Balcony' },
+            { icon: 'fas fa-tv', text: '55" Smart TV' },
+            { icon: 'fas fa-snowflake', text: 'Air Conditioning' },
+            { icon: 'fas fa-bed', text: 'King Size Bed' },
+            { icon: 'fas fa-bath', text: 'Luxury Bathroom' },
+            { icon: 'fas fa-coffee', text: 'Premium Coffee Maker' }
+         ],
+         specs: {
+            guests: 2,
+            size: '50 sqm',
+            bed: '1 King Bed'
+         }
+      },
+      executive: {
+         title: 'Executive Suite',
+         price: 400,
+         images: ['images/gallery-img-2.webp', 'images/home-img-2.jpg', 'images/gallery-img-1.jpg', 'images/home-img-1.jpg'],
+         description: 'Business-friendly room with work desk, high-speed internet, and premium comfort. Ideal for business travelers. Features a dedicated workspace, ergonomic furniture, and all the amenities needed for a productive stay.',
+         amenities: [
+            { icon: 'fas fa-wifi', text: 'High-Speed Business WiFi' },
+            { icon: 'fas fa-briefcase', text: 'Dedicated Workspace' },
+            { icon: 'fas fa-tv', text: '55" Smart TV' },
+            { icon: 'fas fa-snowflake', text: 'Air Conditioning' },
+            { icon: 'fas fa-bed', text: 'King Size Bed' },
+            { icon: 'fas fa-bath', text: 'Luxury Bathroom' },
+            { icon: 'fas fa-print', text: 'Printer Available' },
+            { icon: 'fas fa-concierge-bell', text: 'Concierge Service' }
+         ],
+         specs: {
+            guests: 2,
+            size: '65 sqm',
+            bed: '1 King Bed'
+         }
+      },
+      presidential: {
+         title: 'Presidential Suite',
+         price: 800,
+         images: ['images/gallery-img-3.webp', 'images/gallery-img-2.webp', 'images/gallery-img-1.jpg', 'images/home-img-1.jpg'],
+         description: 'Ultimate luxury with multiple rooms, private balcony, and exclusive amenities. The pinnacle of comfort and elegance. This expansive suite features separate living and dining areas, a private terrace, and the highest level of personalized service.',
+         amenities: [
+            { icon: 'fas fa-wifi', text: 'Premium High-Speed WiFi' },
+            { icon: 'fas fa-door-open', text: 'Private Terrace' },
+            { icon: 'fas fa-tv', text: '75" Smart TV' },
+            { icon: 'fas fa-snowflake', text: 'Climate Control' },
+            { icon: 'fas fa-bed', text: 'King Size Bed' },
+            { icon: 'fas fa-bath', text: 'Spa Bathroom' },
+            { icon: 'fas fa-concierge-bell', text: '24/7 Concierge' },
+            { icon: 'fas fa-wine-glass', text: 'Premium Minibar' }
+         ],
+         specs: {
+            guests: 4,
+            size: '120 sqm',
+            bed: '1 King Bed + Sofa Bed'
+         }
+      }
+   };
+
+   function updateRoomDetails(room) {
+      // Update title
+      document.getElementById('room-title').textContent = room.title;
+      
+      // Update price
+      document.getElementById('room-price').innerHTML = `Starting from <span style="font-size: 2.5rem; font-weight: bold;">$${room.price}</span> <span>/ night</span>`;
+      
+      // Update description
+      document.getElementById('room-description').textContent = room.description;
+      
+      // Update main image
+      document.getElementById('main-img').src = room.images[0];
+      
+      // Update image gallery
+      const gallery = document.getElementById('image-gallery');
+      gallery.innerHTML = '';
+      room.images.forEach(img => {
+         const imgEl = document.createElement('img');
+         imgEl.src = img;
+         imgEl.alt = room.title;
+         imgEl.onclick = () => changeImage(img);
+         gallery.appendChild(imgEl);
+      });
+      
+      // Update amenities
+      const amenitiesGrid = document.getElementById('amenities-grid');
+      amenitiesGrid.innerHTML = '';
+      room.amenities.forEach(amenity => {
+         const amenityEl = document.createElement('div');
+         amenityEl.className = 'amenity-item';
+         amenityEl.innerHTML = `<i class="${amenity.icon}"></i><span>${amenity.text}</span>`;
+         amenitiesGrid.appendChild(amenityEl);
+      });
+      
+      // Update specs
+      const specsContainer = document.getElementById('room-specs');
+      specsContainer.innerHTML = `
+         <div class="spec">
+            <i class="fas fa-users"></i>
+            <span>Max Guests: ${room.specs.guests}</span>
+         </div>
+         <div class="spec">
+            <i class="fas fa-expand-arrows-alt"></i>
+            <span>Size: ${room.specs.size}</span>
+         </div>
+         <div class="spec">
+            <i class="fas fa-bed"></i>
+            <span>Bed: ${room.specs.bed}</span>
+         </div>
+      `;
+      
+      // Update hidden input
+      document.getElementById('room-type-input').value = roomType;
+      
+      // Update calendar if it exists
+      if (typeof calendarBooking !== 'undefined' && calendarBooking) {
+         calendarBooking.roomPrice = room.price;
+         // Prices are now generated dynamically - no need to regenerate
+         calendarBooking.renderCalendars();
+         calendarBooking.updatePriceDisplay();
+      }
+   }
+
+   // Initialize room data
+   if (roomType && roomData[roomType]) {
+      updateRoomDetails(roomData[roomType]);
+   } else {
+      // Default to deluxe if no room type specified
+      updateRoomDetails(roomData.deluxe);
+   }
+   
+   // Make updateRoomDetails available globally for calendar initialization
+   window.updateRoomDetails = updateRoomDetails;
+   window.roomData = roomData;
+</script>
+
+   <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+<script src="js/navigation.js"></script>
+
+<!-- Calendar Booking Script -->
+<script src="js/calendar-booking.js"></script>
+
+<script>
+   // No authentication required at booking stage - only at checkout
+   document.addEventListener('DOMContentLoaded', function() {
+      // Form will submit to payment page, where authentication will be checked
+   });
+</script>
+
+</body>
+</html>

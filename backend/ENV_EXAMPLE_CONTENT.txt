@@ -1,0 +1,68 @@
+# =====================================================
+# Hotel Booking Backend - Environment Configuration Template
+# =====================================================
+# Copy this file to .env.example and update with your actual values
+# =====================================================
+
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# =====================================================
+# Database Configuration
+# =====================================================
+# For XAMPP: Leave DB_PASSWORD empty (default is no password)
+# For other MySQL installations: Add your MySQL password
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=hotel_booking_db
+
+# =====================================================
+# JWT Authentication Configuration
+# =====================================================
+# IMPORTANT: Change this to a secure random string!
+# Generate a secure secret: openssl rand -base64 32
+# Or use: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
+JWT_EXPIRES_IN=7d
+
+# =====================================================
+# Frontend URL (for CORS)
+# =====================================================
+# Update this to match your frontend URL
+# Common ports: 5500, 5501, 3000, 8080
+FRONTEND_URL=http://localhost:5501
+
+# =====================================================
+# Email Configuration (Optional)
+# =====================================================
+# Uncomment and configure if you want to send email notifications
+# For Gmail: Use App Password (not your regular password)
+# EMAIL_HOST=smtp.gmail.com
+# EMAIL_PORT=587
+# EMAIL_USER=your_email@gmail.com
+# EMAIL_PASS=your_app_password
+
+# =====================================================
+# Configuration Notes:
+# =====================================================
+# 1. DB_PASSWORD: 
+#    - XAMPP default: Leave empty
+#    - Custom MySQL: Add your password
+#
+# 2. JWT_SECRET:
+#    - Development: Can use any string
+#    - Production: MUST be a strong random string
+#    - Generate: openssl rand -base64 32
+#
+# 3. FRONTEND_URL:
+#    - Update if frontend runs on different port
+#    - Must match your frontend server URL
+#
+# 4. Email (Optional):
+#    - Only needed for sending booking confirmations
+#    - Can be left commented out for basic functionality
+# =====================================================
+
+

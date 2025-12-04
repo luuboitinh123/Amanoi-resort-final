@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Payment - Hotels And Resorts</title>
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+   <link rel="stylesheet" href="css/style.css">
+   <!-- QR Code Library -->
+   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+</head>
+<body>
+   <!-- Include API integration -->
+   <script src="../frontend-integration/api.js"></script>
+   <script src="js/auth.js"></script>
+   
+<!-- header section starts  -->
+
+<section class="header">
+   <div class="flex">
+      <a href="index.html#home" class="logo" style="font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 500;">Amanoi</a>
+      <div class="header-actions">
+         <a href="index.html#reservation" class="btn btn-primary" style="text-transform: uppercase; letter-spacing: 0.2rem; font-size: 1.2rem; padding: 1rem 2.5rem;">BOOK A ROOM</a>
+         <div class="auth-buttons-container"></div>
+      </div>
+      <div id="menu-btn" class="fas fa-bars"></div>
+   </div>
+   <nav class="navbar">
+      <a href="index.html#home" data-page="home">HOME</a>
+      <a href="index.html#locations" data-page="locations">LOCATIONS</a>
+      <a href="index.html#reservation" data-page="reservation" class="active">BOOK NOW</a>
+      <a href="index.html#reviews" data-page="reviews">REVIEWS</a>
+      <a href="rooms.html" data-page="rooms">ROOMS</a>
+      <a href="index.html#contact" data-page="contact">CONTACT</a>
+      <a href="index.html#packages" data-page="packages">PACKAGES</a>
+   </nav>
+</section>
+
+<!-- header section ends -->
+
+<section class="payment-section" id="payment" style="padding-top: 12rem; min-height: 80vh; margin-top: 0;">
+   <div class="payment-container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      
+      <!-- Booking Summary Section -->
+      <div class="booking-summary-card" style="background: var(--main-color); border: var(--border); padding: 3rem; border-radius: .5rem; margin-bottom: 3rem;">
+         
+         <!-- Summary Icons Row -->
+         <div class="summary-icons" style="display: flex; gap: 3rem; margin-bottom: 3rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+               <i class="fas fa-calendar-alt" style="font-size: 2.5rem; color: var(--sub-color);"></i>
+               <div>
+                  <div style="font-size: 1.4rem; color: rgba(249, 239, 204, 0.8);">Nights</div>
+                  <div style="font-size: 2rem; color: var(--sub-color); font-weight: bold;" id="summary-nights-display">4</div>
+               </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+               <i class="fas fa-user" style="font-size: 2.5rem; color: var(--sub-color);"></i>
+               <div>
+                  <div style="font-size: 1.4rem; color: rgba(249, 239, 204, 0.8);">Adults</div>
+                  <div style="font-size: 2rem; color: var(--sub-color); font-weight: bold;" id="summary-adults-display">1</div>
+               </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+               <i class="fas fa-plane-departure" style="font-size: 2.5rem; color: var(--sub-color);"></i>
+               <div>
+                  <div style="font-size: 1.4rem; color: rgba(249, 239, 204, 0.8);">Check-in</div>
+                  <div style="font-size: 1.6rem; color: var(--sub-color); font-weight: 500;" id="summary-checkin-display">Monday, 12/01/2025 12:00</div>
+               </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+               <i class="fas fa-plane-arrival" style="font-size: 2.5rem; color: var(--sub-color);"></i>
+               <div>
+                  <div style="font-size: 1.4rem; color: rgba(249, 239, 204, 0.8);">Check-out</div>
+                  <div style="font-size: 1.6rem; color: var(--sub-color); font-weight: 500;" id="summary-checkout-display">Friday, 12/05/2025 10:00</div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Booking Table -->
+         <div class="booking-table" style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+               <thead>
+                  <tr style="border-bottom: var(--border);">
+                     <th style="padding: 1.5rem; text-align: left; font-size: 1.8rem; color: var(--sub-color); font-weight: normal;">ROOM</th>
+                     <th style="padding: 1.5rem; text-align: center; font-size: 1.8rem; color: var(--sub-color); font-weight: normal;">GUESTS</th>
+                     <th style="padding: 1.5rem; text-align: center; font-size: 1.8rem; color: var(--sub-color); font-weight: normal;">NIGHTS</th>
+                     <th style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color); font-weight: normal;">NET PRICE</th>
+                     <th style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color); font-weight: normal;">TAX</th>
+                     <th style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color); font-weight: normal;">TOTAL PRICE</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr style="border-bottom: var(--border);">
+                     <td style="padding: 1.5rem;">
+                        <div style="font-size: 1.8rem; color: var(--sub-color); font-weight: bold;" id="table-room-name">King Luxury Room</div>
+                        <div style="font-size: 1.4rem; color: rgba(249, 239, 204, 0.8); margin-top: .5rem;">Non-refundable Rate</div>
+                     </td>
+                     <td style="padding: 1.5rem; text-align: center; font-size: 1.8rem; color: var(--sub-color);" id="table-guests">1 Adult</td>
+                     <td style="padding: 1.5rem; text-align: center; font-size: 1.8rem; color: var(--sub-color);" id="table-nights">4</td>
+                     <td style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color);" id="table-net-price">$136</td>
+                     <td style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color);" id="table-tax">$24</td>
+                     <td style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color); font-weight: bold;" id="table-total">$160</td>
+                  </tr>
+               </tbody>
+               <tfoot>
+                  <tr>
+                     <td colspan="3" style="padding: 1.5rem; font-size: 2rem; color: var(--sub-color); font-weight: bold;">TOTAL</td>
+                     <td style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color);" id="footer-net">$136</td>
+                     <td style="padding: 1.5rem; text-align: right; font-size: 1.8rem; color: var(--sub-color);" id="footer-tax">$24</td>
+                     <td style="padding: 1.5rem; text-align: right; font-size: 2.5rem; color: var(--sub-color); font-weight: bold;" id="footer-total">$160</td>
+                  </tr>
+               </tfoot>
+            </table>
+         </div>
+
+         <!-- Coupon Code Section -->
+         <div class="coupon-section" style="margin-top: 3rem; padding-top: 3rem; border-top: var(--border);">
+            <h3 style="font-size: 1.8rem; color: var(--text-dark); margin-bottom: 1.5rem;">Enter here your coupon code</h3>
+            <div style="display: flex; gap: 1rem;">
+               <input type="text" id="coupon-code" class="box" placeholder="Enter coupon code" style="flex: 1; padding: 1.2rem;">
+               <button type="button" onclick="applyCoupon()" class="btn" style="padding: 1.2rem 3rem; margin-top: 0;">APPLY</button>
+            </div>
+         </div>
+      </div>
+
+      <!-- Billing Information Section -->
+      <div class="billing-section" style="background: var(--main-color); border: var(--border); padding: 3rem; border-radius: .5rem; margin-bottom: 3rem;">
+         <h2 style="font-size: 3rem; color: var(--sub-color); margin-bottom: 3rem; text-transform: capitalize; font-weight: normal;">Billing Information</h2>
+         
+         <form id="billing-form">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem;">
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="first_name" class="box" required style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Last Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="last_name" class="box" required style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     e-Mail <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="email" name="email" class="box" required style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Phone <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <div style="display: flex; gap: .5rem;">
+                     <select class="box" style="width: 30%; padding: 1rem;">
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                        <option value="+84">+84</option>
+                     </select>
+                     <input type="tel" name="phone" class="box" placeholder="(201) 555-0123" required style="flex: 1;">
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Address
+                  </label>
+                  <input type="text" name="address" class="box" style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Zip Code
+                  </label>
+                  <input type="text" name="zip_code" class="box" style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     City
+                  </label>
+                  <input type="text" name="city" class="box" style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Country
+                  </label>
+                  <input type="text" name="country" class="box" style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     State/Province
+                  </label>
+                  <select name="state" class="box" style="width: 100%;">
+                     <option value="">----</option>
+                     <option value="california">California</option>
+                     <option value="newyork">New York</option>
+                     <option value="texas">Texas</option>
+                  </select>
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Company Name
+                  </label>
+                  <input type="text" name="company" class="box" style="width: 100%;">
+               </div>
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     VAT ID
+                  </label>
+                  <input type="text" name="vat_id" class="box" style="width: 100%;">
+               </div>
+            </div>
+         </form>
+      </div>
+
+      <!-- Special Requests Section -->
+      <div class="special-requests-section" style="background: var(--main-color); border: var(--border); padding: 3rem; border-radius: .5rem; margin-bottom: 3rem;">
+         <h3 style="font-size: 2rem; color: var(--sub-color); margin-bottom: 2rem; text-transform: capitalize;">Special Requests</h3>
+         <textarea name="special_requests" class="box" rows="6" placeholder="Enter any special requests..." style="width: 100%; resize: vertical;"></textarea>
+      </div>
+
+      <!-- Terms and Payment Method Section -->
+      <div class="payment-method-section" style="background: var(--main-color); border: var(--border); padding: 3rem; border-radius: .5rem; margin-bottom: 3rem;">
+         
+         <!-- Checkboxes -->
+         <div style="margin-bottom: 3rem;">
+            <label style="display: flex; align-items: center; gap: 1rem; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 2rem; cursor: pointer;">
+               <input type="checkbox" name="terms" required style="width: 2rem; height: 2rem; cursor: pointer;">
+               <span>I agree to the <a href="#" style="color: var(--sub-color); text-decoration: underline;">terms and conditions</a> <span style="color: #ff6b6b;">*</span></span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 1rem; font-size: 1.8rem; color: var(--sub-color); cursor: pointer;">
+               <input type="checkbox" name="pregnant" style="width: 2rem; height: 2rem; cursor: pointer;">
+               <span>Pregnant? <span style="color: #ff6b6b;">*</span></span>
+            </label>
+         </div>
+
+         <!-- Payment Method -->
+         <h2 style="font-size: 3rem; color: var(--sub-color); margin-bottom: 2rem; text-transform: capitalize; font-weight: normal;">Payment Method</h2>
+         
+         <div class="payment-options-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- VNPAY QR -->
+            <label class="payment-option-radio" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; border: var(--border); border-radius: .5rem; cursor: pointer; transition: .3s;">
+               <input type="radio" name="payment_method" value="vnpay_qr" style="width: 2rem; height: 2rem; cursor: pointer;">
+               <i class="fas fa-qrcode" style="font-size: 2rem; color: var(--sub-color);"></i>
+               <span style="font-size: 1.8rem; color: var(--sub-color); flex: 1;">VNPAY QR</span>
+            </label>
+
+            <!-- Bank Transfer -->
+            <label class="payment-option-radio" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; border: var(--border); border-radius: .5rem; cursor: pointer; transition: .3s;">
+               <input type="radio" name="payment_method" value="bank_transfer" style="width: 2rem; height: 2rem; cursor: pointer;">
+               <i class="fas fa-university" style="font-size: 2rem; color: var(--sub-color);"></i>
+               <span style="font-size: 1.8rem; color: var(--sub-color); flex: 1;">Bank Transfer</span>
+            </label>
+
+            <!-- Cards (MasterCard, Visa, etc.) -->
+            <label class="payment-option-radio" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; border: var(--border); border-radius: .5rem; cursor: pointer; transition: .3s;">
+               <input type="radio" name="payment_method" value="cards" checked style="width: 2rem; height: 2rem; cursor: pointer;">
+               <i class="fas fa-credit-card" style="font-size: 2rem; color: var(--sub-color);"></i>
+               <span style="font-size: 1.8rem; color: var(--sub-color); flex: 1;">Cards (MasterCard, Visa, etc.)</span>
+            </label>
+
+            <!-- Cash (Pay upon check-in) -->
+            <label class="payment-option-radio" style="display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; border: var(--border); border-radius: .5rem; cursor: pointer; transition: .3s;">
+               <input type="radio" name="payment_method" value="cash" style="width: 2rem; height: 2rem; cursor: pointer;">
+               <i class="fas fa-money-bill-wave" style="font-size: 2rem; color: var(--sub-color);"></i>
+               <span style="font-size: 1.8rem; color: var(--sub-color); flex: 1;">Cash (Pay upon check-in)</span>
+            </label>
+         </div>
+
+         <!-- VNPAY QR Information Section -->
+         <div id="vnpay-qr-section" class="card-info-section">
+            <h3 style="font-size: 2.5rem; color: var(--sub-color); margin-bottom: 2rem; text-transform: capitalize; font-weight: normal;">VNPAY QR Payment Details</h3>
+            
+            <div class="card-info-grid">
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Payer Full Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="vnpay_payer_name" class="box" placeholder="Enter full name" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Phone Number <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="tel" name="vnpay_phone" class="box" placeholder="Enter phone number" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Email Address <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="email" name="vnpay_email" class="box" placeholder="Enter email address" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Transaction Note (Optional)
+                  </label>
+                  <input type="text" name="vnpay_note" class="box" placeholder="Enter transaction note" style="width: 100%;">
+               </div>
+            </div>
+            
+            <!-- QR Code Display Section -->
+            <div id="qr-code-display" style="display: none; text-align: center; margin-top: 3rem; padding: 2rem; background: var(--white); border-radius: .5rem; border: var(--border);">
+               <h4 style="font-size: 2rem; color: var(--sub-color); margin-bottom: 1.5rem; font-weight: 500;">Scan QR Code to Pay</h4>
+               
+               <!-- QR Code Container -->
+               <div id="qr-code-container" style="display: flex; justify-content: center; margin-bottom: 2rem;">
+                  <div id="qr-code-placeholder" style="width: 250px; height: 250px; background: #f5f5f5; border: 2px dashed rgba(143, 159, 4, 0.3); border-radius: .5rem; display: flex; align-items: center; justify-content: center;">
+                     <i class="fas fa-qrcode" style="font-size: 5rem; color: rgba(143, 159, 4, 0.3);"></i>
+                  </div>
+                  <canvas id="qr-code-canvas" width="250" height="250" style="display: none; border-radius: .5rem; border: 2px solid rgba(143, 159, 4, 0.2);"></canvas>
+               </div>
+               
+               <!-- Countdown Timer -->
+               <div id="qr-countdown" style="margin-bottom: 1.5rem;">
+                  <div style="font-size: 1.4rem; color: var(--sub-color); margin-bottom: 0.5rem;">Time remaining:</div>
+                  <div id="countdown-display" style="font-size: 2.5rem; font-weight: bold; color: var(--main-color); font-family: 'Courier New', monospace;">
+                     01:00
+                  </div>
+               </div>
+               
+               <!-- Expired Message -->
+               <div id="qr-expired" style="display: none; padding: 1.5rem; background: rgba(255, 107, 107, 0.1); border: 1px solid #ff6b6b; border-radius: .5rem; margin-top: 1rem;">
+                  <p style="font-size: 1.6rem; color: #ff6b6b; margin-bottom: 1rem;">
+                     <i class="fas fa-exclamation-triangle"></i> QR Code has expired
+                  </p>
+                  <button type="button" id="refresh-qr-btn" onclick="generateNewQRCode()" style="padding: 1rem 2rem; background: var(--main-color); color: var(--white); border: none; border-radius: .5rem; font-size: 1.4rem; cursor: pointer; font-weight: 600;">
+                     Generate New QR Code
+                  </button>
+               </div>
+            </div>
+            
+            <div style="background: rgba(143, 159, 4, .1); padding: 2rem; border-radius: .5rem; margin-top: 2rem; border: var(--border);">
+               <p style="font-size: 1.6rem; color: var(--sub-color); line-height: 1.8;">
+                  <strong>Instructions:</strong> Scan the QR code above with your VNPAY app to complete the payment. The QR code is valid for 1 minute.
+               </p>
+            </div>
+         </div>
+
+         <!-- Bank Transfer Information Section -->
+         <div id="bank-info-section" class="card-info-section">
+            <h3 style="font-size: 2.5rem; color: var(--sub-color); margin-bottom: 2rem; text-transform: capitalize; font-weight: normal;">Bank Transfer Payment Details</h3>
+            
+            <div class="card-info-grid">
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Payer Full Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="bank_payer_name" class="box" placeholder="Enter full name as it appears on bank account" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Bank Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="bank_name" class="box" placeholder="Enter bank name" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Account Number <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="account_number" class="box" placeholder="Enter account number" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Account Holder Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="account_holder_name" class="box" placeholder="Name as it appears on account" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Phone Number <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="tel" name="bank_phone" class="box" placeholder="Enter phone number" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Email Address <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="email" name="bank_email" class="box" placeholder="Enter email address" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     SWIFT/BIC Code
+                  </label>
+                  <input type="text" name="swift_code" class="box" placeholder="Enter SWIFT/BIC code (if applicable)" style="width: 100%;">
+               </div>
+               
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Transfer Reference/Note
+                  </label>
+                  <input type="text" name="transfer_reference" class="box" placeholder="Enter booking reference or note" style="width: 100%;">
+               </div>
+            </div>
+            
+            <div style="background: rgba(143, 159, 4, .1); padding: 2rem; border-radius: .5rem; margin-top: 2rem; border: var(--border);">
+               <p style="font-size: 1.6rem; color: var(--sub-color); line-height: 1.8;">
+                  <strong>Important:</strong> Please complete the bank transfer within 24 hours to secure your reservation. 
+                  Include your booking reference in the transfer description. You will receive confirmation via email once the payment is verified.
+               </p>
+            </div>
+         </div>
+
+         <!-- Card Information Section -->
+         <div id="card-info-section" class="card-info-section">
+            <h3 style="font-size: 2.5rem; color: var(--sub-color); margin-bottom: 2rem; text-transform: capitalize; font-weight: normal;">Card Payment Details</h3>
+            
+            <div class="card-info-grid">
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Card Number <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="card_number" class="box" placeholder="1234 5678 9012 3456" required maxlength="19" style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Expiry Date <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="expiry_date" class="box" placeholder="MM/YY" required maxlength="5" style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     CVV <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="cvv" class="box" placeholder="123" required maxlength="4" style="width: 100%;">
+               </div>
+               
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Cardholder Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="cardholder_name" class="box" placeholder="Name as it appears on card" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Phone Number <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="tel" name="card_phone" class="box" placeholder="Enter phone number" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Email Address <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="email" name="card_email" class="box" placeholder="Enter email address" required style="width: 100%;">
+               </div>
+            </div>
+         </div>
+
+         <!-- Cash Payment Information Section -->
+         <div id="cash-info-section" class="card-info-section">
+            <h3 style="font-size: 2.5rem; color: var(--sub-color); margin-bottom: 2rem; text-transform: capitalize; font-weight: normal;">Cash Payment Details</h3>
+            
+            <div class="card-info-grid">
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Payer Full Name <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="cash_payer_name" class="box" placeholder="Enter full name" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Phone Number <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="tel" name="cash_phone" class="box" placeholder="Enter phone number" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Email Address <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="email" name="cash_email" class="box" placeholder="Enter email address" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     ID/Passport Number <span style="color: #ff6b6b;">*</span>
+                  </label>
+                  <input type="text" name="cash_id_number" class="box" placeholder="Enter ID or Passport number" required style="width: 100%;">
+               </div>
+               
+               <div class="form-group full-width">
+                  <label style="display: block; font-size: 1.8rem; color: var(--sub-color); margin-bottom: 1rem;">
+                     Special Instructions (Optional)
+                  </label>
+                  <textarea name="cash_instructions" class="box" rows="3" placeholder="Any special instructions for payment at check-in" style="width: 100%;"></textarea>
+               </div>
+            </div>
+            
+            <div style="background: rgba(143, 159, 4, .1); padding: 2rem; border-radius: .5rem; margin-top: 2rem; border: var(--border);">
+               <p style="font-size: 1.6rem; color: var(--sub-color); line-height: 1.8;">
+                  <strong>Important:</strong> Your room will be held until check-in time. Payment must be completed upon arrival at the hotel reception. 
+                  Please bring a valid ID and the credit card used for booking (if applicable). The room will be released if payment is not completed by check-in time.
+               </p>
+            </div>
+         </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons" style="display: flex; gap: 2rem; justify-content: space-between; margin-bottom: 3rem;">
+         <a href="room-details.html" class="btn" style="padding: 1.5rem 4rem;">Back</a>
+         <button type="button" onclick="confirmReservation()" class="btn" style="padding: 1.5rem 4rem; background: var(--main-color); color: var(--sub-color); border: 2px solid var(--sub-color); font-weight: bold;">
+            CONFIRM RESERVATION
+         </button>
+      </div>
+
+   </div>
+</section>
+
+<section class="footer">
+   <div class="box-container">
+      <div class="box">
+         <h4 style="font-size: 2.4rem; color: var(--white); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Amanoi</h4>
+         <a href="#"><i class="fas fa-map-marker-alt"></i> Vinh Hy Village, Vinh Hai Commune, Khanh Hoa Province, Vietnam</a>
+         <a href="tel:+842593770777"><i class="fas fa-phone"></i> Tel: +84 931055975</a>
+         <a href="tel:+842593535777"><i class="fas fa-phone"></i> For reservations: +84 9310559xxx</a>
+         <a href="mailto:amanoi@aman.com"><i class="fas fa-envelope"></i> Email: amanoi@aman.com</a>
+      </div>
+      <div class="box">
+         <h4>More information</h4>
+         <a href="index.html#about">Aman Group</a>
+         <a href="index.html#locations">Destinations</a>
+         <a href="index.html#packages">Experiences</a>
+         <a href="index.html#reviews">About Us</a>
+         <a href="index.html#contact">Contact Us</a>
+      </div>
+      <div class="box">
+         <h4>Follow Us</h4>
+         <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+         <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+         <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+         <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+         <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      </div>
+   </div>
+   <div class="credit">Copyright 2025, Aman Resorts Ltd</div>
+</section>
+
+<script>
+   // Check authentication on page load
+   document.addEventListener('DOMContentLoaded', function() {
+      if (!isAuthenticated()) {
+         alert('Please login to complete your booking');
+         window.location.href = 'auth.html?redirect=' + encodeURIComponent(window.location.href);
+         return;
+      }
+   });
+
+   // Get booking details from URL
+   const urlParams = new URLSearchParams(window.location.search);
+   
+   // Calculate nights
+   function calculateNights(checkIn, checkOut) {
+      if (!checkIn || !checkOut) return 1;
+      const start = new Date(checkIn);
+      const end = new Date(checkOut);
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays || 1;
+   }
+
+   // Update booking summary
+   function updateBookingSummary() {
+      const checkIn = urlParams.get('check_in');
+      const checkOut = urlParams.get('check_out');
+      const adults = urlParams.get('adults') || urlParams.get('adult') || '1';
+      const children = urlParams.get('children') || urlParams.get('childs') || '0';
+      const room = urlParams.get('room') || 'deluxe';
+      
+      const nights = calculateNights(checkIn, checkOut);
+      
+      // Room names
+      const roomNames = {
+         deluxe: 'Deluxe King Room',
+         suite: 'Executive Suite',
+         family: 'Family Suite',
+         ocean: 'Ocean View Room',
+         executive: 'Executive Suite',
+         presidential: 'Presidential Suite'
+      };
+      
+      // Room prices (per night in USD) - matching rooms.html prices
+      const roomPrices = {
+         deluxe: 220,
+         suite: 400,
+         family: 300,
+         ocean: 450,
+         executive: 400,
+         presidential: 800
+      };
+      
+      const roomPrice = roomPrices[room] || 220;
+      const netPrice = roomPrice * nights;
+      const tax = Math.round(netPrice * 0.18); // 18% tax
+      const total = netPrice + tax;
+      
+      // Update display
+      if (checkIn) {
+         const checkInDate = new Date(checkIn);
+         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+         const dayName = days[checkInDate.getDay()];
+         const monthName = months[checkInDate.getMonth()];
+         const day = checkInDate.getDate();
+         const year = checkInDate.getFullYear();
+         document.getElementById('summary-checkin-display').textContent = 
+            `${dayName}, ${monthName} ${day}, ${year} 12:00`;
+      }
+      
+      if (checkOut) {
+         const checkOutDate = new Date(checkOut);
+         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+         const dayName = days[checkOutDate.getDay()];
+         const monthName = months[checkOutDate.getMonth()];
+         const day = checkOutDate.getDate();
+         const year = checkOutDate.getFullYear();
+         document.getElementById('summary-checkout-display').textContent = 
+            `${dayName}, ${monthName} ${day}, ${year} 10:00`;
+      }
+      
+      document.getElementById('summary-nights-display').textContent = nights;
+      document.getElementById('summary-adults-display').textContent = adults;
+      
+      document.getElementById('table-room-name').textContent = roomNames[room] || 'Deluxe King Room';
+      document.getElementById('table-guests').textContent = `${adults} Adult${adults > 1 ? 's' : ''}${children > 0 ? `, ${children} Child${children > 1 ? 'ren' : ''}` : ''}`;
+      document.getElementById('table-nights').textContent = nights;
+      document.getElementById('table-net-price').textContent = '$' + netPrice.toFixed(0);
+      document.getElementById('table-tax').textContent = '$' + tax.toFixed(0);
+      document.getElementById('table-total').textContent = '$' + total.toFixed(0);
+      
+      document.getElementById('footer-net').textContent = '$' + netPrice.toFixed(0);
+      document.getElementById('footer-tax').textContent = '$' + tax.toFixed(0);
+      document.getElementById('footer-total').textContent = '$' + total.toFixed(0);
+   }
+
+   // Apply coupon
+   function applyCoupon() {
+      const couponCode = document.getElementById('coupon-code').value;
+      if (couponCode) {
+         alert('Coupon code applied successfully!');
+         // Add coupon logic here
+      }
+   }
+
+   // Confirm reservation
+   async function confirmReservation() {
+      // Check if user is authenticated
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+         alert('Please login to complete your booking.');
+         window.location.href = 'auth.html?redirect=' + encodeURIComponent(window.location.href);
+         return;
+      }
+
+      // Check if API is available
+      if (typeof BookingsAPI === 'undefined' || typeof RoomsAPI === 'undefined') {
+         alert('Error: API not loaded. Please refresh the page.');
+         console.error('BookingsAPI or RoomsAPI is not defined');
+         return;
+      }
+
+      const terms = document.querySelector('input[name="terms"]');
+      if (!terms.checked) {
+         alert('Please agree to the terms and conditions');
+         return;
+      }
+      
+      const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+      if (!paymentMethod) {
+         alert('Please select a payment method');
+         return;
+      }
+      
+      // Get booking details from URL
+      const checkIn = urlParams.get('check_in');
+      const checkOut = urlParams.get('check_out');
+      const adults = urlParams.get('adults') || urlParams.get('adult') || '1';
+      const children = urlParams.get('children') || urlParams.get('childs') || '0';
+      const roomSlug = urlParams.get('room') || 'deluxe';
+      
+      if (!checkIn || !checkOut) {
+         alert('Missing booking dates. Please go back and select dates.');
+         return;
+      }
+
+      // Disable button to prevent double submission
+      const confirmBtn = document.querySelector('button[onclick="confirmReservation()"]');
+      if (confirmBtn) {
+         confirmBtn.disabled = true;
+         confirmBtn.textContent = 'PROCESSING...';
+      }
+      
+      // Validate payment information based on selected method
+      let paymentInfo = {};
+      let billingInfo = {};
+      
+      if (paymentMethod.value === 'vnpay_qr') {
+         const payerName = document.querySelector('input[name="vnpay_payer_name"]').value;
+         const phone = document.querySelector('input[name="vnpay_phone"]').value;
+         const email = document.querySelector('input[name="vnpay_email"]').value;
+         
+         if (!payerName || !phone || !email) {
+            alert('Please fill in all VNPAY QR payment fields');
+            if (confirmBtn) {
+               confirmBtn.disabled = false;
+               confirmBtn.textContent = 'CONFIRM RESERVATION';
+            }
+            return;
+         }
+         
+         paymentInfo = { payer_name: payerName, phone, email };
+         billingInfo = { name: payerName, phone, email };
+      } else if (paymentMethod.value === 'bank_transfer') {
+         const payerName = document.querySelector('input[name="bank_payer_name"]').value;
+         const bankName = document.querySelector('input[name="bank_name"]').value;
+         const accountNumber = document.querySelector('input[name="account_number"]').value;
+         const accountHolderName = document.querySelector('input[name="account_holder_name"]').value;
+         const phone = document.querySelector('input[name="bank_phone"]').value;
+         const email = document.querySelector('input[name="bank_email"]').value;
+         
+         if (!payerName || !bankName || !accountNumber || !accountHolderName || !phone || !email) {
+            alert('Please fill in all bank transfer fields');
+            if (confirmBtn) {
+               confirmBtn.disabled = false;
+               confirmBtn.textContent = 'CONFIRM RESERVATION';
+            }
+            return;
+         }
+         
+         paymentInfo = { payer_name: payerName, bank_name: bankName, account_number: accountNumber, account_holder: accountHolderName, phone, email };
+         billingInfo = { name: payerName, phone, email };
+      } else if (paymentMethod.value === 'cards') {
+         const cardNumber = document.querySelector('input[name="card_number"]').value.replace(/\s/g, '');
+         const expiryDate = document.querySelector('input[name="expiry_date"]').value;
+         const cvv = document.querySelector('input[name="cvv"]').value;
+         const cardholderName = document.querySelector('input[name="cardholder_name"]').value;
+         const phone = document.querySelector('input[name="card_phone"]').value;
+         const email = document.querySelector('input[name="card_email"]').value;
+         
+         if (!cardNumber || cardNumber.length < 13 || !expiryDate || expiryDate.length !== 5 || !cvv || cvv.length < 3 || !cardholderName || !phone || !email) {
+            alert('Please fill in all card payment fields correctly');
+            if (confirmBtn) {
+               confirmBtn.disabled = false;
+               confirmBtn.textContent = 'CONFIRM RESERVATION';
+            }
+            return;
+         }
+         
+         // Mask card number for security (only store last 4 digits)
+         const maskedCard = '**** **** **** ' + cardNumber.slice(-4);
+         paymentInfo = { card_number: maskedCard, expiry_date: expiryDate, cardholder_name: cardholderName, phone, email };
+         billingInfo = { name: cardholderName, phone, email };
+      } else if (paymentMethod.value === 'cash') {
+         const payerName = document.querySelector('input[name="cash_payer_name"]').value;
+         const phone = document.querySelector('input[name="cash_phone"]').value;
+         const email = document.querySelector('input[name="cash_email"]').value;
+         const idNumber = document.querySelector('input[name="cash_id_number"]').value;
+         
+         if (!payerName || !phone || !email || !idNumber) {
+            alert('Please fill in all cash payment fields');
+            if (confirmBtn) {
+               confirmBtn.disabled = false;
+               confirmBtn.textContent = 'CONFIRM RESERVATION';
+            }
+            return;
+         }
+         
+         paymentInfo = { payer_name: payerName, phone, email, id_number: idNumber };
+         billingInfo = { name: payerName, phone, email, id_number: idNumber };
+      }
+
+      try {
+         // Get room details by slug to get room_id
+         console.log('Fetching room details for slug:', roomSlug);
+         const roomResponse = await RoomsAPI.getBySlug(roomSlug);
+         
+         if (!roomResponse || !roomResponse.success || !roomResponse.room) {
+            throw new Error('Room not found. Please try again.');
+         }
+         
+         const room = roomResponse.room;
+         const roomId = room.id;
+         
+         // Calculate total price
+         const nights = calculateNights(checkIn, checkOut);
+         const roomPrice = parseFloat(room.price_per_night || 220);
+         const netPrice = roomPrice * nights;
+         const tax = Math.round(netPrice * 0.18 * 100) / 100;
+         const totalPrice = netPrice + tax;
+         
+         // Create booking data
+         const bookingData = {
+            room_id: roomId,
+            check_in: checkIn,
+            check_out: checkOut,
+            adults: parseInt(adults),
+            children: parseInt(children) || 0,
+            rooms_count: 1,
+            special_requests: null
+         };
+         
+         console.log('Creating booking with data:', bookingData);
+         
+         // Create booking
+         const bookingResponse = await BookingsAPI.create(bookingData);
+         
+         if (!bookingResponse || !bookingResponse.success) {
+            throw new Error(bookingResponse?.message || 'Failed to create booking');
+         }
+         
+         const booking = bookingResponse.booking;
+         const bookingId = booking.id;
+         
+         console.log('Booking created successfully:', booking);
+         
+         // Update booking with payment information
+         try {
+            await BookingsAPI.updatePayment(bookingId, {
+               payment_method: paymentMethod.value,
+               payment_info: paymentInfo,
+               billing_info: billingInfo
+            });
+            console.log('Payment information updated');
+         } catch (paymentError) {
+            console.error('Error updating payment info:', paymentError);
+            // Continue anyway - booking is created
+         }
+         
+         // Redirect to confirmation page with booking reference
+         const params = new URLSearchParams(window.location.search);
+         params.append('payment_method', paymentMethod.value);
+         params.append('booking_ref', booking.booking_reference);
+         params.append('booking_id', bookingId);
+         params.append('total', totalPrice.toFixed(2));
+         
+         alert('Booking confirmed successfully! Redirecting...');
+         window.location.href = 'booking-confirmation.html?' + params.toString();
+         
+      } catch (error) {
+         console.error('Booking creation error:', error);
+         
+         if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'CONFIRM RESERVATION';
+         }
+         
+         let errorMessage = 'Failed to create booking. ';
+         
+         if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
+            errorMessage += 'Cannot connect to server. Please make sure the backend server is running on http://localhost:3000';
+         } else if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+            errorMessage = 'Session expired. Please login again.';
+            setTimeout(() => {
+               window.location.href = 'auth.html?redirect=' + encodeURIComponent(window.location.href);
+            }, 2000);
+         } else {
+            errorMessage += error.message;
+         }
+         
+         alert(errorMessage);
+      }
+   }
+
+   // Payment option styling and payment info toggle
+   const vnpayQrSection = document.getElementById('vnpay-qr-section');
+   const bankInfoSection = document.getElementById('bank-info-section');
+   const cardInfoSection = document.getElementById('card-info-section');
+   const cashInfoSection = document.getElementById('cash-info-section');
+   
+   // QR Code and Countdown Timer Variables
+   let qrCountdownInterval = null;
+   let qrTimeRemaining = 60; // 1 minute in seconds
+   let qrCodeGenerated = false;
+   
+   function generateQRCode() {
+      // Generate a QR code (using a simple approach - in production, use a proper QR library)
+      const qrDisplay = document.getElementById('qr-code-display');
+      const qrPlaceholder = document.getElementById('qr-code-placeholder');
+      const qrCanvas = document.getElementById('qr-code-canvas');
+      const qrExpired = document.getElementById('qr-expired');
+      const countdownDisplay = document.getElementById('countdown-display');
+      
+      if (!qrDisplay) return;
+      
+      // Show QR code display
+      qrDisplay.style.display = 'block';
+      qrExpired.style.display = 'none';
+      
+      // Generate QR code data (in production, this would come from the payment gateway)
+      const qrData = generateQRData();
+      
+      // For demo purposes, create a simple QR code pattern
+      // In production, use a library like qrcode.js: https://github.com/davidshimjs/qrcodejs
+      createSimpleQRCode(qrData);
+      
+      // Reset and start countdown
+      qrTimeRemaining = 60;
+      qrCodeGenerated = true;
+      startQRCountdown();
+   }
+   
+   function generateQRData() {
+      // Generate QR code data based on booking info
+      const urlParams = new URLSearchParams(window.location.search);
+      const total = urlParams.get('total') || '0';
+      const checkIn = urlParams.get('check_in') || '';
+      const checkOut = urlParams.get('check_out') || '';
+      
+      // In production, this would be a payment gateway URL
+      return `VNPAY|${total}|${Date.now()}|${checkIn}|${checkOut}`;
+   }
+   
+   function createSimpleQRCode(data) {
+      const qrPlaceholder = document.getElementById('qr-code-placeholder');
+      const qrCanvas = document.getElementById('qr-code-canvas');
+      
+      if (!qrCanvas || !qrPlaceholder) return;
+      
+      // Clear canvas
+      const ctx = qrCanvas.getContext('2d');
+      ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+      
+      // Check if QRCode library is available
+      if (typeof QRCode !== 'undefined') {
+         // Use QRCode library to generate QR code
+         QRCode.toCanvas(qrCanvas, data, {
+            width: 250,
+            margin: 2,
+            color: {
+               dark: '#000000',
+               light: '#FFFFFF'
+            }
+         }, function (error) {
+            if (error) {
+               console.error('QR Code generation error:', error);
+               // Fallback to placeholder
+               showQRPlaceholder();
+            } else {
+               // Hide placeholder and show canvas
+               qrPlaceholder.style.display = 'none';
+               qrCanvas.style.display = 'block';
+            }
+         });
+      } else {
+         // Fallback if library not loaded
+         showQRPlaceholder();
+      }
+   }
+   
+   function showQRPlaceholder() {
+      const qrPlaceholder = document.getElementById('qr-code-placeholder');
+      const qrCanvas = document.getElementById('qr-code-canvas');
+      
+      if (qrPlaceholder) {
+         qrPlaceholder.style.display = 'flex';
+         qrPlaceholder.innerHTML = `
+            <div style="text-align: center;">
+               <i class="fas fa-qrcode" style="font-size: 8rem; color: var(--main-color); margin-bottom: 1rem;"></i>
+               <div style="font-size: 1.2rem; color: var(--text-light);">VNPAY QR Code</div>
+            </div>
+         `;
+      }
+      if (qrCanvas) {
+         qrCanvas.style.display = 'none';
+      }
+   }
+   
+   function startQRCountdown() {
+      // Clear any existing countdown
+      if (qrCountdownInterval) {
+         clearInterval(qrCountdownInterval);
+      }
+      
+      const countdownDisplay = document.getElementById('countdown-display');
+      const qrExpired = document.getElementById('qr-expired');
+      const qrDisplay = document.getElementById('qr-code-display');
+      
+      if (!countdownDisplay) return;
+      
+      // Update countdown every second
+      qrCountdownInterval = setInterval(() => {
+         qrTimeRemaining--;
+         
+         // Format time as MM:SS
+         const minutes = Math.floor(qrTimeRemaining / 60);
+         const seconds = qrTimeRemaining % 60;
+         const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+         
+         countdownDisplay.textContent = timeString;
+         
+         // Change color when time is running out
+         if (qrTimeRemaining <= 10) {
+            countdownDisplay.style.color = '#ff6b6b';
+         } else {
+            countdownDisplay.style.color = 'var(--main-color)';
+         }
+         
+         // When timer reaches 0
+         if (qrTimeRemaining <= 0) {
+            clearInterval(qrCountdownInterval);
+            qrCountdownInterval = null;
+            
+            // Hide QR code and show expired message
+            const qrPlaceholder = document.getElementById('qr-code-placeholder');
+            if (qrPlaceholder) {
+               qrPlaceholder.style.opacity = '0.3';
+            }
+            if (qrExpired) {
+               qrExpired.style.display = 'block';
+            }
+            if (countdownDisplay) {
+               countdownDisplay.textContent = '00:00';
+               countdownDisplay.style.color = '#ff6b6b';
+            }
+         }
+      }, 1000);
+   }
+   
+   function generateNewQRCode() {
+      // Reset and generate new QR code
+      if (qrCountdownInterval) {
+         clearInterval(qrCountdownInterval);
+         qrCountdownInterval = null;
+      }
+      
+      // Reset countdown display
+      const countdownDisplay = document.getElementById('countdown-display');
+      if (countdownDisplay) {
+         countdownDisplay.style.color = 'var(--main-color)';
+      }
+      
+      // Reset QR code placeholder opacity
+      const qrPlaceholder = document.getElementById('qr-code-placeholder');
+      if (qrPlaceholder) {
+         qrPlaceholder.style.opacity = '1';
+      }
+      
+      generateQRCode();
+   }
+   
+   function togglePaymentInfo(paymentMethod) {
+      // Hide all sections first
+      vnpayQrSection.classList.remove('active');
+      bankInfoSection.classList.remove('active');
+      cardInfoSection.classList.remove('active');
+      cashInfoSection.classList.remove('active');
+      
+      // Show appropriate section based on payment method
+      if (paymentMethod === 'vnpay_qr') {
+         vnpayQrSection.classList.add('active');
+         // Generate QR code when VNPAY QR is selected
+         setTimeout(() => {
+            generateQRCode();
+         }, 300); // Small delay to ensure section is visible
+      } else {
+         // Stop countdown if switching away from VNPAY QR
+         if (qrCountdownInterval) {
+            clearInterval(qrCountdownInterval);
+            qrCountdownInterval = null;
+         }
+         const qrDisplay = document.getElementById('qr-code-display');
+         if (qrDisplay) {
+            qrDisplay.style.display = 'none';
+         }
+      }
+      
+      if (paymentMethod === 'bank_transfer') {
+         bankInfoSection.classList.add('active');
+      } else if (paymentMethod === 'cards') {
+         cardInfoSection.classList.add('active');
+      } else if (paymentMethod === 'cash') {
+         cashInfoSection.classList.add('active');
+      }
+   }
+   
+   document.querySelectorAll('.payment-option-radio').forEach(option => {
+      option.addEventListener('click', function() {
+         document.querySelectorAll('.payment-option-radio').forEach(opt => {
+            opt.style.borderColor = 'rgba(143, 159, 4, .3)';
+            opt.style.background = 'transparent';
+         });
+         this.style.borderColor = 'var(--sub-color)';
+         this.style.background = 'rgba(143, 159, 4, .1)';
+         
+         // Toggle payment info section
+         const selectedMethod = this.querySelector('input[type="radio"]').value;
+         togglePaymentInfo(selectedMethod);
+      });
+   });
+   
+   // Card number formatting
+   const cardNumberInput = document.querySelector('input[name="card_number"]');
+   if (cardNumberInput) {
+      cardNumberInput.addEventListener('input', function(e) {
+         let value = e.target.value.replace(/\s/g, '');
+         let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+         e.target.value = formattedValue;
+      });
+   }
+   
+   // Expiry date formatting
+   const expiryInput = document.querySelector('input[name="expiry_date"]');
+   if (expiryInput) {
+      expiryInput.addEventListener('input', function(e) {
+         let value = e.target.value.replace(/\D/g, '');
+         if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+         }
+         e.target.value = value;
+      });
+   }
+   
+   // CVV formatting (numbers only)
+   const cvvInput = document.querySelector('input[name="cvv"]');
+   if (cvvInput) {
+      cvvInput.addEventListener('input', function(e) {
+         e.target.value = e.target.value.replace(/\D/g, '');
+      });
+   }
+
+   // Initialize on page load
+   updateBookingSummary();
+   
+   // Show payment info if default payment method requires it
+   const defaultPaymentMethod = document.querySelector('input[name="payment_method"]:checked');
+   if (defaultPaymentMethod) {
+      togglePaymentInfo(defaultPaymentMethod.value);
+   }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/navigation.js"></script>
+
+</body>
+</html>

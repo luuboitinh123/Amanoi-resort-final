@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Hotels And Resorts - Luxury Accommodation</title>
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+   <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+   <!-- Include API integration -->
+   <script src="../frontend-integration/api.js"></script>
+   <script src="js/auth.js"></script>
+   
+<!-- header section starts  -->
+
+<section class="header">
+   <div class="flex">
+      <a href="index.html#home" class="logo" style="font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 500;">Amanoi</a>
+      <div class="header-actions">
+         <a href="#reservation" class="btn btn-primary" style="text-transform: uppercase; letter-spacing: 0.2rem; font-size: 1.2rem; padding: 1rem 2.5rem;">BOOK A ROOM</a>
+         <div class="auth-buttons-container"></div>
+      </div>
+      <div id="menu-btn" class="fas fa-bars"></div>
+   </div>
+   <nav class="navbar">
+      <a href="#home" data-page="home">HOME</a>
+      <a href="#locations" data-page="locations">LOCATIONS</a>
+      <a href="#reservation" data-page="reservation" class="active">BOOK NOW</a>
+      <a href="#reviews" data-page="reviews">REVIEWS</a>
+      <a href="rooms.html" data-page="rooms">ROOMS</a>
+      <a href="#contact" data-page="contact">CONTACT</a>
+      <a href="#packages" data-page="packages">PACKAGES</a>
+   </nav>
+</section>
+
+<!-- header section ends -->
+
+<!-- hero section starts  -->
+
+<section class="home" id="home">
+   <div class="swiper home-slider">
+      <div class="swiper-wrapper">
+         <div class="box swiper-slide">
+            <img src="images/home-img-1.jpg" alt="">
+            <div class="flex">
+               <div class="hero-content">
+                  <h1 class="hero-title">Discover Your Dream Resort</h1>
+                  <h2 class="hero-subtitle">Amanoi</h2>
+                  <p class="hero-description">With Vietnam's stunning coastline stretching beautifully and embraced by Nui Chua National Park, Amanoi appears from afar as a natural paradise overlooking Vinh Hy Bay.</p>
+                  <a href="#reservation" class="btn" style="margin-top: 3rem;">Book Your Stay</a>
+            </div>
+         </div>
+            </div>
+         </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+   </div>
+</section>
+
+<!-- hero section ends -->
+
+<!-- about section starts  -->
+
+<section class="about" id="about">
+   <div class="section-header" style="text-align: center; margin-bottom: 8rem;">
+      <h2 class="section-title">Property</h2>
+      <h3 class="section-heading">Amanoi</h3>
+      <p style="font-size: 1.8rem; color: var(--text-light); max-width: 900px; margin: 3rem auto 0; line-height: 1.9; font-weight: 300;">With Vietnam's stunning coastline stretching beautifully and embraced by Nui Chua National Park, Amanoi appears from afar as a natural paradise overlooking Vinh Hy Bay. From cliff-top restaurants and pools, to the lakeside Aman Spa and private white-sand beach, the resort offers unparalleled opportunities for relaxation, adventure, and discovery.</p>
+   </div>
+
+   <div class="row" style="display: flex; flex-wrap: wrap; gap: 6rem; align-items: center; margin-bottom: 8rem;">
+      <div class="image" style="flex: 1 1 50rem;">
+         <img src="images/home-img-2.jpg" alt="" style="width: 100%; height: auto; border-radius: 0;">
+      </div>
+      <div class="content" style="flex: 1 1 50rem;">
+         <h3>Rooms & Suites</h3>
+         <p style="font-size: 1.7rem; color: var(--text-light); line-height: 1.9; margin-bottom: 3rem; font-weight: 300;">Each pavilion and villa is thoughtfully designed to blend seamlessly with the natural landscape, offering breathtaking views and unparalleled comfort. From the elegant Pavilion rooms to the expansive private villas, every space reflects the essence of Vietnamese architecture and contemporary luxury.</p>
+         <a href="rooms.html" class="btn">Explore Rooms</a>
+      </div>
+   </div>
+
+   <div class="row revers" style="display: flex; flex-wrap: wrap; gap: 6rem; align-items: center; flex-direction: row-reverse;">
+      <div class="image" style="flex: 1 1 50rem;">
+         <img src="images/home-img-3.jpg" alt="" style="width: 100%; height: auto; border-radius: 0;">
+      </div>
+      <div class="content" style="flex: 1 1 50rem;">
+         <h3>Dining</h3>
+         <p style="font-size: 1.7rem; color: var(--text-light); line-height: 1.9; margin-bottom: 3rem; font-weight: 300;">Amanoi's restaurants serve delicious Vietnamese cuisine, with menus that maximize seasonal produce and fresh daily catches. Experience authentic flavors in elegant settings, from cliff-top dining to beachside meals under the stars.</p>
+         <a href="#contact" class="btn">Discover Dining</a>
+      </div>
+   </div>
+</section>
+
+<!-- about section ends -->
+
+<!-- locations section starts  -->
+
+<section class="locations" id="locations" style="padding: 5rem 2rem;">
+   <div class="section-header" style="text-align: center; margin-bottom: 8rem;">
+      <h2 class="section-title">Getting to Amanoi</h2>
+      <h3 class="section-heading">Discover Our Location</h3>
+      <p style="font-size: 1.8rem; color: var(--text-light); max-width: 900px; margin: 3rem auto 0; line-height: 1.9; font-weight: 300;">Amanoi is 75 minutes by car from Cam Ranh Airport (CXR). Domestic flights connect to Cam Ranh Airport from Ho Chi Minh City (65 minutes) or Hanoi (105 minutes).</p>
+   </div>
+
+   <div class="locations-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; max-width: 1200px; margin: 0 auto;">
+      <div class="location-card" style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 4rem; text-align: center; transition: .3s;">
+         <h4 style="font-size: 2.4rem; color: var(--text-dark); margin-bottom: 1.5rem; font-family: 'Playfair Display', serif; font-weight: 400;">Vinh Hy Bay</h4>
+         <p style="font-size: 1.6rem; color: var(--text-light); line-height: 1.9; font-weight: 300;">Stunning bay location with direct access to pristine beaches and crystal-clear waters, surrounded by the natural beauty of Nui Chua National Park.</p>
+      </div>
+      <div class="location-card" style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 4rem; text-align: center; transition: .3s;">
+         <h4 style="font-size: 2.4rem; color: var(--text-dark); margin-bottom: 1.5rem; font-family: 'Playfair Display', serif; font-weight: 400;">National Park</h4>
+         <p style="font-size: 1.6rem; color: var(--text-light); line-height: 1.9; font-weight: 300;">Embraced by Nui Chua National Park, offering unique opportunities for nature exploration, hiking, and wildlife observation.</p>
+      </div>
+      <div class="location-card" style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 4rem; text-align: center; transition: .3s;">
+         <h4 style="font-size: 2.4rem; color: var(--text-dark); margin-bottom: 1.5rem; font-family: 'Playfair Display', serif; font-weight: 400;">Khanh Hoa Province</h4>
+         <p style="font-size: 1.6rem; color: var(--text-light); line-height: 1.9; font-weight: 300;">Located in the beautiful Khanh Hoa Province, 75 minutes from Cam Ranh Airport, offering easy access while maintaining complete seclusion.</p>
+      </div>
+   </div>
+</section>
+
+<!-- locations section ends -->
+
+<!-- services section starts  -->
+
+<section class="services">
+   <div class="section-header" style="text-align: center; margin-bottom: 8rem;">
+      <h2 class="section-title">Experiences</h2>
+      <h3 class="section-heading">Discover What Awaits</h3>
+      <p style="font-size: 1.8rem; color: var(--text-light); max-width: 900px; margin: 3rem auto 0; line-height: 1.9; font-weight: 300;">From wellness and dining to adventure and relaxation, discover the experiences that make Amanoi unforgettable.</p>
+   </div>
+   <div class="box-container">
+      <div class="box">
+         <h3>Dining</h3>
+         <p>Amanoi's restaurants serve delicious Vietnamese cuisine, with menus that maximize seasonal produce and fresh daily catches.</p>
+         <a href="#contact" class="btn" style="margin-top: 2rem;">Discover More</a>
+      </div>
+      <div class="box">
+         <h3>Wellness</h3>
+         <p>The lakeside Aman Spa offers a sanctuary for relaxation and rejuvenation, with treatments inspired by traditional Vietnamese healing practices.</p>
+         <a href="#packages" class="btn" style="margin-top: 2rem;">Discover More</a>
+      </div>
+      <div class="box">
+         <h3>Adventure</h3>
+         <p>Explore Nui Chua National Park, enjoy water sports in Vinh Hy Bay, or discover the natural beauty of Khanh Hoa Province.</p>
+         <a href="#locations" class="btn" style="margin-top: 2rem;">Discover More</a>
+      </div>
+   </div>
+</section>
+
+<!-- services section ends -->
+
+<!-- reservation section starts  -->
+
+<section class="reservation" id="reservation">
+   <div id="auth-required-booking" style="display: none; text-align: center; padding: 3rem; background: rgba(143, 159, 4, 0.1); border: var(--border); border-radius: 0.5rem; margin-bottom: 2rem;">
+      <p style="font-size: 1.8rem; color: var(--text-dark); margin-bottom: 2rem;">
+         <i class="fas fa-lock" style="margin-right: 1rem;"></i>
+         Please login or register to check availability and make a reservation
+      </p>
+      <a href="auth.html?redirect=index.html#reservation" class="btn" style="margin-right: 1rem;">Login</a>
+      <a href="auth.html?redirect=index.html#reservation" class="btn" style="background: transparent; border: 2px solid var(--main-color); color: var(--main-color);">Register</a>
+   </div>
+   <form action="rooms.html" method="get" id="reservation-form">
+      <h3>Book Your Stay</h3>
+      <div class="flex">
+         <div class="box">
+            <p>Check in <span>*</span></p>
+            <input type="date" name="check_in" class="input" required>
+         </div>
+         <div class="box">
+            <p>Check out <span>*</span></p>
+            <input type="date" name="check_out" class="input" required>
+         </div>
+         <div class="box">
+            <p>Adults <span>*</span></p>
+            <select name="adults" class="input" required>
+               <option value="1">1 adult</option>
+               <option value="2">2 adults</option>
+               <option value="3">3 adults</option>
+               <option value="4">4 adults</option>
+               <option value="5">5 adults</option>
+               <option value="6">6 adults</option>
+            </select>
+         </div>
+         <div class="box">
+            <p>Children <span>*</span></p>
+            <select name="childs" class="input" required>
+               <option value="0">0 child</option>
+               <option value="1">1 child</option>
+               <option value="2">2 children</option>
+               <option value="3">3 children</option>
+               <option value="4">4 children</option>
+               <option value="5">5 children</option>
+               <option value="6">6 children</option>
+            </select>
+         </div>
+         <div class="box">
+            <p>Rooms <span>*</span></p>
+            <select name="rooms" class="input" required>
+               <option value="1">1 room</option>
+               <option value="2">2 rooms</option>
+               <option value="3">3 rooms</option>
+               <option value="4">4 rooms</option>
+               <option value="5">5 rooms</option>
+               <option value="6">6 rooms</option>
+            </select>
+         </div>
+      </div>
+      <input type="submit" value="Check Availability" name="check" class="btn">
+   </form>
+</section>
+
+<!-- reservation section ends -->
+
+<!-- gallery section starts  -->
+
+<section class="gallery" id="gallery">
+   <div class="swiper gallery-slider">
+      <div class="swiper-wrapper">
+         <img src="images/gallery-img-1.jpg" class="swiper-slide" alt="">
+         <img src="images/gallery-img-2.webp" class="swiper-slide" alt="">
+         <img src="images/gallery-img-3.webp" class="swiper-slide" alt="">
+         <img src="images/gallery-img-4.webp" class="swiper-slide" alt="">
+         <img src="images/gallery-img-5.webp" class="swiper-slide" alt="">
+         <img src="images/gallery-img-6.webp" class="swiper-slide" alt="">
+      </div>
+      <div class="swiper-pagination"></div>
+   </div>
+</section>
+
+<!-- gallery section ends -->
+
+<!-- contact section starts  -->
+
+<section class="contact" id="contact">
+   <div class="row">
+      <form action="" method="post">
+         <h3>Send us message</h3>
+         <input type="text" name="name" required maxlength="50" placeholder="Enter your name" class="box">
+         <input type="email" name="email" required maxlength="50" placeholder="Enter your email" class="box">
+         <input type="number" name="number" required maxlength="10" min="0" max="9999999999" placeholder="Enter your number" class="box">
+         <textarea name="msg" class="box" required maxlength="1000" placeholder="Enter your message" cols="30" rows="10"></textarea>
+         <input type="submit" value="Send message" name="send" class="btn">
+      </form>
+
+      <div class="faq">
+         <div class="section-header" style="text-align: left; margin-bottom: 4rem;">
+            <h2 class="section-title">FAQ</h2>
+            <h3 class="section-heading">Frequently asked questions</h3>
+         </div>
+         <div class="box active">
+            <h3>Are there activities for children at the resort?</h3>
+            <p>Yes, we have a dedicated kids' club with fun and educational activities for children of all ages, as well as family-friendly amenities like child care services, family pools, and guided nature tours designed for young guests.</p>
+         </div>
+         <div class="box">
+            <h3>What dining options are available at the resort?</h3>
+            <p>Our resort features multiple dining options, including a fine dining restaurant, casual poolside lounges, and in-room dining. We offer a variety of international cuisines and locally inspired dishes, all curated by our team of renowned chefs.</p>
+         </div>
+         <div class="box">
+            <h3>Can I host a wedding or event at the resort?</h3>
+            <p>Absolutely! We specialize in hosting luxurious weddings and private events. Our experienced events team will assist with everything from planning the decor and menu to coordinating with local vendors and ensuring every detail is perfect for your special day.</p>
+         </div>
+         <div class="box">
+            <h3>Are there activities and excursions available at the resort?</h3>
+            <p>Yes, we offer a wide range of activities and excursions, from water sports like snorkeling, scuba diving, and kayaking to land-based activities such as guided hikes, golf, and cultural tours. We also provide private experiences, including yacht charters and sunset cruises.</p>
+         </div>
+         <div class="box">
+            <h3>Can I request early check-in or late check-out?</h3>
+            <p>We offer early check-in and late check-out options based on availability. Please contact our front desk or concierge team in advance to arrange these services, or request during your booking for the best chance of availability.</p>
+         </div>
+      </div>
+   </div>
+</section>
+
+<!-- contact section ends -->
+
+<!-- reviews section starts  -->
+
+<section class="reviews" id="reviews">
+   <div class="section-header" style="text-align: center; margin-bottom: 5rem;">
+      <h2 class="section-title">Guest Testimonials</h2>
+      <h3 class="section-heading">Read our real testimonial services</h3>
+      <p style="font-size: 1.8rem; color: var(--text-light); max-width: 900px; margin: 3rem auto 0; line-height: 1.9; font-weight: 300;">Our guests enjoy more than just a stay—they indulge in a true escape. Here's what our distinguished guests have to say</p>
+   </div>
+
+   <div class="swiper reviews-slider">
+      <div class="swiper-wrapper">
+         <div class="swiper-slide box" style="padding: 4rem; background-color: var(--white); border: 1px solid rgba(0, 0, 0, 0.1);">
+            <img src="images/pic-1.png" alt="" style="height: 8rem; width: 8rem; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+            <h3>"A truly luxurious experience."</h3>
+            <p style="color: var(--text-light); font-weight: 300;">"Hoteluxe exceeded all my expectations. From the moment I walked in, the service was impeccable, and the ambiance was pure elegance. The room was spacious, with breathtaking views, and every detail screamed luxury, from the fine linens to the state-of-the-art amenities. The staff went above and beyond to ensure I felt pampered throughout my stay. It's hands down the best hotel experience I've ever had, and I look forward to returning."</p>
+            <div class="reviewer-info" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+               <h4 style="font-size: 1.6rem; color: var(--text-dark); font-weight: 500;">Bruce Mitchell</h4>
+               <p style="font-size: 1.3rem; color: var(--text-light); font-weight: 300;">Travel Blogger</p>
+            </div>
+         </div>
+         <div class="swiper-slide box" style="padding: 4rem; background-color: var(--white); border: 1px solid rgba(0, 0, 0, 0.1);">
+            <img src="images/pic-2.png" alt="" style="height: 8rem; width: 8rem; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+            <h3>"An oasis of tranquility and elegance."</h3>
+            <p style="color: var(--text-light); font-weight: 300;">"Hoteluxe provided the perfect escape from my busy life. The atmosphere is serene, and every space within the hotel is designed with sophistication. My suite was spacious, the bed was like sleeping on a cloud, and the private balcony had stunning views of the city. The staff were incredibly professional and discreet, making sure every need was met. I've stayed at many luxury hotels, but Hoteluxe truly stands out for its elegance and personalized service."</p>
+            <div class="reviewer-info" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+               <h4 style="font-size: 1.6rem; color: var(--text-dark); font-weight: 500;">Sandiago Martin</h4>
+               <p style="font-size: 1.3rem; color: var(--text-light); font-weight: 300;">Interior Designer</p>
+            </div>
+         </div>
+         <div class="swiper-slide box" style="padding: 4rem; background-color: var(--white); border: 1px solid rgba(0, 0, 0, 0.1);">
+            <img src="images/pic-3.png" alt="" style="height: 8rem; width: 8rem; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+            <h3>"Exceptional service and comfort."</h3>
+            <p style="color: var(--text-light); font-weight: 300;">"The service was outstanding, the rooms were spacious and well-appointed. The front desk staff were very professional and provided excellent support throughout our stay."</p>
+            <div class="reviewer-info" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+               <h4 style="font-size: 1.6rem; color: var(--text-dark); font-weight: 500;">Michael Chen</h4>
+               <p style="font-size: 1.3rem; color: var(--text-light); font-weight: 300;">Business Executive</p>
+            </div>
+         </div>
+         <div class="swiper-slide box" style="padding: 4rem; background-color: var(--white); border: 1px solid rgba(0, 0, 0, 0.1);">
+            <img src="images/pic-4.png" alt="" style="height: 8rem; width: 8rem; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+            <h3>"Perfect family getaway."</h3>
+            <p style="color: var(--text-light); font-weight: 300;">"The pool was beautiful, the food was diverse and delicious. Our family had a wonderful vacation here. Thank you Hotels And Resorts for the amazing experience!"</p>
+            <div class="reviewer-info" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+               <h4 style="font-size: 1.6rem; color: var(--text-dark); font-weight: 500;">Emily Johnson</h4>
+               <p style="font-size: 1.3rem; color: var(--text-light); font-weight: 300;">Family Traveler</p>
+         </div>
+         </div>
+         <div class="swiper-slide box" style="padding: 4rem; background-color: var(--white); border: 1px solid rgba(0, 0, 0, 0.1);">
+            <img src="images/pic-5.png" alt="" style="height: 8rem; width: 8rem; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+            <h3>"Convenient location, modern design."</h3>
+            <p style="color: var(--text-light); font-weight: 300;">"Convenient location near the beach. The rooms were beautifully decorated and modern. I was very satisfied with the service and would definitely return."</p>
+            <div class="reviewer-info" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+               <h4 style="font-size: 1.6rem; color: var(--text-dark); font-weight: 500;">David Williams</h4>
+               <p style="font-size: 1.3rem; color: var(--text-light); font-weight: 300;">Photographer</p>
+         </div>
+         </div>
+         <div class="swiper-slide box" style="padding: 4rem; background-color: var(--white); border: 1px solid rgba(0, 0, 0, 0.1);">
+            <img src="images/pic-6.png" alt="" style="height: 8rem; width: 8rem; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+            <h3>"Luxury with full amenities."</h3>
+            <p style="color: var(--text-light); font-weight: 300;">"A luxurious hotel with all amenities. The staff provided attentive service. I will definitely recommend this to my friends and colleagues."</p>
+            <div class="reviewer-info" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+               <h4 style="font-size: 1.6rem; color: var(--text-dark); font-weight: 500;">Lisa Anderson</h4>
+               <p style="font-size: 1.3rem; color: var(--text-light); font-weight: 300;">Marketing Director</p>
+         </div>
+         </div>
+      </div>
+      <div class="swiper-pagination"></div>
+   </div>
+</section>
+
+<!-- reviews section ends  -->
+
+<!-- packages section starts  -->
+
+<section class="packages" id="packages" style="padding: 5rem 2rem;">
+   <div class="section-header" style="text-align: center; margin-bottom: 5rem;">
+      <h2 class="section-title">Experiences</h2>
+      <h3 class="section-heading">Exclusive Packages & Offers</h3>
+      <p style="font-size: 1.8rem; color: var(--text-light); max-width: 900px; margin: 3rem auto 0; line-height: 1.9; font-weight: 300;">Discover our curated packages designed to enhance your stay with special amenities and experiences.</p>
+   </div>
+
+   <div class="packages-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; max-width: 1200px; margin: 0 auto;">
+      <div class="package-card" style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 4rem; text-align: center; transition: .3s; background-color: var(--white);">
+         <h4 style="font-size: 2.4rem; color: var(--text-dark); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Wellness Pool Villa</h4>
+         <p style="font-size: 1.6rem; color: var(--text-light); line-height: 1.9; margin-bottom: 3rem; font-weight: 300;">Two Wellness Pool Villas at Amanoi are specially designed for personal wellness. Enjoy spa treatments and body care with absolute privacy in your own villa overlooking the lotus lake or facing the mountains.</p>
+         <a href="#reservation" class="btn">Discover More</a>
+      </div>
+      <div class="package-card" style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 4rem; text-align: center; transition: .3s; background-color: var(--white);">
+         <h4 style="font-size: 2.4rem; color: var(--text-dark); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Family Activities</h4>
+         <p style="font-size: 1.6rem; color: var(--text-light); line-height: 1.9; margin-bottom: 3rem; font-weight: 300;">With daily activities from coconut leaf weaving and sandcastle building, to beach volleyball, fishing, and movie screenings, Amanoi offers exciting experiences for children and families to create beautiful memories together.</p>
+         <a href="#reservation" class="btn">Discover More</a>
+      </div>
+      <div class="package-card" style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 4rem; text-align: center; transition: .3s; background-color: var(--white);">
+         <h4 style="font-size: 2.4rem; color: var(--text-dark); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Celebrations & Events</h4>
+         <p style="font-size: 1.6rem; color: var(--text-light); line-height: 1.9; margin-bottom: 3rem; font-weight: 300;">Celebrate life's most important moments in stunning indoor and outdoor settings, perfect for weddings, anniversaries, and unique events in Vietnam.</p>
+         <a href="#reservation" class="btn">Discover More</a>
+      </div>
+   </div>
+</section>
+
+<!-- packages section ends  -->
+
+<!-- footer section starts  -->
+
+<section class="footer">
+   <div class="box-container">
+      <div class="box">
+         <h4 style="font-size: 2.4rem; color: var(--white); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Amanoi</h4>
+         <a href="#"><i class="fas fa-map-marker-alt"></i> Vinh Hy Village, Vinh Hai Commune, Khanh Hoa Province, Vietnam</a>
+         <a href="tel:+842593770777"><i class="fas fa-phone"></i> Tel: +84 931055975</a>
+         <a href="tel:+842593535777"><i class="fas fa-phone"></i> For reservations: +84 9310559xxx</a>
+         <a href="mailto:amanoi@aman.com"><i class="fas fa-envelope"></i> Email: amanoi@aman.com</a>
+      </div>
+      <div class="box">
+         <h4>More information</h4>
+         <a href="index.html#about">Aman Group</a>
+         <a href="index.html#locations">Destinations</a>
+         <a href="index.html#packages">Experiences</a>
+         <a href="index.html#reviews">About Us</a>
+         <a href="index.html#contact">Contact Us</a>
+      </div>
+      <div class="box">
+         <h4>Follow Us</h4>
+         <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+         <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+         <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+         <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+         <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      </div>
+   </div>
+   <div class="credit">Copyright 2025, Aman Resorts Ltd</div>
+</section>
+
+<!-- footer section ends -->
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/navigation.js"></script>
+
+<script>
+   // Check authentication for reservation form
+   document.addEventListener('DOMContentLoaded', function() {
+      // Wait for auth check to complete
+      setTimeout(function() {
+         const reservationForm = document.getElementById('reservation-form');
+         const authMessage = document.getElementById('auth-required-booking');
+         
+         if (reservationForm && authMessage) {
+            // Check auth status
+            const isAuth = isAuthenticated();
+            
+            // Intercept form submission
+            reservationForm.addEventListener('submit', function(e) {
+               if (!isAuthenticated()) {
+                  e.preventDefault();
+                  reservationForm.style.display = 'none';
+                  authMessage.style.display = 'block';
+                  // Update redirect URLs
+                  authMessage.querySelectorAll('a').forEach(link => {
+                     link.href = `auth.html?redirect=${encodeURIComponent('index.html#reservation')}`;
+                  });
+                  // Scroll to message
+                  authMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+               }
+            });
+         }
+      }, 200);
+   });
+</script>
+
+</body>
+</html>

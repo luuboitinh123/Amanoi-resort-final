@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms – Amanoi Resort</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* ===== ROOT VARIABLES ===== */
+        :root {
+            --main-color: #8F9F04;
+            --sub-color: #F9EFCC;
+            --text-muted: #8B8B7A;
+            --card-border: 0.1rem solid rgba(143, 159, 4, 0.12);
+            --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 6px 16px rgba(143, 159, 4, 0.12);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .rooms-hero {
+            background: linear-gradient(135deg, rgba(143, 159, 4, 0.08) 0%, rgba(249, 239, 204, 0.06) 100%);
+            padding: 5rem 2rem 3rem;
+            text-align: center;
+            border-bottom: var(--card-border);
+            min-height: 140px;
+            scroll-margin-top: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .rooms-hero h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--main-color);
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+
+        .rooms-hero p {
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ===== MAIN ROOMS LAYOUT ===== */
+        .rooms-wrap { 
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+            gap: 40px;
+            position: relative; /* ensure sticky positioning works correctly */
+        }
+        
+        /* Ensure sidebar and rooms-list start at same vertical position */
+        .rooms-sidebar,
+        .rooms-list {
+            margin-top: 0;
+        }
+
+        /* ===== SIDEBAR / FILTER SECTION ===== */
+        .rooms-sidebar { 
+            width: 420px; /* increased for better usability and visual consistency */
+            flex-shrink: 0;
+            background: #FAFAF7;
+            border: var(--card-border);
+            padding: 32px; /* increased padding for better spacing */
+            border-radius: 8px;
+            position: sticky;
+            top: 160px; /* account for header height (140px) + some spacing */
+            height: fit-content;
+            max-height: calc(100vh - 180px); /* prevent overflow, account for header */
+            overflow-y: auto; /* allow scrolling if content is too tall */
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* stronger, softer shadow */
+            transition: box-shadow 0.2s ease, transform 0.15s ease;
+            z-index: 10; /* ensure it stays above other content */
+        }
+        
+        .rooms-sidebar h4{ 
+            font-family: 'Playfair Display', serif; 
+            color: var(--main-color); 
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .filter-group{ 
+            margin-bottom: 1.2rem; 
+        }
+        
+        .filter-group label{ 
+            display: block; 
+            font-size: 1rem; 
+            color: var(--text-muted); 
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+        }
+        
+        .filter-group input[type="text"], .filter-group select{ 
+            width: 100%; 
+            padding: 0.75rem 1rem; 
+            border: 1px solid rgba(0,0,0,.06); 
+            border-radius: 6px; 
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .price-range{ 
+            display: flex; 
+            gap: 0.5rem; 
+        }
+        
+        .apply-filters{ 
+            margin-top: 1.5rem; 
+            display: block; 
+            background: var(--main-color); 
+            color: #fff; 
+            padding: 0.9rem 1.5rem; 
+            border-radius: 6px; 
+            text-align: center; 
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .apply-filters:hover{ 
+            background: #6B7A03;
+        }
+
+        /* ===== ROOMS LIST CONTAINER ===== */
+        .rooms-list { 
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            margin-top: 0 !important; /* ensure it does not push content down */
+            align-self: flex-start; /* align with sidebar top */
+            gap: 30px;
+            padding-top: 0; /* ensure horizontal alignment with sidebar */
+        }
+
+        /* ===== INDIVIDUAL ROOM CARD ===== */
+        .room-row { 
+            display: flex;
+            width: 100%;
+            background: #fff;
+            border: var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .room-row:hover {
+            box-shadow: 0 6px 16px rgba(143, 159, 4, 0.12);
+            border-color: rgba(143, 159, 4, 0.24);
+            transform: translateY(-5px);
+        }
+        
+        .room-row img { 
+            width: 40%;
+            min-height: 250px;
+            object-fit: cover;
+            background-color: #eee;
+            transition: transform 0.3s ease;
+        }
+        
+        .room-row:hover img {
+            transform: scale(1.02);
+        }
+        
+        .room-info{ 
+            width: 60%;
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .room-meta{ 
+            display: flex; 
+            gap: 0.8rem; 
+            align-items: center; 
+            margin-bottom: 0.6rem;
+        }
+        
+        .room-type{ 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            letter-spacing: 0.12rem; 
+            color: var(--main-color); 
+            text-transform: uppercase;
+            background: rgba(143, 159, 4, 0.05);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+        }
+        
+        .room-title { 
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--main-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .room-desc{ 
+            color: var(--text-muted); 
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .room-amenities { 
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+            padding: 1rem 0;
+            border-top: var(--card-border);
+            border-bottom: var(--card-border);
+        }
+        
+        .room-amenities span {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .room-bottom { 
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .room-price { 
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .room-price-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+        
+        .room-price-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--main-color);
+            font-weight: 700;
+        }
+        
+        .room-actions { 
+            display: flex;
+            gap: 0.8rem;
+        }
+        
+        .btn-outline { 
+            padding: 0.7rem 1.4rem;
+            border: 1.5px solid var(--main-color);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--main-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-outline:hover {
+            background: var(--main-color);
+            color: white;
+            box-shadow: 0 6px 16px rgba(143, 159, 4, 0.12);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary { 
+            padding: 0.7rem 1.4rem;
+            border: none;
+            border-radius: 4px;
+            background: var(--main-color);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: #7A8A04;
+            box-shadow: 0 6px 16px rgba(143, 159, 4, 0.12);
+            transform: translateY(-1px);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1200px) {
+            .rooms-wrap {
+                gap: 30px;
+                padding: 0 15px;
+            }
+
+            .rooms-sidebar {
+                width: 360px;
+                top: 160px; /* maintain sticky positioning */
+                max-height: calc(100vh - 180px);
+            }
+
+            .room-row {
+                gap: 0;
+            }
+
+            .room-row img {
+                min-height: 240px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .rooms-wrap {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .rooms-sidebar {
+                width: 100%;
+                position: static;
+                top: auto;
+            }
+
+            .room-row {
+                flex-direction: column;
+            }
+
+            .room-row img {
+                width: 100%;
+                min-height: 280px;
+            }
+
+            .room-info {
+                width: 100%;
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .rooms-wrap {
+                margin: 30px auto 0;
+                padding: 0 15px;
+                gap: 20px;
+            }
+
+            .rooms-sidebar {
+                padding: 15px;
+            }
+
+            .room-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .room-row img {
+                width: 100%;
+                min-height: 220px;
+            }
+
+            .room-info {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .room-title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            .room-desc {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+
+            .room-amenities {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
+                margin: 15px 0;
+                padding: 10px 0;
+            }
+
+            .room-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                padding-top: 10px;
+            }
+
+            .room-actions {
+                width: 100%;
+            }
+
+            .room-actions button,
+            .room-actions a {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rooms-hero {
+                padding: 2.5rem 15px;
+                min-height: 100px;
+            }
+
+            .rooms-hero h1 {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+
+            .rooms-hero p {
+                font-size: 13px;
+            }
+
+            .rooms-wrap {
+                margin: 20px auto 0;
+                padding: 0 12px;
+                gap: 15px;
+            }
+
+            .rooms-sidebar {
+                padding: 15px;
+            }
+
+            .rooms-sidebar-label {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .rooms-sidebar input,
+            .rooms-sidebar select {
+                font-size: 13px;
+                padding: 8px;
+            }
+
+            .room-row {
+                flex-direction: column;
+                gap: 0;
+                margin-bottom: 20px;
+            }
+
+            .room-row img {
+                width: 100%;
+                min-height: 180px;
+            }
+
+            .room-info {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .room-title {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+
+            .room-price-value {
+                font-size: 20px;
+            }
+
+            .room-amenities {
+                gap: 8px;
+                margin: 12px 0;
+                padding: 10px 0;
+            }
+
+            .amenity {
+                gap: 6px;
+                font-size: 13px;
+            }
+
+            .room-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .room-actions button,
+            .room-actions a {
+                padding: 10px;
+                font-size: 13px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <script src="../frontend-integration/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- header section starts  -->
+    <section class="header">
+       <div class="flex">
+          <a href="index.html#home" class="logo" style="font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 500;">Amanoi</a>
+          <div class="header-actions">
+             <a href="index.html#reservation" class="btn btn-primary" style="text-transform: uppercase; letter-spacing: 0.2rem; font-size: 1.2rem; padding: 1rem 2.5rem;">BOOK A ROOM</a>
+             <div class="auth-buttons-container"></div>
+          </div>
+          <div id="menu-btn" class="fas fa-bars"></div>
+       </div>
+       <nav class="navbar">
+          <a href="index.html#home" data-page="home">HOME</a>
+          <a href="index.html#locations" data-page="locations">LOCATIONS</a>
+          <a href="index.html#reservation" data-page="reservation">BOOK NOW</a>
+          <a href="index.html#reviews" data-page="reviews">REVIEWS</a>
+          <a href="rooms.html" data-page="rooms" class="active">ROOMS</a>
+          <a href="index.html#contact" data-page="contact">CONTACT</a>
+          <a href="index.html#packages" data-page="packages">PACKAGES</a>
+       </nav>
+    </section>
+    <!-- header section ends -->
+
+    <header class="rooms-hero">
+        <h1>Rooms & Suites</h1>
+        <p>Discover our luxurious rooms and suites, thoughtfully designed for comfort and a memorable stay.</p>
+    </header>
+
+    <div class="rooms-wrap">
+        <aside class="rooms-sidebar">
+            <h4>Find a room</h4>
+            <div class="filter-group">
+                <label>Search</label>
+                <input type="text" placeholder="Search by name or feature">
+            </div>
+            <div class="filter-group">
+                <label>Guests</label>
+                <select>
+                    <option>1 guest</option>
+                    <option>2 guests</option>
+                    <option>3+ guests</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Price</label>
+                <div class="price-range">
+                    <input type="text" placeholder="min" style="width:48%;">
+                    <input type="text" placeholder="max" style="width:48%;">
+                </div>
+            </div>
+            <a class="apply-filters">Apply Filters</a>
+        </aside>
+
+        <section class="rooms-list">
+            <!-- Room 1 -->
+            <article class="room-row">
+                <img src="images/deluxe.jpg" alt="Deluxe King Room">
+                <div class="room-info">
+                    <div class="room-meta"><span class="room-type">DELUXE</span><span style="color:var(--text-muted);">• 45 m²</span></div>
+                    <h3 class="room-title">Deluxe King Room</h3>
+                    <p class="room-desc">Spacious room with a king bed, private balcony and modern bathroom. Perfect for couples and business travelers.</p>
+                    <div class="room-amenities"><span><i class="fas fa-bed"></i> King bed</span><span><i class="fas fa-wifi"></i> Free WiFi</span><span><i class="fas fa-tv"></i> Smart TV</span></div>
+                    <div class="room-bottom">
+                        <div class="room-price">
+                            <span class="room-price-label">From</span>
+                            <span class="room-price-value">$220</span>
+                        </div>
+                        <div class="room-actions"><a class="btn-outline" href="room-details.html?room=deluxe">View</a><a class="btn-primary" href="room-details.html?room=deluxe">Book</a></div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Room 2 -->
+            <article class="room-row">
+                <img src="images/executive.jpg" alt="Executive Suite">
+                <div class="room-info">
+                    <div class="room-meta"><span class="room-type">EXECUTIVE</span><span style="color:var(--text-muted);">• 65 m²</span></div>
+                    <h3 class="room-title">Executive Suite</h3>
+                    <p class="room-desc">Premium suite with separate living area, dedicated workspace and exclusive amenities for business travelers.</p>
+                    <div class="room-amenities"><span><i class="fas fa-briefcase"></i> Workspace</span><span><i class="fas fa-concierge-bell"></i> Service</span></div>
+                    <div class="room-bottom">
+                        <div class="room-price">
+                            <span class="room-price-label">From</span>
+                            <span class="room-price-value">$400</span>
+                        </div>
+                        <div class="room-actions"><a class="btn-outline" href="room-details.html?room=executive">View</a><a class="btn-primary" href="room-details.html?room=executive">Book</a></div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Room 3 -->
+            <article class="room-row">
+                <img src="images/family.jpg" alt="Family Suite">
+                <div class="room-info">
+                    <div class="room-meta"><span class="room-type">FAMILY</span><span style="color:var(--text-muted);">• 80 m²</span></div>
+                    <h3 class="room-title">Family Suite</h3>
+                    <p class="room-desc">Ideal for families—two bedrooms with a living area and plenty of space for children and adults alike.</p>
+                    <div class="room-amenities"><span><i class="fas fa-users"></i> 4 Guests</span><span><i class="fas fa-couch"></i> Living area</span></div>
+                    <div class="room-bottom">
+                        <div class="room-price">
+                            <span class="room-price-label">From</span>
+                            <span class="room-price-value">$300</span>
+                        </div>
+                        <div class="room-actions"><a class="btn-outline" href="room-details.html?room=family">View</a><a class="btn-primary" href="room-details.html?room=family">Book</a></div>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+    </div>
+
+    <!-- footer section starts  -->
+    <section class="footer">
+       <div class="box-container">
+          <div class="box">
+             <h4 style="font-size: 2.4rem; color: var(--white); margin-bottom: 2rem; font-family: 'Playfair Display', serif; font-weight: 400;">Amanoi</h4>
+             <a href="#"><i class="fas fa-map-marker-alt"></i> Vinh Hy Village, Vinh Hai Commune, Khanh Hoa Province, Vietnam</a>
+             <a href="tel:+842593770777"><i class="fas fa-phone"></i> Tel: +84 931055975</a>
+             <a href="tel:+842593535777"><i class="fas fa-phone"></i> For reservations: +84 9310559xxx</a>
+             <a href="mailto:amanoi@aman.com"><i class="fas fa-envelope"></i> Email: amanoi@aman.com</a>
+          </div>
+          <div class="box">
+             <h4>More information</h4>
+             <a href="index.html#about">Aman Group</a>
+             <a href="index.html#locations">Destinations</a>
+             <a href="index.html#packages">Experiences</a>
+             <a href="index.html#reviews">About Us</a>
+             <a href="index.html#contact">Contact Us</a>
+          </div>
+          <div class="box">
+             <h4>Follow Us</h4>
+             <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+             <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+             <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+             <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+             <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          </div>
+       </div>
+       <div class="credit">Copyright 2025, Aman Resorts Ltd</div>
+    </section>
+    <!-- footer section ends -->
+
+    <script>
+        let menuBtn = document.querySelector('#menu-btn');
+        let navbar = document.querySelector('.header .navbar');
+
+        if(menuBtn){
+            menuBtn.onclick = () => {
+                menuBtn.classList.toggle('fa-times');
+                navbar.classList.toggle('active');
+            };
+        }
+
+        window.onscroll = () => {
+            if(menuBtn) menuBtn.classList.remove('fa-times');
+            if(navbar) navbar.classList.remove('active');
+        };
+    </script>
+
+</body>
+</html>

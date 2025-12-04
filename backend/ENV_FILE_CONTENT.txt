@@ -1,0 +1,48 @@
+# =====================================================
+# Hotel Booking Backend - Environment Configuration
+# =====================================================
+# Copy this entire content into your backend/.env file
+# =====================================================
+
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# =====================================================
+# Database Configuration (XAMPP MySQL)
+# =====================================================
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=hotel_booking_db
+
+# =====================================================
+# JWT Authentication Configuration
+# =====================================================
+# IMPORTANT: Change this to a secure random string in production!
+# Generate a secure secret: openssl rand -base64 32
+JWT_SECRET=your_super_secret_jwt_key_change_this_in_production_12345
+JWT_EXPIRES_IN=7d
+
+# =====================================================
+# Frontend URL (for CORS)
+# =====================================================
+FRONTEND_URL=http://localhost:5501
+
+# =====================================================
+# Email Configuration (Optional - for booking confirmations)
+# =====================================================
+# Uncomment and configure if you want to send email notifications
+# EMAIL_HOST=smtp.gmail.com
+# EMAIL_PORT=587
+# EMAIL_USER=your_email@gmail.com
+# EMAIL_PASS=your_app_password
+
+# =====================================================
+# Notes:
+# - DB_PASSWORD: Leave empty for XAMPP default (no password)
+# - JWT_SECRET: Must be changed in production for security
+# - FRONTEND_URL: Update if your frontend runs on a different port
+# =====================================================
+
+
